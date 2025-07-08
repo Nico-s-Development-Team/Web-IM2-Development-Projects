@@ -1,0 +1,355 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  display: flex;
+  background-color: #f4edf9;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 60px;
+  height: 100vh;
+  background-color: #e8dcf5;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: left;
+  padding: 1rem 0;
+  transition: width 0.3s ease;
+  overflow: hidden;
+}
+
+.sidebar:hover {
+  width: 200px;
+}
+
+/* Sidebar item */
+.sidebar-item {
+  display: flex;
+  align-items: center;        /* vertical center */
+  justify-content: flex-start; /* keep icon left-aligned in expanded view */
+  gap: 1rem;
+  padding: 0.8rem 1rem;
+  width: 100%;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.user-icon-sidebar-item {
+  margin-top: auto;
+}
+
+.sidebar-item .icon {
+  font-size: 1.5rem;
+  display: flex;
+  min-width: 20px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+/* Label is hidden by default */
+.sidebar .label {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.sidebar:not(:hover) .label {
+  display: none;
+}
+
+/* When sidebar is hovered, show label */
+.sidebar:hover .label {
+  display: inline;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Main Content */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100vh;
+  padding: 1rem;
+  margin-left: 4rem;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 600px;
+  margin: 0 auto 1rem;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: none;
+  background-color: #f4dffc;
+  margin-right: 10px;
+}
+
+.plus-btn {
+  padding: 0.5rem 0.8rem;
+  border: none;
+  background-color: #f4dffc;
+  border-radius: 8px;
+  font-size: 1.2rem;
+}
+
+.promo-actions {
+  padding: 5px;
+}
+
+.promo-banner {
+  position: relative;
+  max-width: 48rem;
+  margin: 0 auto;
+}
+
+.promo-content-slider {
+  display: flex;
+  aspect-ratio: 16 / 8.5;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  width: 100%;
+  height: auto;
+  box-shadow: 0 1.5rem 3rem -0.75rem hsla(0, 0%, 0%, 0.25);
+  border-radius: 0.5rem;
+}
+
+.promo-content-slider img {
+  flex: 0 0 100%;
+  width: 100%;
+  height: auto;
+  scroll-snap-align: start;
+  object-fit: cover;
+}
+
+.slider-nav {
+    display: flex;
+    column-gap: 1rem;
+    position: absolute;
+    bottom: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.slider-nav a{
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: #fff;
+    opacity: 0.75;
+    transition: opacity ease 250ms;
+}
+
+.slider-nav a:hover {
+    opacity: 1;
+}
+
+.promo-content-slider img {
+  width: 100%;
+  height: auto;
+}
+
+.filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+.filters button {
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.product-card {
+  background-color: #dedede;
+  border-radius: 10px;
+  height: 120px;
+}
+
+.product-scroll-container {
+  height: 100%;
+  max-height: 500px; /* or whatever fits your layout */
+  overflow-y: auto;
+  padding-right: 4px; /* optional: spacing for scrollbar */
+}
+
+/* Optional: customize scrollbar for WebKit browsers */
+.product-scroll-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.product-scroll-container::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 10px;
+}
+
+
+/* Order Section */
+.order-section {
+  width: 300px;
+  background-color: #f4dffc;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  border-left: 2px solid #e0c5fa;
+}
+
+.order-section h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #5a0f8b;
+}
+
+/* Address Section */
+.delivery-address {
+  background: #ebd8ff;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.section-title {
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.address,
+.delivery-info {
+  font-size: 0.95rem;
+  margin-bottom: 0.3rem;
+}
+
+/* Cart Items */
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  background-color: #e5d3f9;
+  padding: 0.7rem;
+  border-radius: 10px;
+}
+
+.item-image {
+  width: 45px;
+  height: 45px;
+  background: #c1c1c1;
+  border-radius: 8px;
+  margin-right: 1rem;
+}
+
+.item-info {
+  flex: 1;
+}
+
+.item-name {
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+}
+
+select {
+  padding: 0.3rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* Summary Section */
+.order-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+}
+
+.summary-line.total {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+/* Promo Buttons */
+.promo-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.promo-btn,
+.add-coupon {
+  flex: 1;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.promo-btn {
+  background-color: #fbc97f;
+}
+
+.add-coupon {
+  background-color: #ff9c1a;
+  color: white;
+}
+
+/* Checkout Button */
+.checkout-btn {
+  width: 100%;
+  margin-top: 0.3rem;
+  background-color: #fa951a;
+  color: white;
+  padding: 0.9rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+

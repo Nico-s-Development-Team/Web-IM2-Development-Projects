@@ -1,0 +1,481 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #FFF8F8;
+    color: #333;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: 'Open Sans', sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+h1, h2, h3 {
+    font-family: 'Poppins', sans-serif;
+}
+
+main {
+    padding-top: 80px;
+    flex: 1;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    padding: 0 120px;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+    background-color: #FFF8F8;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.navbar .logo {
+    font-size: 22px;
+    font-weight: bold;
+    color: red;
+}
+
+.navbar .logo span {
+    color: #333;
+    font-size: 12px;
+}
+
+.navbar input {
+    flex: 1;
+    margin: 0 20px;
+    padding: 8px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    background-color: #EFE6E6;
+}
+
+.navbar nav a {
+    margin: 0 20px;
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.navbar .order-now-btn {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    margin: 0 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.logo {
+    display: flex;
+    width: 100px;
+    height: 100px;
+}
+
+.promo-section {
+    text-align: center;
+    margin: 20px;
+}
+
+.promo-banner {
+  position: relative;
+  max-width: 48rem;
+  margin: 0 auto;
+}
+
+.promo-content-slider {
+  display: flex;
+  aspect-ratio: 16 / 8.5;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  width: 100%;
+  height: auto;
+  box-shadow: 0 1.5rem 3rem -0.75rem hsla(0, 0%, 0%, 0.25);
+  border-radius: 0.5rem;
+}
+
+.promo-content-slider img {
+  flex: 0 0 100%;
+  width: 100%;
+  height: auto;
+  scroll-snap-align: start;
+  object-fit: cover;
+}
+
+.slider-nav {
+    display: flex;
+    column-gap: 1rem;
+    position: absolute;
+    bottom: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.slider-nav a{
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: #fff;
+    opacity: 0.75;
+    transition: opacity ease 250ms;
+}
+
+.slider-nav a:hover {
+    opacity: 1;
+}
+
+.promo-content-slider img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.promo-buttons {
+    margin: 40px 0 0;
+}
+
+.promo-buttons button {
+    margin: 0 60px;
+    padding: 14px 160px;
+    justify-content: center;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.promo-buttons .order-btn {
+    background-color: red;
+    color: white;
+}
+
+.promo-buttons .history-btn {
+    background-color: #7da87b;
+    color: white;
+}
+
+.section {
+    scroll-margin-top: 100px;
+}
+
+.section-header {
+    display: flex;
+    margin: 60px 200px 40px;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.section-header h2 {
+    font-size: 18px;
+}
+
+.section-header a {
+    color: #7da87b;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.items {
+    display: grid;
+    margin: 0 200px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+.item {
+    border-radius: 10px;
+    text-align: center;
+}
+
+.item img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.image-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.image-container img {
+    width: 100%;
+    display: block;
+    border-radius: 10px;
+    transition: transform ease 0.3s;
+}
+
+.image-container:hover img {
+    transform: scale(1.1);
+}
+
+.image-container .order-btn {
+    position: absolute;
+    bottom: 10px; /* Distance from bottom */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #FF0000;
+    color: white;
+    border: none;
+    padding: 7px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.item button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 7px 15px;
+    margin: 5px 0 10px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.promo-service {
+    text-align: center;
+    margin: 80px 0 20px;
+    scroll-margin-top: 100px;
+}
+
+.promo-items{
+    display: grid;
+    margin: 20px 200px 0;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+.box-content {
+    border: 2px solid #ccc;       
+    padding: 15px;                
+    margin-top: 10px;            
+    background-color: #fff8f8;   
+    border-radius: 10px;         
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1); 
+}
+
+.footer {
+    margin: 50px 0 0;
+    background: #FFF8F8;
+    border-top: 1px solid #ccc;
+    padding: 20px 30px;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.footer .logo {
+    font-size: 20px;
+    color: red;
+}
+
+.footer .logo span {
+    font-size: 12px;
+    color: #333;
+}
+
+.footer .info p,
+.footer .social p {
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.footer .icons img {
+    width: 60px;
+    height: 35px;
+    margin-right: 10px;
+    object-fit: contain;
+    cursor: pointer;
+}
+
+.copyright {
+    text-align: center;
+    font-size: 12px;
+    margin-top: 15px;
+    color: #777;
+}
+
+/* The Modal (background) */
+.signup, .login {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6); /* Dark background */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Modal Content */
+.signup-content {
+    background-color: #f2f2f2;
+    padding: 30px;
+    border-radius: 20px;
+    width: 450px;
+    max-width: 95%;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    position: relative;
+    animation: fadeIn 0.3s;
+}
+
+.login-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 20px;
+    width: 450px;
+    max-width: 80%;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    position: relative;
+    animation: fadeIn 0.3s; 
+}
+
+.signup-content img.logo,
+.login-content img.logo {
+    margin: 0 0 0 120px;
+    width: 150px;
+    margin-bottom: 10px;
+}
+
+.signup-content h2,
+.login-content h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.signup-content form,
+.login-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.name-fields {
+    display: flex;
+    gap: 10px;
+}
+
+.name-fields input {
+    flex: 1;
+}
+
+.signup-content input[type="text"],
+.signup-content input[type="email"],
+.signup-content input[type="password"],
+.login-content input[type="email"],
+.login-content input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background-color: white;
+}
+
+.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    text-align: left;
+}
+
+.create-btn,
+.log-btn {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 5px;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.divider {
+    margin: 10px 0;
+    font-size: 14px;
+    color: gray;
+}
+
+.social-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.social-buttons button {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background-color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.google-btn {
+    background-color: white;
+}
+
+.facebook-btn {
+    background-color: white;
+}
+
+.login-text {
+    font-size: 13px;
+    margin-top: 8px;
+}
+
+.login-text a {
+    color: red;
+    text-decoration: none;
+}
+
+/* Close Button */
+.close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 28px;
+    color: #aaa;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: black;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from {opacity: 0; transform: scale(0.95);}
+    to {opacity: 1; transform: scale(1);}
+}

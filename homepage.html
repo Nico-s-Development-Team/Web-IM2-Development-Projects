@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Food Delivery Homepage</title>
+  <link rel="stylesheet" href="gridstyles.css"/>
+  <script src="functions.js"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+  <div class="menu-icon">☰</div>
+
+  <div class="sidebar-icons">
+    <div class="sidebar-item">
+      <span class="icon">✎</span>
+      <span class="label">Edit</span>
+    </div>
+    <div class="sidebar-item">
+      <span class="icon">⭐</span>
+      <span class="label">Label</span>
+    </div>
+    <div class="sidebar-item">
+      <span class="icon">⭐</span>
+      <span class="label">Label</span>
+    </div>
+    <div class="sidebar-item">
+      <span class="icon">⭐</span>
+      <span class="label">Label</span>
+    </div>
+  </div>
+
+  <div class="user-icon-sidebar-item">
+    <span class="icon">👤</span>
+    <span class="label">User</span>
+  </div>
+</aside>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Search Bar -->
+      <div class="search-bar">
+        <input type="text" placeholder="What would you like to eat?" />
+        <button class="plus-btn">+</button>
+      </div>
+
+      <!-- Promotion Banner -->
+      <div class="promo-banner">
+        <div class="promo-content-slider" id="slider">
+        <img id="slide-1" src="img/burger_promotions.png" alt="burger_promotions"/>
+        <img id="slide-2" src="img/chicken_promotion.png" alt="chicken_promotion"/>
+        <img id="slide-3" src="img/pizza_promotions.png" alt="pizza_promotions"/>
+        </div>
+        <div class="slider-nav">
+            <a href="#slide-1"></a>
+            <a href="#slide-2"></a>
+            <a href="#slide-3"></a>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="filters">
+        <button class="icon" data-label="Edit">📍 Nearby</button>
+        <button class="icon" data-label="Favorites">❤️ Best Seller</button>
+        <button class="icon" data-label="Edit">😊 Budget Meals</button>
+        <button class="icon" data-label="Top">⭐ Top Rated</button>
+        <button class="icon" data-label="Promo">📋 All</button>
+      </div>
+
+      <!-- Product Grid -->
+
+      <div class="products-scroll-container">
+        <div class="products">
+            <div class="product-card"></div>
+            <div class="product-card"></div>
+            <div class="product-card"></div>
+            <div class="product-card"></div>
+            <div class="product-card"></div>
+            <div class="product-card"></div>
+            <div class="product-card"></div>
+            <div class="product-card"></div>
+            <div class="product-card"></div>
+            <div class="product-card"></div>
+            <div class="product-card"></div>
+            <div class="product-card"></div>
+          </div>
+      </div>
+    </main>
+
+    <!-- Order Section -->
+    <aside class="order-section">
+  <h3>🛒 My Orders</h3>
+
+  <!-- Address -->
+  <div class="delivery-address">
+    <p class="section-title">📍 Delivery Address</p>
+    <p class="address">JTH2, Nasipit Talamban, Cebu City</p>
+    <p class="delivery-info">⏱ 40 mins &nbsp; • &nbsp; 4 km</p>
+  </div>
+
+  <!-- Cart Items -->
+  <div class="cart-items">
+    <div class="cart-item">
+      <div class="item-image"></div>
+      <div class="item-info">
+        <p class="item-name">PRODUCT_1</p>
+        <select><option>1</option></select>
+      </div>
+    </div>
+
+    <div class="cart-item">
+      <div class="item-image"></div>
+      <div class="item-info">
+        <p class="item-name">PRODUCT_2</p>
+        <select><option>1</option></select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div class="order-summary">
+    <div class="summary-line">
+      <span>Sub Total</span>
+      <span>₱234</span>
+    </div>
+    <div class="summary-line">
+      <span>Delivery Fee</span>
+      <span>₱9</span>
+    </div>
+
+    <!-- Promotions -->
+    <div class="promo-actions">
+      <button class="promo-btn">Find Promotions</button>
+      <button class="add-coupon">Add Coupon</button>
+    </div>
+
+    <!-- Total & Checkout -->
+    <div class="summary-line total">
+      <span>Total</span>
+      <span>₱243</span>
+    </div>
+    <button class="checkout-btn">Check Out</button>
+  </div>
+</aside>
+
+  </div>
+</body>
+</html>
