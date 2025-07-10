@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Management - Nico's Delivery</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white shadow-md px-6 py-8">
+      <h2 class="text-2xl font-bold text-blue-600 mb-8">Admin Panel</h2>
+      <nav class="space-y-4">
+        <a href="dashboard.html" class="block text-gray-700 font-medium hover:text-blue-600">Dashboard</a>
+        <a href="menu.html" class="block text-gray-700 font-medium hover:text-blue-600">Menu Management</a>
+        <a href="orders.html" class="block text-gray-700 font-medium hover:text-blue-600">Order Management</a>
+        <a href="inventory.html" class="block text-gray-700 font-medium hover:text-blue-600">Inventory Management</a>
+        <a href="customers.html" class="block text-blue-600 font-semibold">Customer Management</a>
+        <a href="history.html" class="block text-gray-700 font-medium hover:text-blue-600">Order History</a>
+        <a href="staff.html" class="block text-blue-600 font-semibold">Staff Management</a>
+      </nav>
+    </aside>
+
+    <!-- Customers Content -->
+    <main class="flex-1 p-10">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Customer Management</h1>
+        <div class="flex gap-2">
+          <input type="text" id="searchInput" placeholder="Search customer..." class="border px-3 py-2 rounded w-64">
+          <button onclick="openAddModal()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Add Customer</button>
+        </div>
+      </div>
+
+      <div class="bg-white rounded shadow overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead class="bg-gray-100 text-left">
+            <tr>
+              <th class="px-4 py-2">Name</th>
+              <th class="px-4 py-2">Email</th>
+              <th class="px-4 py-2">Phone</th>
+              <th class="px-4 py-2">Address</th>
+              <th class="px-4 py-2 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="customerTable" class="divide-y"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add/Edit Modal -->
+  <div id="customerModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center">
+    <div class="bg-white p-6 rounded shadow-md w-96">
+      <h2 id="modalTitle" class="text-xl font-bold mb-4">Add Customer</h2>
+      <form id="customerForm" class="space-y-3">
+        <input type="text" id="custName" placeholder="Full Name" class="w-full border px-3 py-2 rounded" required>
+        <input type="email" id="custEmail" placeholder="Email" class="w-full border px-3 py-2 rounded" required>
+        <input type="text" id="custPhone" placeholder="Phone Number" class="w-full border px-3 py-2 rounded" required>
+        <input type="text" id="custAddress" placeholder="Address" class="w-full border px-3 py-2 rounded" required>
+        <div class="flex justify-end space-x-2">
+          <button type="button" onclick="closeModal()" class="bg-gray-500 text-white px-4 py-1 rounded">Cancel</button>
+          <button type="submit" class="bg-green-600 text-white px-4 py-1 rounded">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let customers = [
+      { name: "Juan Dela Cruz", email: "juan@example.com", phone: "09123456789", address: "123 Mabini St." },
+      { name: "Maria Santos", email: "maria@example.com", phone: "09987654321", address: "456 Rizal Ave." }
+    ];
+
+    let editingIndex = null;
+    const customerTable = document.getElementById("customerTable");
+    const customerModal = document.getElementById("customerModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const customerForm = document.getElementById("customerForm");
+    const searchInput = document.getElementById("searchInput");
+
+    function renderCustomers(filter = "") {
+      customerTable.innerHTML = "";
+      customers
+        .filter(cust => cust.name.toLowerCase().includes(filter.toLowerCase()))
+        .forEach((cust, index) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td class="px-4 py-2">${cust.name}</td>
+            <td class="px-4 py-2">${cust.email}</td>
+            <td class="px-4 py-2">${cust.phone}</td>
+            <td class="px-4 py-2">${cust.address}</td>
+            <td class="px-4 py-2 text-right space-x-2">
+              <button onclick="editCustomer(${index})" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm">Edit</button>
+              <button onclick="deleteCustomer(${index})" class="bg-red-500 text-white px-3 py-1 rounded text-sm">Delete</button>
+            </td>
+          `;
+          customerTable.appendChild(row);
+        });
+    }
+
+    function openAddModal() {
+      editingIndex = null;
+      modalTitle.textContent = "Add Customer";
+      customerForm.reset();
+      customerModal.classList.remove("hidden");
+      customerModal.classList.add("flex");
+    }
+
+    function editCustomer(index) {
+      editingIndex = index;
+      modalTitle.textContent = "Edit Customer";
+      const c = customers[index];
+      document.getElementById("custName").value = c.name;
+      document.getElementById("custEmail").value = c.email;
+      document.getElementById("custPhone").value = c.phone;
+      document.getElementById("custAddress").value = c.address;
+      customerModal.classList.remove("hidden");
+      customerModal.classList.add("flex");
+    }
+
+    function deleteCustomer(index) {
+      if (confirm("Delete this customer?")) {
+        customers.splice(index, 1);
+        renderCustomers(searchInput.value);
+      }
+    }
+
+    function closeModal() {
+      customerModal.classList.add("hidden");
+      customerModal.classList.remove("flex");
+    }
+
+    customerForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const newCustomer = {
+        name: document.getElementById("custName").value,
+        email: document.getElementById("custEmail").value,
+        phone: document.getElementById("custPhone").value,
+        address: document.getElementById("custAddress").value
+      };
+      if (editingIndex === null) {
+        customers.push(newCustomer);
+      } else {
+        customers[editingIndex] = newCustomer;
+      }
+      closeModal();
+      renderCustomers(searchInput.value);
+    });
+
+    searchInput.addEventListener("input", () => {
+      renderCustomers(searchInput.value);
+    });
+
+    renderCustomers();
+  </script>
+</body>
+</html>

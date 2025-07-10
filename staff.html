@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Staff Management - Nico's Delivery</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white shadow-md px-6 py-8">
+      <h2 class="text-2xl font-bold text-blue-600 mb-8">Admin Panel</h2>
+      <nav class="space-y-4">
+        <a href="dashboard.html" class="block text-blue-700 font-bold hover:text-blue-600">Dashboard</a>
+        <a href="menu.html" class="block text-black-700 font-medium hover:text-blue-600">Menu Management</a>
+        <a href="orders.html" class="block text-black-700 font-medium hover:text-blue-600">Order Management</a>
+        <a href="inventory.html" class="block text-black-700 font-medium hover:text-blue-600">Inventory Management</a>
+        <a href="customers.html" class="block text-black-700 font-medium hover:text-blue-600">Customer Management</a>
+        <a href="history.html" class="block text-black-700 font-medium hover:text-blue-600">Order History</a>
+        <a href="staff.html" class="block text-black-600 font-semibold">Staff Management</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-10 relative">
+      <!-- Profile Button (Top-right Corner) -->
+      <div class="absolute top-0 right-0 mt-4 mr-4">
+        <button onclick="openProfile()" class="bg-blue-500 text-white px-4 py-2 rounded shadow">Profile</button>
+      </div>
+
+      <!-- Page Title -->
+      <div class="mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Staff Management</h1>
+      </div>
+
+      <!-- Search + Add Staff -->
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
+        <input type="text" id="searchInput" placeholder="Search staff..." class="border px-3 py-2 rounded w-full sm:w-64">
+        <button onclick="openAddModal()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Add Staff</button>
+      </div>
+
+      <!-- Staff Table -->
+      <div class="bg-white rounded shadow overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead class="bg-gray-100 text-left">
+            <tr>
+              <th class="px-4 py-2">Name</th>
+              <th class="px-4 py-2">Email</th>
+              <th class="px-4 py-2">Role</th>
+              <th class="px-4 py-2">Status</th>
+              <th class="px-4 py-2 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="staffTable" class="divide-y"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <!-- Staff Details Modal -->
+  <div id="staffDetailsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50">
+    <div class="bg-white p-6 rounded shadow-md w-96">
+      <h2 class="text-xl font-bold mb-4">Staff Details</h2>
+      <div class="space-y-2 text-sm text-gray-700">
+        <p><strong>Name:</strong> <span id="staffDetailName"></span></p>
+        <p><strong>Email:</strong> <span id="staffDetailEmail"></span></p>
+        <p><strong>Phone:</strong> <span id="staffDetailPhone"></span></p>
+        <p><strong>Role:</strong> <span id="staffDetailRole"></span></p>
+        <p><strong>Address:</strong> <span id="staffDetailAddress"></span></p>
+      </div>
+      <div class="flex justify-end mt-4">
+        <button onclick="closeStaffDetails()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add/Edit Staff Modal -->
+  <div id="staffModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50">
+    <div class="bg-white p-6 rounded shadow-md w-96">
+      <h2 id="modalTitle" class="text-xl font-bold mb-4">Add Staff</h2>
+      <form id="staffForm" class="space-y-3">
+        <input type="text" id="staffName" placeholder="Full Name" class="w-full border px-3 py-2 rounded" required>
+        <input type="email" id="staffEmail" placeholder="Email" class="w-full border px-3 py-2 rounded" required>
+        <input type="text" id="staffPhone" placeholder="Phone Number" class="w-full border px-3 py-2 rounded" required>
+        <input type="text" id="staffRole" placeholder="Role" class="w-full border px-3 py-2 rounded" required>
+        <input type="text" id="staffAddress" placeholder="Address" class="w-full border px-3 py-2 rounded" required>
+        <div class="flex justify-end space-x-2">
+          <button type="button" onclick="closeModal()" class="bg-gray-500 text-white px-4 py-1 rounded">Cancel</button>
+          <button type="submit" class="bg-green-600 text-white px-4 py-1 rounded">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Profile Modal -->
+  <div id="profileModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50">
+    <div class="bg-white p-6 rounded shadow-md w-96">
+      <h2 class="text-xl font-bold mb-4">My Profile</h2>
+      <form id="profileForm" class="space-y-3">
+        <input type="text" id="profileName" class="w-full border px-3 py-2 rounded" placeholder="Name" required>
+        <input type="email" id="profileEmail" class="w-full border px-3 py-2 rounded" placeholder="Email" required>
+        <div class="relative">
+          <input type="password" id="profilePassword" class="w-full border px-3 py-2 rounded" placeholder="Password" required>
+          <button type="button" onclick="togglePasswordVisibility()" class="absolute right-2 top-2 text-sm text-gray-500">Show</button>
+        </div>
+        <div class="flex justify-end space-x-2">
+          <button type="button" onclick="closeProfile()" class="bg-gray-500 text-white px-4 py-1 rounded">Cancel</button>
+          <button type="submit" class="bg-blue-600 text-white px-4 py-1 rounded">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    let staff = [
+      { name: "Alex Reyes", email: "alex@example.com", phone: "09123456789", role: "Cashier", address: "123 St. Cebu", status: "Active" },
+      { name: "Liza Moreno", email: "liza@example.com", phone: "09987654321", role: "Cook", address: "456 Ave. Cebu", status: "Inactive" }
+    ];
+
+    let editingIndex = null;
+    const staffTable = document.getElementById("staffTable");
+    const staffModal = document.getElementById("staffModal");
+    const staffForm = document.getElementById("staffForm");
+    const modalTitle = document.getElementById("modalTitle");
+    const searchInput = document.getElementById("searchInput");
+
+    const loggedInUser = {
+      name: "Alex Reyes",
+      email: "alex@example.com",
+      password: "password123"
+    };
+
+    function renderStaff(filter = "") {
+      staffTable.innerHTML = "";
+      staff
+        .filter(s => s.name.toLowerCase().includes(filter.toLowerCase()))
+        .forEach((s, index) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td class="px-4 py-2">${s.name}</td>
+            <td class="px-4 py-2">${s.email}</td>
+            <td class="px-4 py-2">${s.role}</td>
+            <td class="px-4 py-2">${s.status}</td>
+            <td class="px-4 py-2 text-right space-x-2">
+              <button onclick='showStaffDetails(${JSON.stringify(s)})' class="bg-blue-500 text-white px-3 py-1 rounded text-sm">Details</button>
+              <button onclick="editStaff(${index})" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm">Edit</button>
+            </td>
+          `;
+          staffTable.appendChild(row);
+        });
+    }
+
+    function openAddModal() {
+      editingIndex = null;
+      modalTitle.textContent = "Add Staff";
+      staffForm.reset();
+      staffModal.classList.remove("hidden");
+      staffModal.classList.add("flex");
+    }
+
+    function editStaff(index) {
+      editingIndex = index;
+      const s = staff[index];
+      modalTitle.textContent = "Edit Staff";
+      document.getElementById("staffName").value = s.name;
+      document.getElementById("staffEmail").value = s.email;
+      document.getElementById("staffPhone").value = s.phone;
+      document.getElementById("staffRole").value = s.role;
+      document.getElementById("staffAddress").value = s.address;
+      staffModal.classList.remove("hidden");
+      staffModal.classList.add("flex");
+    }
+
+    function closeModal() {
+      staffModal.classList.add("hidden");
+      staffModal.classList.remove("flex");
+    }
+
+    function showStaffDetails(staff) {
+      document.getElementById("staffDetailName").textContent = staff.name;
+      document.getElementById("staffDetailEmail").textContent = staff.email;
+      document.getElementById("staffDetailPhone").textContent = staff.phone;
+      document.getElementById("staffDetailRole").textContent = staff.role;
+      document.getElementById("staffDetailAddress").textContent = staff.address;
+      document.getElementById("staffDetailsModal").classList.remove("hidden");
+      document.getElementById("staffDetailsModal").classList.add("flex");
+    }
+
+    function closeStaffDetails() {
+      document.getElementById("staffDetailsModal").classList.add("hidden");
+      document.getElementById("staffDetailsModal").classList.remove("flex");
+    }
+
+    function openProfile() {
+      document.getElementById("profileName").value = loggedInUser.name;
+      document.getElementById("profileEmail").value = loggedInUser.email;
+      document.getElementById("profilePassword").value = loggedInUser.password;
+      document.getElementById("profileModal").classList.remove("hidden");
+      document.getElementById("profileModal").classList.add("flex");
+    }
+
+    function closeProfile() {
+      document.getElementById("profileModal").classList.add("hidden");
+      document.getElementById("profileModal").classList.remove("flex");
+    }
+
+    function togglePasswordVisibility() {
+      const passwordInput = document.getElementById("profilePassword");
+      passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+    }
+
+    document.getElementById("profileForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      loggedInUser.name = document.getElementById("profileName").value;
+      loggedInUser.email = document.getElementById("profileEmail").value;
+      loggedInUser.password = document.getElementById("profilePassword").value;
+      alert("Profile updated successfully!");
+      closeProfile();
+    });
+
+    staffForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const newStaff = {
+        name: document.getElementById("staffName").value,
+        email: document.getElementById("staffEmail").value,
+        phone: document.getElementById("staffPhone").value,
+        role: document.getElementById("staffRole").value,
+        address: document.getElementById("staffAddress").value,
+        status: editingIndex !== null ? staff[editingIndex].status : "Active"
+      };
+      if (editingIndex === null) {
+        staff.push(newStaff);
+      } else {
+        staff[editingIndex] = newStaff;
+      }
+      closeModal();
+      renderStaff(searchInput.value);
+    });
+
+    searchInput.addEventListener("input", () => {
+      renderStaff(searchInput.value);
+    });
+
+    renderStaff();
+  </script>
+</body>
+</html>
