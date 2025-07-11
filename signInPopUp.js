@@ -1,67 +1,77 @@
-
-// Get the modal
+// Get the modal elements
 const signupModal = document.getElementById('signup');
 const loginModal = document.getElementById('login');
 
-// Get the close button
-const closeBtn = document.querySelectorAll('.close');  
+// Get the close buttons
+const closeButtons = document.querySelectorAll('.close-signup, .close-login');
 
-// Get ALL buttons that should open the modal
+// Get all "Order Now" buttons
 const orderButtons = document.querySelectorAll('.order-btn');
 
-// links
-const historyBtn = document.getElementById('btn-history'); 
+// Get switch links and history button
 const loginLink = document.getElementById('switch-to-login');
 const signupLink = document.getElementById('switch-to-signup');
+const historyBtn = document.getElementById('btn-history');
 
-// Function to open modal
-function openSignupModal() {
-    signupModal.style.display = 'flex';
-    loginModal.style.display = 'none';
+// Utility functions to show/hide modals
+function showModal(modal) {
+  modal.classList.remove('hidden');
+  modal.classList.add('fixed', 'inset-0', 'flex', 'items-center', 'justify-center', 'z-50', 'bg-black', 'bg-opacity-50');
+}
+
+function hideModal(modal) {
+  modal.classList.add('hidden');
+  modal.classList.remove('flex', 'fixed', 'inset-0', 'bg-black', 'bg-opacity-50');
 }
 
 function openLoginModal() {
-    loginModal.style.display  = 'flex';
-    signupModal.style.display = 'none';
+  showModal(loginModal);
+  hideModal(signupModal);
 }
 
-// close All modals
+function openSignupModal() {
+  showModal(signupModal);
+  hideModal(loginModal);
+}
+
 function closeAllModals() {
-    signupModal.style.display = 'none';
-    loginModal.style.display  = 'none';
+  hideModal(signupModal);
+  hideModal(loginModal);
 }
 
-
-// Attach event to every 'Order Now' button
+// Attach "Order Now" button events
 orderButtons.forEach(button => {
-    button.addEventListener('click', openSignupModal);
+  button.addEventListener('click', openLoginModal);
 });
 
-// Get id to open modal
-if (historyBtn) historyBtn.addEventListener('click', openSignupModal);
+// Attach event for order history
+if (historyBtn) {
+  historyBtn.addEventListener('click', openLoginModal);
+}
 
+// Link switchers
 if (loginLink) {
-    loginLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        openLoginModal();
-    });
-}
-if (signupLink) {
-    signupLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        openSignupModal();
-    });
+  loginLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    openLoginModal();
+  });
 }
 
-// Close when clicking the close (X) button
-closeBtn.forEach(btn => {
-    btn.addEventListener('click', closeAllModals);
+if (signupLink) {
+  signupLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    openSignupModal();
+  });
+}
+
+// Close modals with close (X) button
+closeButtons.forEach(btn => {
+  btn.addEventListener('click', closeAllModals);
 });
 
-// Close when clicking outside the modal content
+// Close modals when clicking outside the content
 window.addEventListener('click', (e) => {
-    if (e.target === signupModal || e.target === loginModal) {
-        closeAllModals();
-    }
-
+  if (e.target === signupModal || e.target === loginModal) {
+    closeAllModals();
+  }
 });

@@ -5,7 +5,7 @@ include 'db_conn.php';
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email    = $_POST['email'];
     $password = $_POST['password'];
-    // comment
+
     $stmt = $conn->prepare("SELECT Customer_ID, PasswordHash, is_verified FROM Customer_T WHERE Customer_Email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -14,18 +14,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($result->num_rows === 1) {
         $user = $result->fetch_assoc();
         if ($user['is_verified'] == 0) {
-            echo "Please verify your account first.";
+            header("Location: index.html?error=not_verified");
+            exit();
         } elseif (password_verify($password, $user['PasswordHash'])) {
             $_SESSION['customer_id'] = $user['Customer_ID'];
-
-            // Redirect to order page
-            header("Location: orderPage.html");
+            header("Location: orderPage.php?login=success");
             exit();
         } else {
-            echo "Incorrect password.";
+            header("Location: home.html?error=wrong_password");
+            exit();
         }
     } else {
-        echo "Email not found.";
+        header("Location: home.html?error=email_not_found");
+        exit();
     }
 }
 ?>
