@@ -4,32 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - Nico's Delivery</title>
-  <script src="https://cdn.tailwindcss.com">function logout() {
-  alert("Logging out...");
-  // Add your logout logic or redirect here
-}
-</script>
-  <script>
-    const dashboardStats = {
-      totalOrders: 32,
-      totalSales: 3120,
-      pendingOrders: 6,
-      completedOrders: 25,
-      cancelledOrders: 1,
-      topProduct: "Burger",
-      alerts: ["Low stock on Fresh Lumpia"]
-    };
-  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-100 font-sans">
+
+  <!-- Header -->
   <header class="bg-white shadow px-6 py-4 flex justify-between items-center">
     <h1 class="text-xl font-bold text-blue-600">Nico's Delivery Admin</h1>
     <div>
-      <button onclick="openLogin()" class="text-sm text-blue-600 hover:underline mr-4">Login</button>
-      <button onclick="openSignup()" class="text-sm text-blue-600 hover:underline">Sign Up</button>
+      <button onclick="alert('Login clicked')" class="text-sm text-blue-600 hover:underline mr-4">Login</button>
+      <button onclick="alert('Sign Up clicked')" class="text-sm text-blue-600 hover:underline">Sign Up</button>
     </div>
   </header>
+
   <div class="flex min-h-screen">
+    <!-- Sidebar -->
     <aside class="w-64 bg-white shadow-md px-6 py-8 hidden md:block">
       <h2 class="text-2xl font-bold text-blue-600 mb-8">Admin Panel</h2>
       <nav class="space-y-4">
@@ -41,81 +31,93 @@
         <a href="history.html" class="block text-gray-700 font-medium hover:text-blue-600">Order History</a>
         <a href="staff.html" class="block text-gray-700 font-medium hover:text-blue-600">Staff Management</a>
       </nav>
-<!-- Logout Button -->
-<div class="mt-12">
-  <button onclick="logout()" class="flex items-center text-red-600 hover:text-red-800 text-sm font-medium">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 11-4 0v-1m0-8v1a2 2 0 104 0V7" />
-    </svg>
-    Logout
-  </button>
-</div>
     </aside>
-    <main class="flex-1 p-6">
-      <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-800">Dashboard</h1>
-        <input type="text" id="dashboardSearch" placeholder="Search orders or products..." class="mt-4 sm:mt-0 border px-4 py-2 rounded w-full sm:w-64">
+
+    <!-- Dashboard Content -->
+    <main class="flex-1 p-10 space-y-8">
+      <h2 class="text-2xl font-bold text-gray-800">Dashboard Overview</h2>
+
+      <!-- Statistics Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-lg shadow">
+          <h3 class="text-lg font-semibold text-gray-600">Total Orders</h3>
+          <p class="text-2xl font-bold text-blue-600" id="totalOrders">-</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow">
+          <h3 class="text-lg font-semibold text-gray-600">Total Sales</h3>
+          <p class="text-2xl font-bold text-blue-600" id="totalSales">-</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow">
+          <h3 class="text-lg font-semibold text-gray-600">Pending Orders</h3>
+          <p class="text-2xl font-bold text-yellow-500" id="pendingOrders">-</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow">
+          <h3 class="text-lg font-semibold text-gray-600">Completed Orders</h3>
+          <p class="text-2xl font-bold text-green-500" id="completedOrders">-</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow">
+          <h3 class="text-lg font-semibold text-gray-600">Cancelled Orders</h3>
+          <p class="text-2xl font-bold text-red-500" id="cancelledOrders">-</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow">
+          <h3 class="text-lg font-semibold text-gray-600">Top Product</h3>
+          <p class="text-2xl font-bold text-indigo-600" id="topProduct">-</p>
+        </div>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        <div class="bg-white p-6 rounded shadow text-center">
-          <p class="text-xl font-semibold">Total Orders Today</p>
-          <p id="ordersCount" class="text-4xl mt-2 text-blue-600 font-bold">0</p>
-        </div>
-        <div class="bg-white p-6 rounded shadow text-center">
-          <p class="text-xl font-semibold">Total Sales</p>
-          <p id="salesCount" class="text-4xl mt-2 text-green-600 font-bold">₱0</p>
-        </div>
-        <div class="bg-white p-6 rounded shadow text-center">
-          <p class="text-xl font-semibold">Pending Orders</p>
-          <p id="pendingCount" class="text-4xl mt-2 text-yellow-500 font-bold">0</p>
-        </div>
-        <div class="bg-white p-6 rounded shadow text-center">
-          <p class="text-xl font-semibold">Completed Orders</p>
-          <p id="completedCount" class="text-4xl mt-2 text-green-600 font-bold">0</p>
-        </div>
-        <div class="bg-white p-6 rounded shadow text-center">
-          <p class="text-xl font-semibold">Cancelled Orders</p>
-          <p id="cancelledCount" class="text-4xl mt-2 text-red-600 font-bold">0</p>
-        </div>
-        <div class="bg-white p-6 rounded shadow text-center">
-          <p class="text-xl font-semibold">Top Product</p>
-          <p id="topProduct" class="text-4xl mt-2 text-blue-600 font-bold">—</p>
-        </div>
+
+      <!-- Chart Section -->
+      <div class="bg-white p-6 rounded-lg shadow">
+        <h3 class="text-lg font-semibold text-gray-600 mb-4">Order Status Overview</h3>
+        <canvas id="orderChart" height="100"></canvas>
       </div>
-      <div class="bg-white p-6 rounded shadow">
-        <h2 class="text-xl font-semibold mb-4">Alerts</h2>
-        <ul id="alertsList" class="list-disc ml-6 text-red-600"></ul>
+
+      <!-- Alerts -->
+      <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded" role="alert" id="alertBox">
+        <!-- Alerts will be injected here -->
       </div>
     </main>
   </div>
+
   <script>
-    function openLogin() {
-      document.getElementById('loginModal').classList.remove('hidden');
-      document.getElementById('loginModal').classList.add('flex');
-    }
-    function closeLogin() {
-      document.getElementById('loginModal').classList.add('hidden');
-      document.getElementById('loginModal').classList.remove('flex');
-    }
-    function openSignup() {
-      document.getElementById('signupModal').classList.remove('hidden');
-      document.getElementById('signupModal').classList.add('flex');
-    }
-    function closeSignup() {
-      document.getElementById('signupModal').classList.add('hidden');
-      document.getElementById('signupModal').classList.remove('flex');
-    }
-    document.getElementById("ordersCount").textContent = dashboardStats.totalOrders;
-    document.getElementById("salesCount").textContent = `₱${dashboardStats.totalSales}`;
-    document.getElementById("pendingCount").textContent = dashboardStats.pendingOrders;
-    document.getElementById("completedCount").textContent = dashboardStats.completedOrders;
-    document.getElementById("cancelledCount").textContent = dashboardStats.cancelledOrders;
-    document.getElementById("topProduct").textContent = dashboardStats.topProduct;
-    const alertsList = document.getElementById("alertsList");
-    dashboardStats.alerts.forEach(alert => {
-      const li = document.createElement("li");
-      li.textContent = alert;
-      alertsList.appendChild(li);
+    const dashboardStats = {
+      totalOrders: 32,
+      totalSales: 3120,
+      pendingOrders: 6,
+      completedOrders: 25,
+      cancelledOrders: 1,
+      topProduct: "Burger",
+      alerts: ["Low stock on Fresh Lumpia"]
+    };
+
+    // Populate stats
+    document.getElementById("totalOrders").innerText = dashboardStats.totalOrders;
+    document.getElementById("totalSales").innerText = "₱" + dashboardStats.totalSales;
+    document.getElementById("pendingOrders").innerText = dashboardStats.pendingOrders;
+    document.getElementById("completedOrders").innerText = dashboardStats.completedOrders;
+    document.getElementById("cancelledOrders").innerText = dashboardStats.cancelledOrders;
+    document.getElementById("topProduct").innerText = dashboardStats.topProduct;
+
+    // Alerts
+    const alertBox = document.getElementById("alertBox");
+    alertBox.innerHTML = dashboardStats.alerts.map(a => `<p>⚠️ ${a}</p>`).join("");
+
+    // Chart
+    new Chart(document.getElementById('orderChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Pending', 'Completed', 'Cancelled'],
+        datasets: [{
+          label: 'Orders',
+          data: [dashboardStats.pendingOrders, dashboardStats.completedOrders, dashboardStats.cancelledOrders],
+          backgroundColor: ['#facc15', '#22c55e', '#ef4444']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'bottom' }
+        }
+      }
     });
   </script>
 </body>

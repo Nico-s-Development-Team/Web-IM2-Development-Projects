@@ -2,14 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Order History - Nico's Delivery</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 font-sans">
+
+  <!-- Header -->
+  <header class="bg-white shadow px-6 py-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold text-blue-600">Nico's Delivery Admin</h1>
+    <div>
+      <button onclick="alert('Login clicked')" class="text-sm text-blue-600 hover:underline mr-4">Login</button>
+      <button onclick="alert('Sign Up clicked')" class="text-sm text-blue-600 hover:underline">Sign Up</button>
+    </div>
+  </header>
+
   <div class="flex min-h-screen">
     <!-- Sidebar -->
-    <aside class="w-64 bg-white shadow-md px-6 py-8">
+    <aside class="w-64 bg-white shadow-md px-6 py-8 hidden md:block">
       <h2 class="text-2xl font-bold text-blue-600 mb-8">Admin Panel</h2>
       <nav class="space-y-4">
         <a href="dashboard.html" class="block text-gray-700 font-medium hover:text-blue-600">Dashboard</a>
@@ -18,201 +28,75 @@
         <a href="inventory.html" class="block text-gray-700 font-medium hover:text-blue-600">Inventory Management</a>
         <a href="customers.html" class="block text-gray-700 font-medium hover:text-blue-600">Customer Management</a>
         <a href="history.html" class="block text-blue-600 font-semibold">Order History</a>
-        <a href="staff.html" class="block text-blue-600 font-semibold">Staff Management</a>
+        <a href="staff.html" class="block text-gray-700 font-medium hover:text-blue-600">Staff Management</a>
       </nav>
     </aside>
 
-    <!-- Order History Content -->
-    <main class="flex-1 p-10">
-      <h1 class="text-3xl font-bold text-gray-800 mb-6">Order History</h1>
-
-      <!-- Filters -->
-      <div class="flex flex-wrap gap-2 mb-4">
-        <input type="text" id="historySearch" placeholder="Search by customer or ID..." class="border px-3 py-2 rounded w-full sm:w-64" />
-        <input type="date" id="historyStartDate" class="border px-3 py-2 rounded" />
-        <input type="date" id="historyEndDate" class="border px-3 py-2 rounded" />
-        <select id="historyStatus" class="border px-3 py-2 rounded">
-          <option value="">All Statuses</option>
-          <option value="Completed">Completed</option>
-          <option value="Cancelled">Cancelled</option>
-        </select>
+    <!-- Main Content -->
+    <main class="flex-1 p-10 space-y-8">
+      <div class="flex justify-between items-center">
+        <h2 class="text-2xl font-bold text-gray-800">Order History</h2>
+        <button onclick="exportHistory()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Export</button>
       </div>
 
-      <!-- History Table -->
-      <div class="bg-white rounded shadow overflow-x-auto">
-        <table class="min-w-full text-sm">
-          <thead class="bg-gray-100 text-left">
-            <tr>
-              <th class="px-4 py-2">Order ID</th>
-              <th class="px-4 py-2">Customer</th>
-              <th class="px-4 py-2">Date</th>
-              <th class="px-4 py-2">Status</th>
-              <th class="px-4 py-2">Total</th>
-              <th class="px-4 py-2">Action</th>
+      <!-- Order History Table -->
+      <div class="bg-white p-6 rounded-lg shadow overflow-x-auto">
+        <table class="min-w-full table-auto">
+          <thead>
+            <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+              <th class="py-3 px-6 text-left">Order ID</th>
+              <th class="py-3 px-6 text-left">Customer</th>
+              <th class="py-3 px-6 text-left">Items</th>
+              <th class="py-3 px-6 text-left">Total</th>
+              <th class="py-3 px-6 text-left">Date</th>
+              <th class="py-3 px-6 text-left">Status</th>
             </tr>
           </thead>
-          <tbody id="historyTable" class="divide-y"></tbody>
+          <tbody id="historyTableBody" class="text-gray-700 text-sm font-light">
+            <!-- History data will be rendered here -->
+          </tbody>
         </table>
       </div>
     </main>
   </div>
 
-  <!-- Details Modal -->
-  <div id="historyDetailsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center">
-    <div class="bg-white p-6 rounded shadow-md w-[400px]">
-      <h2 class="text-xl font-bold mb-4">Order Details</h2>
-      <div id="historyDetailsContent" class="text-sm text-gray-800 space-y-4"></div>
-      <div class="flex justify-end mt-4">
-        <button onclick="closeHistoryDetailsModal()" class="bg-gray-600 text-white px-4 py-1 rounded">Close</button>
-      </div>
-    </div>
-  </div>
-
   <script>
-    const historyTable = document.getElementById("historyTable");
-    const historySearch = document.getElementById("historySearch");
-    const historyStartDate = document.getElementById("historyStartDate");
-    const historyEndDate = document.getElementById("historyEndDate");
-    const historyStatus = document.getElementById("historyStatus");
-    const historyDetailsModal = document.getElementById("historyDetailsModal");
-    const historyDetailsContent = document.getElementById("historyDetailsContent");
-
-    const historyOrders = [
-      {
-        id: 90,
-        customer: "Ana Cruz",
-        date: "2025-07-05",
-        status: "Completed",
-        total: 120,
-        payment: "Cash",
-        items: [
-          { name: "Choco-lava cake", qty: 1, price: 120 }
-        ]
-      },
-      {
-        id: 91,
-        customer: "Ben Lopez",
-        date: "2025-07-04",
-        status: "Cancelled",
-        total: 200,
-        payment: "Cash",
-        items: [
-          { name: "Adobo", qty: 2, price: 100 }
-        ]
-      },
-      {
-        id: 92,
-        customer: "Claire Lim",
-        date: "2025-07-03",
-        status: "Completed",
-        total: 180,
-        payment: "Cash",
-        items: [
-          { name: "Pancit Bihon", qty: 2, price: 90 }
-        ]
-      }
+    const orderHistory = [
+      { id: "#001", customer: "John Doe", items: "Burger, Fries", total: "₱205", date: "2025-07-01", status: "Completed" },
+      { id: "#002", customer: "Jane Smith", items: "Lumpia", total: "₱85", date: "2025-07-02", status: "Cancelled" },
+      { id: "#003", customer: "Mario Cruz", items: "Burger, Lumpia, Soda", total: "₱310", date: "2025-07-03", status: "Completed" }
     ];
 
-    function getStatusColor(status) {
-      switch (status) {
-        case "Completed": return "text-green-600 font-semibold";
-        case "Cancelled": return "text-red-600 font-semibold";
-        default: return "text-gray-700";
-      }
-    }
-
     function renderHistory() {
-      const filterText = historySearch.value.toLowerCase();
-      const statusFilter = historyStatus.value;
-      const startDate = historyStartDate.value;
-      const endDate = historyEndDate.value;
+      const tbody = document.getElementById("historyTableBody");
+      tbody.innerHTML = "";
+      orderHistory.forEach(entry => {
+        const statusColor = entry.status === "Completed"
+          ? "bg-green-200 text-green-800"
+          : "bg-red-200 text-red-800";
 
-      historyTable.innerHTML = "";
-
-      historyOrders.forEach(order => {
-        const matchSearch = order.customer.toLowerCase().includes(filterText) || order.id.toString().includes(filterText);
-        const matchStatus = !statusFilter || order.status === statusFilter;
-        const matchStart = !startDate || order.date >= startDate;
-        const matchEnd = !endDate || order.date <= endDate;
-
-        if (matchSearch && matchStatus && matchStart && matchEnd) {
-          const row = document.createElement("tr");
-          const statusClass = getStatusColor(order.status);
-
-          row.innerHTML = `
-            <td class="px-4 py-2">${order.id}</td>
-            <td class="px-4 py-2">${order.customer}</td>
-            <td class="px-4 py-2">${order.date}</td>
-            <td class="px-4 py-2 ${statusClass}">${order.status}</td>
-            <td class="px-4 py-2">₱${order.total}</td>
-            <td class="px-4 py-2">
-              <button onclick="showHistoryDetails(${order.id})" class="bg-blue-500 text-white px-3 py-1 rounded text-sm">Details</button>
+        tbody.innerHTML += `
+          <tr class="border-b border-gray-200 hover:bg-gray-100">
+            <td class="py-3 px-6 text-left">${entry.id}</td>
+            <td class="py-3 px-6 text-left">${entry.customer}</td>
+            <td class="py-3 px-6 text-left">${entry.items}</td>
+            <td class="py-3 px-6 text-left">${entry.total}</td>
+            <td class="py-3 px-6 text-left">${entry.date}</td>
+            <td class="py-3 px-6 text-left">
+              <span class="${statusColor} px-2 py-1 rounded-full text-xs">${entry.status}</span>
             </td>
-          `;
-
-          historyTable.appendChild(row);
-        }
+          </tr>
+        `;
       });
     }
 
-    function showHistoryDetails(id) {
-      const order = historyOrders.find(o => o.id === id);
-      if (order) {
-        let itemsHtml = order.items.map(item =>
-          `<div class="flex justify-between">
-            <span>${item.name} × ${item.qty}</span>
-            <span>₱${item.price}</span>
-          </div>`
-        ).join("");
-
-        historyDetailsContent.innerHTML = `
-          <div>
-            <div class="flex justify-between">
-              <strong>Order ID</strong>
-              <span>#${order.id}</span>
-            </div>
-            <div class="flex justify-between">
-              <strong>Status</strong>
-              <span>${order.status}</span>
-            </div>
-          </div>
-          <div>
-            <div class="flex justify-between">
-              <strong>Customer</strong>
-              <span>${order.customer}</span>
-            </div>
-            <div class="flex justify-between">
-              <strong>Date</strong>
-              <span>${order.date}</span>
-            </div>
-          </div>
-          <div class="flex justify-between">
-            <strong>Payment Method</strong>
-            <span>${order.payment}</span>
-          </div>
-          <div>
-            <strong class="block mb-1">Products</strong>
-            ${itemsHtml}
-          </div>
-          <div class="flex justify-between border-t pt-2">
-            <strong>Total</strong>
-            <span>₱${order.total}</span>
-          </div>
-        `;
-
-        historyDetailsModal.classList.remove("hidden");
-        historyDetailsModal.classList.add("flex");
-      }
+    function exportHistory() {
+      alert("Order history exported. (This is a placeholder demo action)");
     }
 
-    function closeHistoryDetailsModal() {
-      historyDetailsModal.classList.add("hidden");
-      historyDetailsModal.classList.remove("flex");
-    }
-
-    [historySearch, historyStartDate, historyEndDate, historyStatus].forEach(el => el.addEventListener("input", renderHistory));
-
+    // Initial render
     renderHistory();
   </script>
+
 </body>
 </html>
