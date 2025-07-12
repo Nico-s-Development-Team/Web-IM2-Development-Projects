@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Management - Nico's Delivery</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white shadow-md px-6 py-8">
+      <h2 class="text-2xl font-bold text-blue-600 mb-8">Admin Panel</h2>
+      <nav class="space-y-4">
+        <a href="dashboard.html" class="block text-gray-700 font-medium hover:text-blue-600">Dashboard</a>
+        <a href="menu.html" class="block text-gray-700 font-medium hover:text-blue-600">Menu Management</a>
+        <a href="orders.html" class="block text-blue-600 font-semibold">Order Management</a>
+        <a href="inventory.html" class="block text-gray-700 font-medium hover:text-blue-600">Inventory Management</a>
+        <a href="customers.html" class="block text-gray-700 font-medium hover:text-blue-600">Customer Management</a>
+        <a href="history.html" class="block text-gray-700 font-medium hover:text-blue-600">Order History</a>
+      </nav>
+    </aside>
+
+    <!-- Orders Content -->
+    <main class="flex-1 p-10">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Order Management</h1>
+        <button onclick="openAddOrderModal()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Add Order</button>
+      </div>
+
+      <div class="flex flex-wrap gap-2 mb-4">
+        <input type="text" id="searchInput" placeholder="Search by customer or ID..." class="border px-3 py-2 rounded w-full sm:w-64">
+        <select id="statusFilter" class="border px-3 py-2 rounded">
+          <option value="">All Statuses</option>
+          <option value="Preparing">Preparing</option>
+          <option value="Ready">Ready</option>
+          <option value="Completed">Completed</option>
+        </select>
+        <input type="date" id="dateFilter" class="border px-3 py-2 rounded">
+      </div>
+
+      <div class="bg-white rounded shadow overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead class="bg-gray-100 text-left">
+            <tr>
+              <th class="px-4 py-2">Order ID</th>
+              <th class="px-4 py-2">Customer</th>
+              <th class="px-4 py-2">Date</th>
+              <th class="px-4 py-2">Status</th>
+              <th class="px-4 py-2">Total</th>
+              <th class="px-4 py-2 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="orderTable" class="divide-y"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add Order Modal -->
+  <div id="orderModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center">
+    <div class="bg-white p-6 rounded shadow-md w-96">
+      <h2 class="text-xl font-bold mb-4">Add Order</h2>
+      <form id="orderForm" class="space-y-3">
+        <input type="text" id="orderCustomer" placeholder="Customer Name" class="w-full border px-3 py-2 rounded" required>
+        <input type="number" id="orderTotal" placeholder="Total (₱)" class="w-full border px-3 py-2 rounded" required>
+        <select id="orderStatus" class="w-full border px-3 py-2 rounded" required>
+          <option value="Preparing">Preparing</option>
+          <option value="Ready">Ready</option>
+          <option value="Completed">Completed</option>
+        </select>
+        <input type="date" id="orderDate" class="w-full border px-3 py-2 rounded" required>
+        <div class="flex justify-end space-x-2">
+          <button type="button" onclick="closeModal()" class="bg-gray-500 text-white px-4 py-1 rounded">Cancel</button>
+          <button type="submit" class="bg-green-600 text-white px-4 py-1 rounded">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Order Details Modal -->
+  <div id="detailsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center">
+    <div class="bg-white p-6 rounded shadow-md w-[400px]">
+      <h2 class="text-xl font-bold mb-4">Order Details</h2>
+      <div id="detailsContent" class="text-sm text-gray-800 space-y-4">
+        <!-- Content dynamically inserted -->
+      </div>
+      <div class="flex justify-end mt-4">
+        <button onclick="closeDetailsModal()" class="bg-gray-600 text-white px-4 py-1 rounded">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  let orders = [];
+  const orderTable = document.getElementById("orderTable");
+  const orderModal = document.getElementById("orderModal");
+  const orderForm = document.getElementById("orderForm");
+  const searchInput = document.getElementById("searchInput");
+  const statusFilter = document.getElementById("statusFilter");
+  const dateFilter = document.getElementById("dateFilter");
+  const detailsModal = document.getElementById("detailsModal");
+  const detailsContent = document.getElementById("detailsContent");
+
+  function getStatusClass(status) {
+    switch (status) {
+      case "Pending": return "text-red-500 font-semibold";
+      case "Preparing": return "text-yellow-600 font-semibold";
+      case "Ready": return "text-blue-600 font-semibold";
+      case "Completed": return "text-green-600 font-semibold";
+      default: return "text-gray-700";
+    }
+  }
+
+  function loadOrders() {
+    fetch('orders_api.php?action=fetch')
+      .then(response => response.json())
+      .then(data => {
+        orders = data;
+        renderOrders();
+      })
+      .catch(error => console.error("Fetch failed:", error));
+  }
+
+  function changeOrderStatus(orderId, newStatus) {
+    const formData = new FormData();
+    formData.append("action", "update_status");
+    formData.append("id", orderId);
+    formData.append("status", newStatus);
+
+    fetch('orders_api.php', {
+      method: "POST",
+      body: formData
+    })
+    .then(res => res.json())
+    .then(res => {
+      if (res.success) loadOrders();
+      else alert("Failed to update status.");
+    })
+    .catch(err => console.error("Error updating status:", err));
+  }
+
+  function renderOrders() {
+    const filterText = searchInput.value.toLowerCase();
+    const filterStatus = statusFilter.value;
+    const filterDate = dateFilter.value;
+
+    orderTable.innerHTML = "";
+    orders.forEach(order => {
+      const matchSearch = order.customer.toLowerCase().includes(filterText) || order.id.toString().includes(filterText);
+      const matchStatus = !filterStatus || order.status === filterStatus;
+      const matchDate = !filterDate || order.date.startsWith(filterDate);
+
+      if (matchSearch && matchStatus && matchDate) {
+        const row = document.createElement("tr");
+        const statusClass = getStatusClass(order.status);
+        const statusSelect = `
+          <select onchange="changeOrderStatus(${order.id}, this.value)" class="border text-xs px-2 py-1 rounded ${statusClass}">
+            <option value="Pending" ${order.status === "Pending" ? "selected" : ""}>Pending</option>
+            <option value="Preparing" ${order.status === "Preparing" ? "selected" : ""}>Preparing</option>
+            <option value="Ready" ${order.status === "Ready" ? "selected" : ""}>Ready</option>
+            <option value="Completed" ${order.status === "Completed" ? "selected" : ""}>Completed</option>
+          </select>`;
+
+        row.innerHTML = `
+          <td class="px-4 py-2">${order.id}</td>
+          <td class="px-4 py-2">${order.customer}</td>
+          <td class="px-4 py-2">${order.date}</td>
+          <td class="px-4 py-2">${statusSelect}</td>
+          <td class="px-4 py-2">₱${order.total}</td>
+          <td class="px-4 py-2 text-right">
+            <button onclick="showOrderDetails(${order.id})" class="bg-blue-600 text-white px-3 py-1 rounded text-sm">Details</button>
+          </td>
+        `;
+        orderTable.appendChild(row);
+      }
+    });
+  }
+
+  function showOrderDetails(id) {
+    const order = orders.find(o => o.id === id);
+    if (order) {
+      detailsContent.innerHTML = `
+        <div class="flex justify-between">
+          <strong>Order ID</strong><span>#${order.id}</span>
+        </div>
+        <div class="flex justify-between">
+          <strong>Customer</strong><span>${order.customer}</span>
+        </div>
+        <div class="flex justify-between">
+          <strong>Date</strong><span>${order.date}</span>
+        </div>
+        <div class="flex justify-between">
+          <strong>Status</strong><span>${order.status}</span>
+        </div>
+        <div class="flex justify-between">
+          <strong>Total</strong><span>₱${order.total}</span>
+        </div>
+        <div class="flex justify-between">
+          <strong>Payment</strong><span>Cash</span>
+        </div>
+        <div>
+          <strong class="block mt-4">Order Items:</strong>
+          <p class="text-sm italic text-gray-500">Item details loading not yet implemented.</p>
+        </div>
+      `;
+      detailsModal.classList.remove("hidden");
+      detailsModal.classList.add("flex");
+    }
+  }
+
+  function closeDetailsModal() {
+    detailsModal.classList.add("hidden");
+    detailsModal.classList.remove("flex");
+  }
+
+  function openAddOrderModal() {
+    orderForm.reset();
+    orderModal.classList.remove("hidden");
+    orderModal.classList.add("flex");
+  }
+
+  function closeModal() {
+    orderModal.classList.add("hidden");
+    orderModal.classList.remove("flex");
+  }
+
+  orderForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    alert("Order creation via UI not implemented yet. Please add directly in database.");
+    closeModal();
+  });
+
+  [searchInput, statusFilter, dateFilter].forEach(el => el.addEventListener("input", renderOrders));
+
+  loadOrders();
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nico's Delivery - Profile</title>
+    <link rel="stylesheet" href="profilePageStyle.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+        <header class="top-navbar">
+            <div class="logo">
+                <img src="img/logo.png" alt="Burger King">
+                <span>Nico's Food Delivery</span>
+            </div>
+            <div class="page-info">
+                <span>Account Information</span>
+            </div>
+            <div class="top-actions">
+                <button class="search-btn">🔍 Search</button>
+                <button class="login-btn">Login / Register</button>
+            </div>
+        </header>
+    <div class="wrapper">
+        <div class="profile-container">
+
+            <div class="profile-main-content">
+
+                <div class="profile-types">
+                    <h1 class="profile-type-name">My Profile</h1>
+
+                    <div class="profile-form-group floating-label">
+                        <input type="text" id="first-name" placeholder=" " value="Christian Furl" required>
+                        <label for="first-name">First Name</label>
+                    </div>
+
+                    <div class="profile-form-group floating-label">
+                        <input type="text" id="last-name" placeholder=" " value="Tujan" required>
+                        <label for="last-name">Last Name</label>
+                    </div>
+
+                    <div class="profile-form-group floating-label">
+                        <input type="tel" id="mobile-num" placeholder=" " value="0989628768" required>
+                        <label for="mobile-num">Mobile Number</label>
+                    </div>
+
+                    <button class="profile-save-button customer-info">Save</button>
+
+                    <hr class="profile-hrline">
+                </div>
+
+                <div class="profile-types">
+                    <h1 class="profile-type-name">Email & Password</h1>
+
+                    <div class="profile-form-group floating-label">
+                        <input type="text" id="email" placeholder=" " value="2831878@gmail.com" required>
+                        <label for="email">Email</label>
+                    </div>
+
+                    <div class="profile-form-group floating-label">
+                        <input type="password" id="password" placeholder=" " value="wazzapgoiseyo" required>
+                        <label for="password">Password</label>
+                    </div>
+
+                        <div class="profile-form-group floating-label" style="display: flex;">
+                        <input type="password" id="newPassword" placeholder=" ">
+                        <label for="newPassword">New Password</label>
+                        <img src="img/eye-close.png" alt="Eye Open/Close" id="reveal-pass" width="23vw" height="100%" style="cursor: pointer; margin: auto;  margin-right: -30px;">
+                    </div>
+                    
+                    <button class="profile-save-button email-password">Save</button>
+
+                    <hr class="profile-hrline">
+
+                </div>
+
+                <div class="profile-types">
+                    <h1 class="profile-type-name">Manage Account</h1>
+                    
+                    <div class="select-boxes-container">
+                        <div class="select-boxes">
+                            <img src="img/orders.png" alt="order-history-logo">
+                            <h3>Orders</h3>
+                        </div>
+
+                        <div class="select-boxes">
+                            <img src="img/cart.png" alt="order-history-logo">
+                            <h3>Cart</h3>
+                        </div>
+
+                        <div class="select-boxes">
+                            <img src="img/logout.png" alt="logout-logo">
+                            <h3>Logout</h3>
+                        </div>
+                        
+                        <div class="delete-account">
+                            <h3>Delete My Account</h3>
+                        </div>
+
+                    </div>
+
+                    
+
+                </div>
+                
+            </div>
+
+        </div>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="logo">
+                    <img src="img/logo2.png" alt="logo">   
+                </div>
+                <div class="info">
+                    <p>About Us</p>
+                    <p>09506050987</p>
+                    <p>nicosdelivery@gmail.com</p>
+                </div>
+                <div class="social">
+                    <p>Stay connected with us thru</p>
+                    <div class="icons">
+                        <a href="https://www.facebook.com/profile.php?id=100063765711429"><img src="img/fb.png" alt="Facebook"></a>
+                        <img src="img/ig.png" alt="Instagram">
+                        <img src="img/x.avif" alt="X">
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2025 Nico's Food Delivery. All rights reserved.
+            </div>
+        </footer>
+
+</div>
+
+<script>
+    document.getElementById("reveal-pass").onclick = function(){
+
+        let newPassword = document.getElementById("newPassword")
+        let eyeReveal = document.getElementById("reveal-pass")
+
+        if(newPassword.type == "password"){
+            newPassword.type = "text";
+            eyeReveal.src = "img/eye-open.png";
+        }
+        else{
+            newPassword.type = "password";
+            eyeReveal.src = "img/eye-close.png";
+        }
+    }
+
+</script>
+
+</body>
+
+</html>

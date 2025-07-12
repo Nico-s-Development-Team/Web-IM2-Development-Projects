@@ -80,9 +80,9 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <!-- Example Product Card -->
         <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center shadow hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
-          <img src="img/lumpia.jpg" alt="Fried Chicken" class="w-28 h-28 object-contain mb-3 rounded">
+          <img src="img/Menu-2/Chicken_Rice_Bowl_2.jpg" alt="Fried Chicken" class="w-28 h-28 object-contain mb-3 rounded">
           <h4 class="text-base font-medium text-gray-900">Fried Chicken</h4>
-          <p class="text-sm text-gray-500 text-center">Crispy, golden perfection wrapped around savory seasoned meat</p>
+          <p class="text-sm text-gray-500 text-center">Crispy on the outside, juicy on the inside—chicken done right!</p>
           <div class="text-green-600 font-bold mt-2">₱105</div>
           <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded-full px-3 py-1 mt-2 text-lg transition">+</button>
         </div>
@@ -94,16 +94,16 @@
           <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded-full px-3 py-1 mt-2 text-lg transition">+</button>
         </div>
         <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center shadow hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
-          <img src="img/lumpia.jpg" alt="Pork BBQ" class="w-28 h-28 object-contain mb-3 rounded">
+          <img src="img/Menu-2/Pork_BBQ.jpg" alt="Pork BBQ" class="w-28 h-28 object-contain mb-3 rounded">
           <h4 class="text-base font-medium text-gray-900">Pork BBQ</h4>
-          <p class="text-sm text-gray-500 text-center">Crispy, golden perfection wrapped around savory seasoned meat</p>
+          <p class="text-sm text-gray-500 text-center">Smoky, sweet, and tender—skewers that steal the show!</p>
           <div class="text-green-600 font-bold mt-2">₱105</div>
           <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded-full px-3 py-1 mt-2 text-lg transition">+</button>
         </div>
         <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center shadow hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
-          <img src="img/lumpia.jpg" alt="Pork Bistek" class="w-28 h-28 object-contain mb-3 rounded">
+          <img src="img/Menu-2/Pork_Bistek_3.jpg" alt="Pork Bistek" class="w-28 h-28 object-contain mb-3 rounded">
           <h4 class="text-base font-medium text-gray-900">Pork Bistek</h4>
-          <p class="text-sm text-gray-500 text-center">Crispy, golden perfection wrapped around savory seasoned meat</p>
+          <p class="text-sm text-gray-500 text-center">Tender pork slices in tangy soy-calamansi sauce</p>
           <div class="text-green-600 font-bold mt-2">₱105</div>
           <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded-full px-3 py-1 mt-2 text-lg transition">+</button>
         </div>
@@ -113,21 +113,21 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <!-- Example Product Card -->
         <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center shadow hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
-          <img src="img/lumpia.jpg" alt="Lumpia" class="w-28 h-28 object-contain mb-3 rounded">
+          <img src="img/Menu-2/barkada_bundle.jpg" alt="barkada" class="w-28 h-28 object-contain mb-3 rounded">
           <h4 class="text-base font-medium text-gray-900">Barkada Bundle</h4>
           <p class="text-sm text-gray-500 text-center">(Good for 4–5 persons)</p>
           <div class="text-green-600 font-bold mt-2">₱105</div>
           <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded-full px-3 py-1 mt-2 text-lg transition">+</button>
         </div>
         <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center shadow hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
-          <img src="img/lumpia.jpg" alt="Lumpia" class="w-28 h-28 object-contain mb-3 rounded">
+          <img src="img/Menu-2/family_set.jpg" alt="Lumpia" class="w-28 h-28 object-contain mb-3 rounded">
           <h4 class="text-base font-medium text-gray-900">Pamilya Set A</h4>
           <p class="text-sm text-gray-500 text-center">(Good for 6–8 persons)</p>
           <div class="text-green-600 font-bold mt-2">₱105</div>
           <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded-full px-3 py-1 mt-2 text-lg transition">+</button>
         </div>
         <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center shadow hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
-          <img src="img/lumpia.jpg" alt="Lumpia" class="w-28 h-28 object-contain mb-3 rounded">
+          <img src="img/Menu-2/fiesta_meal.jpg" alt="Lumpia" class="w-28 h-28 object-contain mb-3 rounded">
           <h4 class="text-base font-medium text-gray-900">Fiesta Meal Package</h4>
           <p class="text-sm text-gray-500 text-center">(Good for 10 persons)</p>
           <div class="text-green-600 font-bold mt-2">₱105</div>
@@ -139,16 +139,16 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <!-- Example Product Card -->
         <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center shadow hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
-          <img src="img/lumpia.jpg" alt="Lumpia" class="w-28 h-28 object-contain mb-3 rounded">
+          <img src="img/Menu-2/Pork_BBQ.jpg" alt="Lumpia" class="w-28 h-28 object-contain mb-3 rounded">
           <h4 class="text-base font-medium text-gray-900">Pork BBQ</h4>
-          <p class="text-sm text-gray-500 text-center">Crispy, golden perfection wrapped around savory seasoned meat</p>
+          <p class="text-sm text-gray-500 text-center">Smoky, sweet, and tender—skewers that steal the show!</p>
           <div class="text-green-600 font-bold mt-2">₱105</div>
           <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded-full px-3 py-1 mt-2 text-lg transition">+</button>
         </div>
         <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center shadow hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
-          <img src="img/lumpia.jpg" alt="Lumpia" class="w-28 h-28 object-contain mb-3 rounded">
+          <img src="img/Menu-2/Pork_Bistek_3.jpg" alt="Lumpia" class="w-28 h-28 object-contain mb-3 rounded">
           <h4 class="text-base font-medium text-gray-900">Pork Bistek</h4>
-          <p class="text-sm text-gray-500 text-center">Crispy, golden perfection wrapped around savory seasoned meat</p>
+          <p class="text-sm text-gray-500 text-center">Tender pork slices in tangy soy-calamansi sauce</p>
           <div class="text-green-600 font-bold mt-2">₱105</div>
           <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded-full px-3 py-1 mt-2 text-lg transition">+</button>
         </div>
@@ -165,16 +165,16 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <!-- Example Product Card -->
         <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center shadow hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
-          <img src="img/lumpia.jpg" alt="Lumpia" class="w-28 h-28 object-contain mb-3 rounded">
+          <img src="img/Menu-2/Pancit_Bihon.jpg" alt="Lumpia" class="w-28 h-28 object-contain mb-3 rounded">
           <h4 class="text-base font-medium text-gray-900">Pancit Bihon</h4>
-          <p class="text-sm text-gray-500 text-center">Crispy, golden perfection wrapped around savory seasoned meat</p>
+          <p class="text-sm text-gray-500 text-center">Long life, big flavor—celebrate with every noodle forkful!</p>
           <div class="text-green-600 font-bold mt-2">₱105</div>
           <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded-full px-3 py-1 mt-2 text-lg transition">+</button>
         </div>
         <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center shadow hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
-          <img src="img/lumpia.jpg" alt="Lumpia" class="w-28 h-28 object-contain mb-3 rounded">
+          <img src="img/Menu-2/Bam-I_3.jpg" alt="Bam-I" class="w-28 h-28 object-contain mb-3 rounded">
           <h4 class="text-base font-medium text-gray-900">Bam-I</h4>
-          <p class="text-sm text-gray-500 text-center">Crispy, golden perfection wrapped around savory seasoned meat</p>
+          <p class="text-sm text-gray-500 text-center">Two noodles, one unforgettable Filipino-Chinese fusion!</p>
           <div class="text-green-600 font-bold mt-2">₱105</div>
           <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded-full px-3 py-1 mt-2 text-lg transition">+</button>
         </div>
@@ -184,16 +184,16 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <!-- Example Product Card -->
         <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center shadow hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
-          <img src="img/lumpia.jpg" alt="Lumpia" class="w-28 h-28 object-contain mb-3 rounded">
+          <img src="img/Menu-2/Chicken_Rice_Bowl_1.jpg" alt="Lumpia" class="w-28 h-28 object-contain mb-3 rounded">
           <h4 class="text-base font-medium text-gray-900">Fried Chicken w/ Rice</h4>
-          <p class="text-sm text-gray-500 text-center">Crispy, golden perfection wrapped around savory seasoned meat</p>
+          <p class="text-sm text-gray-500 text-center">Crispy on the outside, juicy on the inside—chicken done right!</p>
           <div class="text-green-600 font-bold mt-2">₱105</div>
           <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded-full px-3 py-1 mt-2 text-lg transition">+</button>
         </div>
         <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center shadow hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
-          <img src="img/lumpia.jpg" alt="Lumpia" class="w-28 h-28 object-contain mb-3 rounded">
+          <img src="img/Menu-2/Bicol_Express.jpg" alt="Lumpia" class="w-28 h-28 object-contain mb-3 rounded">
           <h4 class="text-base font-medium text-gray-900">Bicol Express</h4>
-          <p class="text-sm text-gray-500 text-center">Crispy, golden perfection wrapped around savory seasoned meat</p>
+          <p class="text-sm text-gray-500 text-center">Creamy, spicy, and addictively good—Bicolano heat in every bite!</p>
           <div class="text-green-600 font-bold mt-2">₱105</div>
           <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded-full px-3 py-1 mt-2 text-lg transition">+</button>
         </div>
