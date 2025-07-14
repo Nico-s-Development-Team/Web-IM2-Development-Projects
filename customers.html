@@ -12,12 +12,14 @@
     <aside class="w-64 bg-white shadow-md px-6 py-8">
       <h2 class="text-2xl font-bold text-blue-600 mb-8">Admin Panel</h2>
       <nav class="space-y-4">
-        <a href="dashboard.html" class="block text-gray-700 font-medium hover:text-blue-600">Dashboard</a>
-        <a href="menu.html" class="block text-gray-700 font-medium hover:text-blue-600">Menu Management</a>
-        <a href="orders.html" class="block text-gray-700 font-medium hover:text-blue-600">Order Management</a>
-        <a href="inventory.html" class="block text-gray-700 font-medium hover:text-blue-600">Inventory Management</a>
-        <a href="customers.html" class="block text-blue-600 font-semibold">Customer Management</a>
-        <a href="history.html" class="block text-gray-700 font-medium hover:text-blue-600">Order History</a>
+        <a href="dashboard.html" class="block text-blue-700 font-semibold">Dashboard</a>
+        <a href="menu.html" class="block text-black-700 font-medium hover:text-blue-700">Menu Management</a>
+        <a href="orders.html" class="block text-black-700 font-medium hover:text-blue-700">Order Management</a>
+        <a href="inventory.html" class="block text-black-700 font-medium hover:text-blue-700">Inventory Management</a>
+        <a href="customers.html" class="block text-black-700 font-medium hover:text-blue-700">Customer Management</a>
+        <a href="history.html" class="block text-black-700 font-medium hover:text-blue-700">Order History</a>
+        <a href="staff.html" class="block text-black-700 font-medium hover:text-blue-700">Staff Management</a>
+        <a href="delivery.html" class="block text-black-700 font-medium hover:text-blue-700">Delivery Management</a>
       </nav>
     </aside>
 
@@ -26,9 +28,19 @@
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
         <h1 class="text-3xl font-bold text-gray-800">Customer Management</h1>
         <div class="flex gap-2">
-          <input type="text" id="searchInput" placeholder="Search customer..." class="border px-3 py-2 rounded w-64">
           <button onclick="openAddModal()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Add Customer</button>
         </div>
+      
+      </div>
+        <input type="text" id="searchInput" placeholder="Search customer..." class="border px-3 py-2 rounded w-64">
+        <select id="sortSelect" class="border px-3 py-2 rounded">
+          <option value="nameAsc">Sort: Name (A-Z)</option>
+          <option value="nameDesc">Sort: Name (Z-A)</option>
+          <option value="emailAsc">Sort: Email (A-Z)</option>
+          <option value="emailDesc">Sort: Email (Z-A)</option>
+        </select>
+      <div>
+        
       </div>
 
       <div class="bg-white rounded shadow overflow-x-auto">
@@ -79,23 +91,39 @@
     const searchInput = document.getElementById("searchInput");
 
     function renderCustomers(filter = "") {
+      const sortValue = document.getElementById("sortSelect").value;
+      let filtered = customers.filter(cust =>
+        cust.name.toLowerCase().includes(filter.toLowerCase()) ||
+        cust.email.toLowerCase().includes(filter.toLowerCase())
+      );
+
+      // Apply sorting
+      filtered.sort((a, b) => {
+        switch (sortValue) {
+          case "nameAsc": return a.name.localeCompare(b.name);
+          case "nameDesc": return b.name.localeCompare(a.name);
+          case "emailAsc": return a.email.localeCompare(b.email);
+          case "emailDesc": return b.email.localeCompare(a.email);
+          default: return 0;
+        }
+      });
+
+      // Render
       customerTable.innerHTML = "";
-      customers
-        .filter(cust => cust.name.toLowerCase().includes(filter.toLowerCase()))
-        .forEach((cust, index) => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td class="px-4 py-2">${cust.name}</td>
-            <td class="px-4 py-2">${cust.email}</td>
-            <td class="px-4 py-2">${cust.phone}</td>
-            <td class="px-4 py-2">${cust.address}</td>
-            <td class="px-4 py-2 text-right space-x-2">
-              <button onclick="editCustomer(${index})" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm">Edit</button>
-              <button onclick="deleteCustomer(${index})" class="bg-red-500 text-white px-3 py-1 rounded text-sm">Delete</button>
-            </td>
-          `;
-          customerTable.appendChild(row);
-        });
+      filtered.forEach((cust, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td class="px-4 py-2">${cust.name}</td>
+          <td class="px-4 py-2">${cust.email}</td>
+          <td class="px-4 py-2">${cust.phone}</td>
+          <td class="px-4 py-2">${cust.address}</td>
+          <td class="px-4 py-2 text-right space-x-2">
+            <button onclick="editCustomer(${index})" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm">Edit</button>
+            <button onclick="deleteCustomer(${index})" class="bg-red-500 text-white px-3 py-1 rounded text-sm">Delete</button>
+          </td>
+        `;
+        customerTable.appendChild(row);
+      });
     }
 
     function openAddModal() {

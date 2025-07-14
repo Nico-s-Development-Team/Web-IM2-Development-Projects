@@ -12,12 +12,14 @@
     <aside class="w-64 bg-white shadow-md px-6 py-8">
       <h2 class="text-2xl font-bold text-blue-600 mb-8">Admin Panel</h2>
       <nav class="space-y-4">
-        <a href="dashboard.html" class="block text-gray-700 font-medium hover:text-blue-600">Dashboard</a>
-        <a href="menu.html" class="block text-gray-700 font-medium hover:text-blue-600">Menu Management</a>
-        <a href="orders.html" class="block text-gray-700 font-medium hover:text-blue-600">Order Management</a>
-        <a href="inventory.html" class="block text-gray-700 font-medium hover:text-blue-600">Inventory Management</a>
-        <a href="customers.html" class="block text-gray-700 font-medium hover:text-blue-600">Customer Management</a>
-        <a href="history.html" class="block text-blue-600 font-semibold">Order History</a>
+        <a href="dashboard.html" class="block text-blue-700 font-semibold">Dashboard</a>
+        <a href="menu.html" class="block text-black-700 font-medium hover:text-blue-700">Menu Management</a>
+        <a href="orders.html" class="block text-black-700 font-medium hover:text-blue-700">Order Management</a>
+        <a href="inventory.html" class="block text-black-700 font-medium hover:text-blue-700">Inventory Management</a>
+        <a href="customers.html" class="block text-black-700 font-medium hover:text-blue-700">Customer Management</a>
+        <a href="history.html" class="block text-black-700 font-medium hover:text-blue-700">Order History</a>
+        <a href="staff.html" class="block text-black-700 font-medium hover:text-blue-700">Staff Management</a>
+        <a href="delivery.html" class="block text-black-700 font-medium hover:text-blue-700">Delivery Management</a>
       </nav>
     </aside>
 
@@ -30,10 +32,16 @@
         <input type="text" id="historySearch" placeholder="Search by customer or ID..." class="border px-3 py-2 rounded w-full sm:w-64" />
         <input type="date" id="historyStartDate" class="border px-3 py-2 rounded" />
         <input type="date" id="historyEndDate" class="border px-3 py-2 rounded" />
-        <select id="historyStatus" class="border px-3 py-2 rounded">
-          <option value="">All Statuses</option>
-          <option value="Completed">Completed</option>
-          <option value="Cancelled">Cancelled</option>
+        <select id="historySort" class="border px-3 py-2 rounded">
+          <option value="">Sort By</option>
+          <option value="id-asc">Order ID ↑</option>
+          <option value="id-desc">Order ID ↓</option>
+          <option value="customer-asc">Customer ↑</option>
+          <option value="customer-desc">Customer ↓</option>
+          <option value="date-asc">Date ↑</option>
+          <option value="date-desc">Date ↓</option>
+          <option value="total-asc">Total ↑</option>
+          <option value="total-desc">Total ↓</option>
         </select>
       </div>
 
@@ -45,7 +53,6 @@
               <th class="px-4 py-2">Order ID</th>
               <th class="px-4 py-2">Customer</th>
               <th class="px-4 py-2">Date</th>
-              <th class="px-4 py-2">Status</th>
               <th class="px-4 py-2">Total</th>
               <th class="px-4 py-2">Action</th>
             </tr>
@@ -68,150 +75,134 @@
   </div>
 
   <script>
-    const historyTable = document.getElementById("historyTable");
-    const historySearch = document.getElementById("historySearch");
-    const historyStartDate = document.getElementById("historyStartDate");
-    const historyEndDate = document.getElementById("historyEndDate");
-    const historyStatus = document.getElementById("historyStatus");
-    const historyDetailsModal = document.getElementById("historyDetailsModal");
-    const historyDetailsContent = document.getElementById("historyDetailsContent");
+  const historyTable = document.getElementById("historyTable");
+  const historySearch = document.getElementById("historySearch");
+  const historyStartDate = document.getElementById("historyStartDate");
+  const historyEndDate = document.getElementById("historyEndDate");
+  const historySort = document.getElementById("historySort");
+  const historyDetailsModal = document.getElementById("historyDetailsModal");
+  const historyDetailsContent = document.getElementById("historyDetailsContent");
 
-    const historyOrders = [
-      {
-        id: 90,
-        customer: "Ana Cruz",
-        date: "2025-07-05",
-        status: "Completed",
-        total: 120,
-        payment: "Cash",
-        items: [
-          { name: "Choco-lava cake", qty: 1, price: 120 }
-        ]
-      },
-      {
-        id: 91,
-        customer: "Ben Lopez",
-        date: "2025-07-04",
-        status: "Cancelled",
-        total: 200,
-        payment: "Cash",
-        items: [
-          { name: "Adobo", qty: 2, price: 100 }
-        ]
-      },
-      {
-        id: 92,
-        customer: "Claire Lim",
-        date: "2025-07-03",
-        status: "Completed",
-        total: 180,
-        payment: "Cash",
-        items: [
-          { name: "Pancit Bihon", qty: 2, price: 90 }
-        ]
+  const historyOrders = [
+    {
+      id: 90,
+      customer: "Ana Cruz",
+      date: "2025-07-05",
+      status: "Completed",
+      total: 120,
+      payment: "Cash",
+      items: [
+        { name: "Choco-lava cake", qty: 1, price: 120 }
+      ]
+    },
+    {
+      id: 91,
+      customer: "Ben Lopez",
+      date: "2025-07-04",
+      status: "Cancelled",
+      total: 200,
+      payment: "Cash",
+      items: [
+        { name: "Adobo", qty: 2, price: 100 }
+      ]
+    }
+  ];
+
+
+  function renderHistory() {
+    const filterText = historySearch.value.toLowerCase();
+    const startDate = historyStartDate.value;
+    const endDate = historyEndDate.value;
+    const sortValue = historySort.value;
+
+    let filtered = [...historyOrders];
+
+    // Filter
+    filtered = filtered.filter(order => {
+      const matchSearch = order.customer.toLowerCase().includes(filterText) || order.id.toString().includes(filterText);
+      const matchStart = !startDate || order.date >= startDate;
+      const matchEnd = !endDate || order.date <= endDate;
+      return matchSearch && matchStart && matchEnd;
+    });
+
+    // Sort
+    filtered.sort((a, b) => {
+      switch (sortValue) {
+        case "id-asc": return a.id - b.id;
+        case "id-desc": return b.id - a.id;
+        case "customer-asc": return a.customer.localeCompare(b.customer);
+        case "customer-desc": return b.customer.localeCompare(a.customer);
+        case "date-asc": return a.date.localeCompare(b.date);
+        case "date-desc": return b.date.localeCompare(a.date);
+        case "total-asc": return a.total - b.total;
+        case "total-desc": return b.total - a.total;
+        default: return 0;
       }
-    ];
+    });
 
-    function getStatusColor(status) {
-      switch (status) {
-        case "Completed": return "text-green-600 font-semibold";
-        case "Cancelled": return "text-red-600 font-semibold";
-        default: return "text-gray-700";
-      }
-    }
+    // Render
+    historyTable.innerHTML = "";
+    filtered.forEach(order => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td class="px-4 py-2">${order.id}</td>
+        <td class="px-4 py-2">${order.customer}</td>
+        <td class="px-4 py-2">${order.date}</td>
+        <td class="px-4 py-2">₱${order.total}</td>
+        <td class="px-4 py-2">
+          <button onclick="showHistoryDetails(${order.id})" class="bg-blue-500 text-white px-3 py-1 rounded text-sm">Details</button>
+        </td>
+      `;
+      historyTable.appendChild(row);
+    });
+  }
 
-    function renderHistory() {
-      const filterText = historySearch.value.toLowerCase();
-      const statusFilter = historyStatus.value;
-      const startDate = historyStartDate.value;
-      const endDate = historyEndDate.value;
+  function showHistoryDetails(id) {
+    const order = historyOrders.find(o => o.id === id);
+    if (!order) return;
 
-      historyTable.innerHTML = "";
+    let itemsHtml = order.items.map(item => `
+      <div class="flex justify-between">
+        <span>${item.name} × ${item.qty}</span>
+        <span>₱${item.price}</span>
+      </div>
+    `).join("");
 
-      historyOrders.forEach(order => {
-        const matchSearch = order.customer.toLowerCase().includes(filterText) || order.id.toString().includes(filterText);
-        const matchStatus = !statusFilter || order.status === statusFilter;
-        const matchStart = !startDate || order.date >= startDate;
-        const matchEnd = !endDate || order.date <= endDate;
+    historyDetailsContent.innerHTML = `
+      <div class="flex justify-between">
+        <strong>Order ID</strong><span>#${order.id}</span>
+      </div>
+      <div class="flex justify-between">
+        <strong>Customer</strong><span>${order.customer}</span>
+      </div>
+      <div class="flex justify-between">
+        <strong>Date</strong><span>${order.date}</span>
+      </div>
+      <div class="flex justify-between">
+        <strong>Payment</strong><span>${order.payment}</span>
+      </div>
+      <div>
+        <strong class="block mt-4 mb-1">Products</strong>
+        ${itemsHtml}
+      </div>
+      <div class="flex justify-between border-t pt-2 mt-2">
+        <strong>Total</strong><span>₱${order.total}</span>
+      </div>
+    `;
+    historyDetailsModal.classList.remove("hidden");
+    historyDetailsModal.classList.add("flex");
+  }
 
-        if (matchSearch && matchStatus && matchStart && matchEnd) {
-          const row = document.createElement("tr");
-          const statusClass = getStatusColor(order.status);
+  function closeHistoryDetailsModal() {
+    historyDetailsModal.classList.add("hidden");
+    historyDetailsModal.classList.remove("flex");
+  }
 
-          row.innerHTML = `
-            <td class="px-4 py-2">${order.id}</td>
-            <td class="px-4 py-2">${order.customer}</td>
-            <td class="px-4 py-2">${order.date}</td>
-            <td class="px-4 py-2 ${statusClass}">${order.status}</td>
-            <td class="px-4 py-2">₱${order.total}</td>
-            <td class="px-4 py-2">
-              <button onclick="showHistoryDetails(${order.id})" class="bg-blue-500 text-white px-3 py-1 rounded text-sm">Details</button>
-            </td>
-          `;
+  // Event listeners
+  [historySearch, historyStartDate, historyEndDate, historySort].forEach(el => el.addEventListener("input", renderHistory));
 
-          historyTable.appendChild(row);
-        }
-      });
-    }
+  renderHistory();
+</script>
 
-    function showHistoryDetails(id) {
-      const order = historyOrders.find(o => o.id === id);
-      if (order) {
-        let itemsHtml = order.items.map(item =>
-          `<div class="flex justify-between">
-            <span>${item.name} × ${item.qty}</span>
-            <span>₱${item.price}</span>
-          </div>`
-        ).join("");
-
-        historyDetailsContent.innerHTML = `
-          <div>
-            <div class="flex justify-between">
-              <strong>Order ID</strong>
-              <span>#${order.id}</span>
-            </div>
-            <div class="flex justify-between">
-              <strong>Status</strong>
-              <span>${order.status}</span>
-            </div>
-          </div>
-          <div>
-            <div class="flex justify-between">
-              <strong>Customer</strong>
-              <span>${order.customer}</span>
-            </div>
-            <div class="flex justify-between">
-              <strong>Date</strong>
-              <span>${order.date}</span>
-            </div>
-          </div>
-          <div class="flex justify-between">
-            <strong>Payment Method</strong>
-            <span>${order.payment}</span>
-          </div>
-          <div>
-            <strong class="block mb-1">Products</strong>
-            ${itemsHtml}
-          </div>
-          <div class="flex justify-between border-t pt-2">
-            <strong>Total</strong>
-            <span>₱${order.total}</span>
-          </div>
-        `;
-
-        historyDetailsModal.classList.remove("hidden");
-        historyDetailsModal.classList.add("flex");
-      }
-    }
-
-    function closeHistoryDetailsModal() {
-      historyDetailsModal.classList.add("hidden");
-      historyDetailsModal.classList.remove("flex");
-    }
-
-    [historySearch, historyStartDate, historyEndDate, historyStatus].forEach(el => el.addEventListener("input", renderHistory));
-
-    renderHistory();
-  </script>
 </body>
 </html>
