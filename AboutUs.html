@@ -8,19 +8,21 @@
 </head>
 <body class="bg-white text-gray-900">
 
-  <header class="flex items-center justify-between p-4 shadow-md">
-    <div class="logo">
-      <img src="img/logo2.png" alt="business_logo" class="h-12 w-auto" />
-    </div>
-    <nav class="flex space-x-6 items-center">
-      <a href="home.html" class="hover:underline">Home</a>
-      <a href="home.html" class="hover:underline">Menu</a>
-      <a href="home.html" class="hover:underline">Promotions/Deals</a>
-      <button class="bg-red-600 text-white px-4 py-2 rounded-2xl hover:bg-red-700 transition">
-        Login/Register
-      </button>
-    </nav>
-  </header>
+  <header class="fixed top-0 left-0 w-full bg-white shadow-md z-50">
+        <div class="container mx-auto flex items-center justify-between py-4 px-6">
+            <div class="flex items-center gap-4">
+                <a href="home.html">
+                  <img src="img/logo2.png" alt="business_logo" class="h-12 w-12 object-contain">
+                </a>
+            </div>
+            <nav class="flex items-center gap-6 text-sm font-bold">
+              <a href="home.html" class="hover:text-red-500">Home</a>
+              <a href="home.html#featured" class="hover:text-red-500">Menu</a>
+              <a href="home.html#promotions" class="hover:text-red-500">Promotions/Deals</a>
+              <button class="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600 transition">Order Now</button>
+            </nav>
+        </div>
+    </header>
 
   <main class="px-6 py-16">
     <!-- About Us Section -->
