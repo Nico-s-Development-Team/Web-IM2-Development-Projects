@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Management - Nico's Delivery</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white shadow-md px-6 py-8 hidden md:block">
+      <h2 class="text-2xl font-bold text-blue-600 mb-8">Admin Panel</h2>
+      <nav class="space-y-4">
+        <a href="dashboard.html" class="block text-black font-medium hover:text-blue-700">Dashboard</a>
+        <a href="menu.html" class="block text-black font-medium hover:text-blue-700">Menu Management</a>
+        <a href="orders.html" class="block text-black font-medium hover:text-blue-700">Order Management</a>
+        <a href="inventory.html" class="block text-black font-medium hover:text-blue-700">Inventory Management</a>
+        <a href="user_management.html" class="block text-black-700 font-medium hover:text-blue-700">User Management</a>
+        <a href="history.html" class="block text-black font-medium hover:text-blue-700">Order History</a>
+        <a href="delivery.html" class="block text-black font-medium hover:text-blue-700">Delivery Management</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6">
+      <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">User Management</h1>
+        <button onclick="openUserModal()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Add User</button>
+      </div>
+
+      <!-- Filters -->
+      <div class="flex flex-wrap gap-2 mb-4">
+        <input type="text" id="searchInput" placeholder="Search user..." class="border px-4 py-2 rounded w-full sm:w-64" />
+        <select id="roleFilter" class="border px-4 py-2 rounded">
+          <option value="">All Roles</option>
+          <option value="Customer">Customer</option>
+          <option value="Manager">Manager</option>
+          <option value="Cashier">Cashier</option>
+          <option value="Cook">Cook</option>
+        </select>
+      </div>
+
+      <!-- User Table -->
+      <div class="bg-white rounded shadow overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead class="bg-gray-100 text-left">
+            <tr>
+              <th class="px-4 py-2">Name</th>
+              <th class="px-4 py-2">Email</th>
+              <th class="px-4 py-2">Role</th>
+              <th class="px-4 py-2">Phone</th>
+              <th class="px-4 py-2">Address</th>
+              <th class="px-4 py-2 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="userTable" class="divide-y"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <!-- User Modal -->
+  <div id="userModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50">
+    <div class="bg-white p-6 rounded shadow-md w-96">
+      <h2 id="modalTitle" class="text-xl font-bold mb-4">Add User</h2>
+      <form id="userForm" class="space-y-3">
+        <input type="text" id="userName" placeholder="Full Name" class="w-full border px-3 py-2 rounded" required>
+        <input type="email" id="userEmail" placeholder="Email" class="w-full border px-3 py-2 rounded" required>
+        <select id="userRole" class="w-full border px-3 py-2 rounded" required>
+          <option value="Customer">Customer</option>
+          <option value="Manager">Manager</option>
+          <option value="Cashier">Cashier</option>
+          <option value="Cook">Cook</option>
+        </select>
+        <input type="text" id="userPhone" placeholder="Phone Number" class="w-full border px-3 py-2 rounded">
+        <input type="text" id="userAddress" placeholder="Address" class="w-full border px-3 py-2 rounded">
+        <div class="flex justify-end space-x-2">
+          <button type="button" onclick="closeUserModal()" class="bg-gray-500 text-white px-4 py-1 rounded">Cancel</button>
+          <button type="submit" class="bg-green-600 text-white px-4 py-1 rounded">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const users = [
+      { name: "Juan Dela Cruz", email: "juan@example.com", role: "Customer", phone: "09123456789", address: "123 Mabini St." },
+      { name: "Carlos Reyes", email: "carlos@example.com", role: "Manager", phone: "", address: "" },
+      { name: "Ella Santos", email: "ella@example.com", role: "Cashier", phone: "", address: "" },
+      { name: "Maria Santos", email: "maria@example.com", role: "Customer", phone: "09987654321", address: "456 Rizal Ave." },
+    ];
+
+    let editingIndex = null;
+
+    function renderUsers(filter = "") {
+      const roleFilter = document.getElementById("roleFilter").value;
+      const table = document.getElementById("userTable");
+      table.innerHTML = "";
+
+      const filtered = users.filter(u =>
+        (u.name.toLowerCase().includes(filter.toLowerCase()) || u.email.toLowerCase().includes(filter.toLowerCase())) &&
+        (!roleFilter || u.role === roleFilter)
+      );
+
+      filtered.forEach((user, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td class="px-4 py-2">${user.name}</td>
+          <td class="px-4 py-2">${user.email}</td>
+          <td class="px-4 py-2">${user.role}</td>
+          <td class="px-4 py-2">${user.phone || '—'}</td>
+          <td class="px-4 py-2">${user.address || '—'}</td>
+          <td class="px-4 py-2 text-right space-x-2">
+            <button onclick="editUser(${index})" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm">Edit</button>
+            <button onclick="deleteUser(${index})" class="bg-red-500 text-white px-3 py-1 rounded text-sm">Delete</button>
+          </td>
+        `;
+        table.appendChild(row);
+      });
+    }
+
+    function openUserModal() {
+      editingIndex = null;
+      document.getElementById("modalTitle").textContent = "Add User";
+      document.getElementById("userForm").reset();
+      document.getElementById("userModal").classList.remove("hidden");
+      document.getElementById("userModal").classList.add("flex");
+    }
+
+    function closeUserModal() {
+      document.getElementById("userModal").classList.add("hidden");
+      document.getElementById("userModal").classList.remove("flex");
+    }
+
+    function editUser(index) {
+      editingIndex = index;
+      const u = users[index];
+      document.getElementById("modalTitle").textContent = "Edit User";
+      document.getElementById("userName").value = u.name;
+      document.getElementById("userEmail").value = u.email;
+      document.getElementById("userRole").value = u.role;
+      document.getElementById("userPhone").value = u.phone;
+      document.getElementById("userAddress").value = u.address;
+      document.getElementById("userModal").classList.remove("hidden");
+      document.getElementById("userModal").classList.add("flex");
+    }
+
+    function deleteUser(index) {
+      if (confirm("Delete this user?")) {
+        users.splice(index, 1);
+        renderUsers(document.getElementById("searchInput").value);
+      }
+    }
+
+    document.getElementById("userForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const newUser = {
+        name: document.getElementById("userName").value,
+        email: document.getElementById("userEmail").value,
+        role: document.getElementById("userRole").value,
+        phone: document.getElementById("userPhone").value,
+        address: document.getElementById("userAddress").value,
+      };
+
+      if (editingIndex === null) {
+        users.push(newUser);
+      } else {
+        users[editingIndex] = newUser;
+      }
+
+      closeUserModal();
+      renderUsers(document.getElementById("searchInput").value);
+    });
+
+    document.getElementById("searchInput").addEventListener("input", (e) => {
+      renderUsers(e.target.value);
+    });
+
+    document.getElementById("roleFilter").addEventListener("change", () => {
+      renderUsers(document.getElementById("searchInput").value);
+    });
+
+    renderUsers();
+  </script>
+
+</body>
+</html>

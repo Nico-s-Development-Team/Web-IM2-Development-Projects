@@ -12,12 +12,13 @@
     <aside class="w-64 bg-white shadow-md px-6 py-8">
       <h2 class="text-2xl font-bold text-blue-600 mb-8">Admin Panel</h2>
       <nav class="space-y-4">
-        <a href="dashboard.html" class="block text-gray-700 font-medium hover:text-blue-600">Dashboard</a>
-        <a href="menu.html" class="block text-blue-600 font-semibold">Menu Management</a>
-        <a href="orders.html" class="block text-gray-700 font-medium hover:text-blue-600">Order Management</a>
-        <a href="inventory.html" class="block text-gray-700 font-medium hover:text-blue-600">Inventory Management</a>
-        <a href="customers.html" class="block text-gray-700 font-medium hover:text-blue-600">Customer Management</a>
-        <a href="history.html" class="block text-gray-700 font-medium hover:text-blue-600">Order History</a>
+        <a href="dashboard.html" class="block text-blue-700 font-semibold">Dashboard</a>
+        <a href="menu.html" class="block text-black-700 font-medium hover:text-blue-700">Menu Management</a>
+        <a href="orders.html" class="block text-black-700 font-medium hover:text-blue-700">Order Management</a>
+        <a href="inventory.html" class="block text-black-700 font-medium hover:text-blue-700">Inventory Management</a>
+        <a href="user_management.html" class="block text-black-700 font-medium hover:text-blue-700">User Management</a>
+        <a href="history.html" class="block text-black-700 font-medium hover:text-blue-700">Order History</a>
+        <a href="delivery.html" class="block text-black-700 font-medium hover:text-blue-700">Delivery Management</a>
       </nav>
     </aside>
 
@@ -26,9 +27,28 @@
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
         <h1 class="text-3xl font-bold text-gray-800">Menu Management</h1>
         <div class="flex gap-2">
-          <input type="text" id="searchInput" placeholder="Search item..." class="border px-3 py-2 rounded w-64">
+          <!-- <input type="text" id="searchInput" placeholder="Search item..." class="border px-3 py-2 rounded w-64"> -->
           <button onclick="openAddModal()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Add Item</button>
         </div>
+      </div>
+
+      <div class="flex flex-wrap gap-2 mb-4">
+        <input type="text" id="searchInput" placeholder="Search by customer or ID..." class="border px-3 py-2 rounded w-full sm:w-64">
+         <select id="stockFilter" class="border px-3 py-2 rounded">
+          <option value="">All Stock</option>
+          <option value="in">In Stock</option>
+          <option value="out">Out of Stock</option>
+        </select>
+        <!-- <input type="date" id="dateFilter" class="border px-3 py-2 rounded"> -->
+        <select id="sortSelect" class="border px-3 py-2 rounded">
+          <option value="">Sort By</option>
+          <option value="name-asc">Name ↑</option>
+          <option value="name-desc">Name ↓</option>
+          <option value="price-asc">Price ↑</option>
+          <option value="price-desc">Price ↓</option>
+          <option value="stock-asc">Stock ↑</option>
+          <option value="stock-desc">Stock ↓</option>
+      </select>
       </div>
 
       <div class="bg-white rounded shadow overflow-x-auto">
@@ -72,6 +92,8 @@
   const modalTitle = document.getElementById("modalTitle");
   const menuForm = document.getElementById("menuForm");
   const searchInput = document.getElementById("searchInput");
+  const sortSelect = document.getElementById("sortSelect");
+  const stockFilter = document.getElementById("stockFilter");
 
   // Fetch all menu items from DB
   function loadMenu() {
@@ -86,23 +108,53 @@
 
   // Render the table
   function renderMenu(filter = "") {
-    menuTable.innerHTML = "";
-    menuItems
-      .filter(item => item.name.toLowerCase().includes(filter.toLowerCase()))
-      .forEach((item, index) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td class="px-4 py-2">${item.name}</td>
-          <td class="px-4 py-2">₱${item.price}</td>
-          <td class="px-4 py-2">${item.stock}</td>
-          <td class="px-4 py-2 text-right space-x-2">
-            <button onclick="editItem(${index})" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm">Edit</button>
-            <button onclick="deleteItem(${item.id})" class="bg-red-500 text-white px-3 py-1 rounded text-sm">Delete</button>
-          </td>
-        `;
-        menuTable.appendChild(row);
-      });
+  const searchText = filter.toLowerCase();
+  const filterStock = stockFilter.value;
+  const sortValue = sortSelect.value;
+
+  let filteredItems = [...menuItems];
+
+  // Filter by search
+  filteredItems = filteredItems.filter(item =>
+    item.name.toLowerCase().includes(searchText)
+  );
+
+  // Filter by stock
+  if (filterStock === "in") {
+    filteredItems = filteredItems.filter(item => item.stock > 0);
+  } else if (filterStock === "out") {
+    filteredItems = filteredItems.filter(item => item.stock === 0);
   }
+
+  // Sort items
+  filteredItems.sort((a, b) => {
+    switch (sortValue) {
+      case "name-asc": return a.name.localeCompare(b.name);
+      case "name-desc": return b.name.localeCompare(a.name);
+      case "price-asc": return a.price - b.price;
+      case "price-desc": return b.price - a.price;
+      case "stock-asc": return a.stock - b.stock;
+      case "stock-desc": return b.stock - a.stock;
+      default: return 0;
+    }
+  });
+
+  // Render
+  menuTable.innerHTML = "";
+  filteredItems.forEach((item, index) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td class="px-4 py-2">${item.name}</td>
+      <td class="px-4 py-2">₱${item.price}</td>
+      <td class="px-4 py-2">${item.stock}</td>
+      <td class="px-4 py-2 text-right space-x-2">
+        <button onclick="editItem(${index})" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm">Edit</button>
+        <button onclick="deleteItem(${item.id})" class="bg-red-500 text-white px-3 py-1 rounded text-sm">Delete</button>
+      </td>
+    `;
+    menuTable.appendChild(row);
+  });
+}
 
   // Add/Edit Modal open
   function openAddModal() {
@@ -124,7 +176,7 @@
     menuModal.classList.add("flex");
   }
 
-  // Delete item from DB
+  // Delete item from db
   function deleteItem(id) {
     if (confirm("Delete this menu item?")) {
       const formData = new FormData();
@@ -173,6 +225,15 @@
   searchInput.addEventListener("input", () => {
     renderMenu(searchInput.value);
   });
+
+  // After renderMenu() definition and element declarations
+  searchInput.addEventListener("input", () => renderMenu(searchInput.value));
+  sortSelect.addEventListener("change", () => renderMenu(searchInput.value));
+  stockFilter.addEventListener("change", () => renderMenu(searchInput.value));
+
+// Initial load
+loadMenu();
+
 
   // Load menu initially
   loadMenu();

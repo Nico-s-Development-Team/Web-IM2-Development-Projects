@@ -1,0 +1,266 @@
+/* Reset & Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  background: #FFF8F8;
+}
+
+h1, h2, h3 {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Wrapper to ensure footer stays at bottom */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Top Navbar */
+.top-navbar {
+  background: #FFF8F8;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px;
+  height: 60px;
+  border-bottom: 1px solid #ccc;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.top-navbar .logo {
+  display: flex;
+  align-items: center;
+}
+
+.top-navbar .logo img {
+  width: 40px;
+  margin-right: 10px;
+}
+
+.top-navbar .page-info {
+  color: #cc5c00;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.top-navbar .top-actions button {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  margin-left: 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.top-navbar .login-btn {
+  background: #ff8c42;
+  color: white;
+  border: none;
+}
+
+/* Back Button */
+.backBtn {
+  margin: 20px 30px -30px;
+  font-size: 28px;
+  text-decoration: none;
+  color: #333;
+  display: inline-block;
+}
+
+.backBtn:hover {
+  color: red;
+}
+
+/* Delivery Container */
+.delivery-container {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2%;
+  padding: 40px 30px;
+  flex-wrap: wrap;
+}
+
+/* Delivery Details Panel */
+.delivery-details-container,
+.order-details-container {
+  width: 40%;
+  box-shadow: 0 0 10px #cbcaca;
+  border-radius: 10px;
+  background: white;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.delivery-details-inside-container,
+.order-details-inside-container {
+  width: 90%;
+  margin: auto;
+}
+
+#delivery-status-indicator {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+#delivery-delivery-rider {
+  width: 100%;
+  max-width: 220px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+#delivery-time-indicator {
+  font-size: 14px;
+  margin-top: 20px;
+  color: #555;
+}
+
+#delivery-time {
+  font-size: 32px;
+  font-weight: bold;
+  margin-top: 10px;
+  color: #cc5c00;
+}
+
+/* Order Details */
+.order-details-header {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.delivery-hrline {
+  height: 1px;
+  background-color: #e1e0e0;
+  border: none;
+  margin: 20px 0;
+}
+
+.order-details-div {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.order-details-category,
+.order-details-category-value,
+.order-details-quantity,
+.order-details-item-name,
+.order-details-price {
+  display: inline-block;
+}
+
+.order-details-category {
+  width: 40%;
+  text-align: left;
+}
+
+.order-details-category-value {
+  width: 60%;
+  text-align: right;
+}
+
+.order-details-quantity {
+  width: 10%;
+  text-align: left;
+}
+
+.order-details-item-name {
+  width: 70%;
+  text-align: left;
+}
+
+.order-details-price {
+  width: 20%;
+  text-align: right;
+}
+
+#order-details-bottom {
+  margin-bottom: 40px;
+}
+
+/* Footer */
+.footer {
+  background: #FFF8F8;
+  border-top: 1px solid #ccc;
+  padding: 30px;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: auto;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.footer .logo img {
+  width: 80px;
+}
+
+.footer .info p,
+.footer .social p {
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.footer .icons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.footer .icons img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+.copyright {
+  text-align: center;
+  font-size: 12px;
+  color: #777;
+  margin-top: 20px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .delivery-details-container,
+  .order-details-container {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .backBtn {
+    margin: 20px;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer .icons {
+    justify-content: center;
+  }
+}

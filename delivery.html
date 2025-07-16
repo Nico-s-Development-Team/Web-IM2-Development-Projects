@@ -1,0 +1,202 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delivery Management - Nico's Delivery</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+    
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white shadow-md px-6 py-8">
+      <h2 class="text-2xl font-bold text-blue-600 mb-8">Admin Panel</h2>
+      <nav class="space-y-4">
+        <a href="dashboard.html" class="block text-blue-700 font-semibold">Dashboard</a>
+        <a href="menu.html" class="block text-black-700 font-medium hover:text-blue-700">Menu Management</a>
+        <a href="orders.html" class="block text-black-700 font-medium hover:text-blue-700">Order Management</a>
+        <a href="inventory.html" class="block text-black-700 font-medium hover:text-blue-700">Inventory Management</a>
+        <a href="user_management.html" class="block text-black-700 font-medium hover:text-blue-700">User Management</a>
+        <a href="history.html" class="block text-black-700 font-medium hover:text-blue-700">Order History</a>
+        <a href="delivery.html" class="block text-black-700 font-medium hover:text-blue-700">Delivery Management</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-10">
+    <!-- Header and Assign Button -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+      <h1 class="text-3xl font-bold text-gray-800">Delivery Management</h1>
+      <button onclick="openAddDeliveryModal()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Add Delivery</button>
+    </div>
+
+    <!-- Filter/Search Bar -->
+    <div class="flex flex-wrap gap-2 mb-4">
+      <input type="text" id="searchDelivery" placeholder="Search by rider or customer..." class="border px-3 py-2 rounded w-full sm:w-64">
+    <select id="statusFilter" class="border px-3 py-2 rounded">
+      <option value="">All Statuses</option>
+      <option value="Pending">Pending</option>
+      <option value="Out for Delivery">Out for Delivery</option>
+      <option value="Ready for Pickup">Ready for Pickup</option>
+      <option value="Delivered">Delivered</option>
+      </select>
+    </div>
+
+  <!-- Delivery Table -->
+  <div class="bg-white rounded shadow overflow-x-auto">
+    <table class="min-w-full text-sm">
+      <thead class="bg-gray-100 text-left">
+        <tr>
+          <th class="px-4 py-2">Order ID</th>
+          <th class="px-4 py-2">Address</th>
+          <th class="px-4 py-2">Rider</th>
+          <th class="px-4 py-2">Status</th>
+          <th class="px-4 py-2">ETA</th>
+          <th class="px-4 py-2 text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="deliveryTable" class="divide-y">
+        <!-- JS will populate rows here -->
+      </tbody>
+    </table>
+  </div>
+</main>
+
+  </div>
+
+  <!-- Delivery Modal -->
+<div id="deliveryModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center xz-50">
+  <div class="bg-white p-6 rounded shadow-md w-96">
+    <h2 class="text-xl font-bold mb-4" id="modalTitle">Update Delivery</h2>
+    <form id="deliveryForm" class="space-y-3">
+      
+      <label class="block text-sm font-medium text-gray-700">Address</label>
+      <input type="text" id="modalAddress" class="w-full border px-3 py-2 rounded" required>
+      
+      <label class="block text-sm font-medium text-gray-700">Rider</label>
+      <input type="text" id="modalRider" class="w-full border px-3 py-2 rounded">
+
+      <label class="block text-sm font-medium text-gray-700">Status</label>
+      <select id="modalStatus" class="w-full border px-3 py-2 rounded" required>
+        <option value="Pending">Pending</option>
+        <option value="Out for Delivery">Out for Delivery</option>
+        <option value="Ready for Pickup">Ready for Pickup</option>
+        <option value="Delivered">Delivered</option>
+      </select>
+
+      <label class="block text-sm font-medium text-gray-700">ETA</label>
+      <input type="text" id="modalEta" class="w-full border px-3 py-2 rounded">
+
+      <div class="flex justify-end gap-2">
+        <button type="button" onclick="closeDeliveryModal()" class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
+        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+  <script>
+  editingDeliveryIndex = null; 
+
+    const deliveries = [
+      { orderId: "#1001", address: "Mabolo", rider: "Ryan", status: "Out for Delivery", eta: "10 mins" },
+      { orderId: "#1002", address: "Talamban", rider: "", status: "Pending", eta: "" },
+    ];
+
+    const deliveryTable = document.getElementById("deliveryTable");
+    const searchInput = document.getElementById("searchDelivery");
+    const statusFilter = document.getElementById("statusFilter");
+    const eta = document.getElementById("modalEta").value;
+
+     function openAddDeliveryModal() {
+      document.getElementById("modalTitle").textContent = "Add Delivery";
+      document.getElementById("modalAddress").value = "";
+      document.getElementById("modalRider").value = "";
+      document.getElementById("modalStatus").value = "Pending";
+      document.getElementById("modalEta").value = "";
+      document.getElementById("deliveryModal").classList.remove("hidden");
+      document.getElementById("deliveryModal").classList.add("flex");
+  }
+
+    function renderDeliveries(filterText = "", filterStatus = "") {
+      deliveryTable.innerHTML = "";
+      deliveries
+        .filter(d =>
+          (d.address.toLowerCase().includes(filterText.toLowerCase()) || d.rider.toLowerCase().includes(filterText.toLowerCase())) &&
+          (filterStatus === "" || d.status === filterStatus)
+        )
+        .forEach(d => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td class="px-4 py-2">${d.orderId}</td>
+            <td class="px-4 py-2">${d.address}</td>
+            <td class="px-4 py-2">${d.rider || '<span class=\"text-red-500\">Unassigned</span>'}</td>
+            <td class="px-4 py-2">${d.status}</td>
+            <td class="px-4 py-2">${d.eta || '—'}</td>
+            <td class="px-4 py-2 text-right space-x-2">
+            <button onclick="openDeliveryModal(${deliveries.indexOf(d)})" class="bg-blue-600 text-white px-3 py-1 rounded text-sm">Update</button>
+            </td>
+          `;
+          deliveryTable.appendChild(row);
+        });
+    }
+
+    function closeDeliveryModal() {
+      document.getElementById("deliveryModal").classList.add("hidden");
+      document.getElementById("deliveryModal").classList.remove("flex");
+    }
+
+    function openDeliveryModal(index) {
+      editingDeliveryIndex = index;
+      const d = deliveries[index];
+      document.getElementById("modalTitle").textContent = d.rider ? "Update Delivery" : "Assign Delivery";
+      document.getElementById("modalAddress").value = d.address;
+      document.getElementById("modalRider").value = d.rider;
+      document.getElementById("modalStatus").value = d.status;
+      document.getElementById("modalEta").value = d.eta;
+      document.getElementById("deliveryModal").classList.remove("hidden");
+      document.getElementById("deliveryModal").classList.add("flex");
+    }
+
+
+    searchInput.addEventListener("input", () => renderDeliveries(searchInput.value, statusFilter.value));
+    statusFilter.addEventListener("change", () => renderDeliveries(searchInput.value, statusFilter.value));
+    
+    document.getElementById("deliveryForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const address = document.getElementById("modalAddress").value;
+      const rider = document.getElementById("modalRider").value;
+      const status = document.getElementById("modalStatus").value;
+
+      let etaRaw = document.getElementById("modalEta").value.trim();
+      let eta = etaRaw.match(/^\d+$/) ? `${etaRaw} mins` : etaRaw;
+
+      if (editingDeliveryIndex === null) {
+        const newDelivery = {
+          orderId: `#${Math.floor(Math.random() * 9000 + 1000)}`,
+          address,
+          rider,
+          status,
+          eta
+        };
+        deliveries.push(newDelivery);
+        renderDeliveries(searchInput.value, statusFilter.value);
+        closeDeliveryModal();
+      } else {
+        deliveries[editingDeliveryIndex].address = address;
+        deliveries[editingDeliveryIndex].rider = rider;
+        deliveries[editingDeliveryIndex].status = status;
+        deliveries[editingDeliveryIndex].eta = eta;
+        renderDeliveries(searchInput.value, statusFilter.value);
+        closeDeliveryModal();
+      }
+    });
+
+    renderDeliveries();
+
+  </script>
+</body>
+</html>
