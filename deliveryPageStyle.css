@@ -1,0 +1,195 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #FFF8F8;
+    font-family: 'Open Sans', sans-serif;
+}
+
+h1, h2, h3 {
+    font-family: 'Poppins', sans-serif;
+}
+
+.profile-container {
+    display: flex;
+    flex: 1;
+    padding: 20px;
+    height: calc(100vh - 60px);
+}
+/* Delivery Page */
+
+.backBtn {
+    position: relative;
+    width: 4px;
+    padding: 0.5% 0.5%;
+    margin: 1% 3.5%;
+    font-size: 30px;
+    margin-bottom: -3.3%;
+}
+
+.backBtn:hover {
+    color: red;
+}
+
+
+
+.delivery-container {
+    display: flex;
+    flex: 1;
+    padding: 20px;
+    height: calc(100vh - 60px);
+    gap: 2%;
+    justify-content: center;
+    margin-top: 2%;
+}
+
+.delivery-details-container{
+    background-color: white;
+    width: 40%;
+    display: flex;
+    border-color: #999;
+    box-shadow: 0 0 10px #cbcaca;
+    border-radius: 5px;
+    justify-content: center;
+    text-align: center;
+}
+
+.delivery-details-inside-container{
+    width: 80%;
+    margin: auto auto;
+    justify-content: center;
+    text-align: center;
+}
+
+#delivery-status-indicator{
+    font-size: medium;
+    margin-bottom: 5%;
+}
+
+#delivery-delivery-rider{
+    margin: auto;
+    width: 12vw;
+    min-width: 100px;
+}
+
+#delivery-time-indicator{
+    font-size: small;
+    margin-top: 5%;
+}
+
+#delivery-time{
+    font-size: 35px;
+    font-weight: bolder;
+    margin-top: 2%;
+}
+
+.order-details-container{
+    background-color: white;
+    display: flex;
+    width: 40%;
+    border-color: #999;
+    box-shadow: 0 0 10px #cbcaca;
+    border-radius: 5px;
+    outline: none;
+    justify-content: center;
+    text-align: center;
+}
+
+.order-details-inside-container{
+    width: 80%;
+    margin-top: 5%;
+    justify-content: center;
+    text-align: center;
+}
+
+.order-details-header{
+    font-family: 'Poppins', sans-serif;
+    font-size: larger;
+    margin-bottom: 5%;
+}
+
+.delivery-hrline{
+    height: 0.5px; 
+    background-color: rgb(225, 224, 224);
+    border: none;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.order-details{
+    width: 20%;
+    text-align: left;
+}
+
+.order-details-div{
+    width: 100%;
+    display: flex;
+    padding: 1% 0% 1% 0%;
+}
+
+.order-details-items{
+    font-size: 14px;
+}
+
+.order-details-category{
+    width: 40%;
+    text-align: left;
+}
+
+.order-details-category-value{
+    width: 60%;
+    text-align: right;
+}
+
+.order-details-quantity{
+    width: 10%;
+    text-align: left;
+}
+
+.order-details-item-name{
+    width: 70%;
+    text-align: left;
+}
+
+.order-details-price{
+    width: 20%;
+    text-align: right;
+}
+
+#order-details-bottom{
+    margin-bottom: 100px;
+}
+
+@media (max-width: 758px) {
+    .delivery-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 40px;
+    }
+
+    .delivery-details-container{
+        width: 80%;
+        height: 300px;
+    }
+
+    .order-details-container{
+        width: 80%;
+    }
+}

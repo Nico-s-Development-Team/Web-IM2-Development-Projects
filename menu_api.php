@@ -36,7 +36,7 @@ if ($action === 'fetch') {
     $id = $_POST['id'];
     $name = $_POST['name'];
     $price = $_POST['price'];
-    $stock = $_POST['stock'];
+    $stock = $_POST['stock'];   
 
     $stmt = $conn->prepare("UPDATE MenuItem_T SET Item_Name = ?, Price = ?, Quantity = ? WHERE MenuItem_ID = ?");
     $stmt->bind_param("sdii", $name, $price, $stock, $id);

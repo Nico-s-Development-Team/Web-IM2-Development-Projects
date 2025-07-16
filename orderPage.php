@@ -299,14 +299,57 @@
   </div>
 </div>
 
-<div id="checkoutModal" class="fixed inset-0 z-50 bg-black bg-opacity-30 flex items-center justify-center hidden">
-  <div class="bg-white rounded-lg shadow-lg p-6 w-80 animate-modalFadeIn">
-    <h2 class="text-lg font-semibold text-gray-800 mb-3 text-center">Order Placed Successfully</h2>
-    <div class="flex justify-center gap-3">
-      <button id="closeModal" class="px-4 py-1.5 text-sm rounded bg-red-500 hover:bg-red-600 text-white">Close</button>
+<!-- Checkout Modal -->
+<div id="checkoutModal" class="hidden fixed inset-0 z-50 bg-black bg-opacity-40 flex justify-center items-center px-4">
+  <div class="bg-white w-full max-w-xl rounded-lg shadow-lg p-6 relative">
+    
+    <!-- Step Navigation -->
+<div class="flex items-center justify-between mb-6">
+  <!-- Step 1 -->
+  <div class="flex items-center gap-2">
+    <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold bg-gray-300 text-white">1</div>
+    <span class="text-sm text-gray-500">Menu</span>
+  </div>
+
+  <!-- Line -->
+  <div class="flex-1 h-1 mx-2 bg-gray-300 rounded"></div>
+
+  <!-- Step 2 (Current) -->
+  <div class="flex items-center gap-2">
+    <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold bg-red-500 text-white ring-2 ring-red-300">2</div>
+    <span class="text-sm text-red-600 font-medium">Basket</span>
+  </div>
+
+  <!-- Line -->
+  <div class="flex-1 h-1 mx-2 bg-gray-300 rounded"></div>
+
+  <!-- Step 3 -->
+  <div class="flex items-center gap-2">
+    <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold bg-gray-300 text-white">3</div>
+    <span class="text-sm text-gray-500">Checkout</span>
+  </div>
+</div>
+
+
+    <!-- Basket Summary -->
+    <div id="checkoutSummary" class="space-y-4 max-h-64 overflow-y-auto border-t pt-4">
+      <!-- JS will populate this -->
+    </div>
+
+    <!-- Total -->
+    <div class="flex justify-between items-center mt-4 border-t pt-4 font-semibold">
+      <span>Total:</span>
+      <span id="checkoutTotal" class="text-red-500">₱0.00</span>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex justify-end gap-3 mt-6">
+      <button id="cancelCheckout" class="px-4 py-2 text-sm border rounded text-gray-600 hover:text-red-500 hover:border-red-500">Cancel</button>
+      <button id="goToReview" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 text-sm">Proceed to Checkout</button>
     </div>
   </div>
 </div>
+
 
   <script>
     const currentUserId = <?= json_encode($_SESSION['customer_id']); ?>;

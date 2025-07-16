@@ -189,37 +189,87 @@ function renderBasket() {
     });
 }
 
+// Event: Cancel closes the modal
+document.getElementById('cancelCheckout')?.addEventListener('click', () => {
+  document.getElementById('checkoutModal').classList.add('hidden');
+});
+
+// Event: Go to Review (redirects to reviewOrderPage.html)
+document.getElementById('goToReview')?.addEventListener('click', () => {
+  window.location.href = 'reviewOrderPage.php';
+});
+
+// Fill modal with basket items
+function updateCheckoutSummary() {
+  const summary = document.getElementById('checkoutSummary');
+  const totalElem = document.getElementById('checkoutTotal');
+
+  if (!summary || !totalElem) return;
+
+  if (basket.length === 0) {
+    summary.innerHTML = `<p class="text-center text-gray-500">Your basket is empty.</p>`;
+    totalElem.textContent = "₱0.00";
+    return;
+  }
+
+  let total = 0;
+  let html = '';
+
+  basket.forEach(item => {
+    const subtotal = item.price * item.quantity;
+    total += subtotal;
+    html += `
+      <div class="flex justify-between items-start">
+        <div>
+          <p class="font-medium text-gray-800">${item.quantity}x ${item.name}</p>
+          <p class="text-sm text-gray-500">₱${item.price.toFixed(2)} each</p>
+        </div>
+        <div class="text-right font-medium text-gray-700">₱${subtotal.toFixed(2)}</div>
+      </div>
+    `;
+  });
+
+  summary.innerHTML = html;
+  totalElem.textContent = `₱${total.toFixed(2)}`;
+}
+
+
 // ===============================
 // ✅ Checkout Function
 // ===============================
-async function handleCheckout() {
-  const userId = currentUserId;
 
-  try {
-    const response = await fetch('checkout.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ userId, basket })
-    });
-
-    const result = await response.json();
-
-    if (result.success) {
-      basket = [];
-      localStorage.setItem('basket', JSON.stringify(basket));
-      renderBasket();
-
-      // ✅ Show the modal instead of alert
-      document.getElementById('checkoutModal').classList.remove('hidden');
-    } else {
-      console.error("Server error:", result.error);
-      alert("Error placing order: " + result.error);
-    }
-  } catch (error) {
-    console.error("Checkout request failed:", error);
-    alert("Something went wrong. Please try again.");
-  }
+function handleCheckout() {
+  updateCheckoutSummary();
+  document.getElementById('checkoutModal').classList.remove('hidden');
 }
 
+// async function handleCheckout() {
+//   const userId = currentUserId;
+
+//   try {
+//     const response = await fetch('checkout.php', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify({ userId, basket })
+//     });
+
+//     const result = await response.json();
+
+//     if (result.success) {
+//       basket = [];
+//       localStorage.setItem('basket', JSON.stringify(basket));
+//       renderBasket();
+
+//       // ✅ Show the modal instead of alert
+//       document.getElementById('checkoutModal').classList.remove('hidden');
+//     } else {
+//       console.error("Server error:", result.error);
+//       alert("Error placing order: " + result.error);
+//     }
+//   } catch (error) {
+//     console.error("Checkout request failed:", error);
+//     alert("Something went wrong. Please try again.");
+//   }
+// }
