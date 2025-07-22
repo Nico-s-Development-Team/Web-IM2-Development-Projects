@@ -1,24 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Menu Management - Nico's Delivery</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 font-sans">
   <div class="flex min-h-screen">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <!-- Sidebar -->
-    <aside class="w-64 bg-white shadow-md px-6 py-8">
-      <h2 class="text-2xl font-bold text-blue-600 mb-8">Admin Panel</h2>
-      <nav class="space-y-4">
-        <a href="dashboard.html" class="block text-blue-700 font-semibold">Dashboard</a>
-        <a href="menu.html" class="block text-black-700 font-medium hover:text-blue-700">Menu Management</a>
-        <a href="orders.html" class="block text-black-700 font-medium hover:text-blue-700">Order Management</a>
-        <a href="inventory.html" class="block text-black-700 font-medium hover:text-blue-700">Inventory Management</a>
-        <a href="user_management.html" class="block text-black-700 font-medium hover:text-blue-700">User Management</a>
-        <a href="history.html" class="block text-black-700 font-medium hover:text-blue-700">Order History</a>
-        <a href="delivery.html" class="block text-black-700 font-medium hover:text-blue-700">Delivery Management</a>
+    <aside class="w-64 bg-white shadow-lg px-6 py-8 hidden md:flex flex-col h-screen rounded-r-2xl">
+      <h2 class="text-3xl font-bold text-blue-600 mb-10 tracking-tight">Admin Panel</h2>
+      <nav class="space-y-3 text-sm font-medium">
+        <a href="dashboard.html" class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-blue-700 transition-all">
+          <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+          Dashboard
+        </a>
+        <a href="menu.html" class="flex items-center gap-3 px-4 py-2 rounded-lg text-blue-700 bg-blue-100">
+          <i data-lucide="utensils" class="w-5 h-5"></i>
+          Menu Management
+        </a>
+        <a href="orders.html" class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-blue-700 transition-all">
+          <i data-lucide="clipboard-list" class="w-5 h-5"></i>
+          Order Management
+        </a>
+        <a href="user_management.html" class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-blue-700 transition-all">
+          <i data-lucide="users" class="w-5 h-5"></i>
+          User Management
+        </a>
+        <a href="history.html" class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-blue-700 transition-all">
+          <i data-lucide="history" class="w-5 h-5"></i>
+          Order History
+        </a>
+        <a href="delivery.html" class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-blue-700 transition-all">
+          <i data-lucide="truck" class="w-5 h-5"></i>
+          Delivery Management
+        </a>
       </nav>
     </aside>
 
@@ -27,19 +46,17 @@
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
         <h1 class="text-3xl font-bold text-gray-800">Menu Management</h1>
         <div class="flex gap-2">
-          <!-- <input type="text" id="searchInput" placeholder="Search item..." class="border px-3 py-2 rounded w-64"> -->
           <button onclick="openAddModal()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Add Item</button>
         </div>
       </div>
 
       <div class="flex flex-wrap gap-2 mb-4">
         <input type="text" id="searchInput" placeholder="Search by customer or ID..." class="border px-3 py-2 rounded w-full sm:w-64">
-         <select id="stockFilter" class="border px-3 py-2 rounded">
+        <select id="stockFilter" class="border px-3 py-2 rounded">
           <option value="">All Stock</option>
           <option value="in">In Stock</option>
           <option value="out">Out of Stock</option>
         </select>
-        <!-- <input type="date" id="dateFilter" class="border px-3 py-2 rounded"> -->
         <select id="sortSelect" class="border px-3 py-2 rounded">
           <option value="">Sort By</option>
           <option value="name-asc">Name ↑</option>
@@ -48,7 +65,7 @@
           <option value="price-desc">Price ↓</option>
           <option value="stock-asc">Stock ↑</option>
           <option value="stock-desc">Stock ↓</option>
-      </select>
+        </select>
       </div>
 
       <div class="bg-white rounded shadow overflow-x-auto">
@@ -63,11 +80,19 @@
           </thead>
           <tbody id="menuTable" class="divide-y"></tbody>
         </table>
+
+        <div id="pagination" class="flex justify-center items-center mt-4 space-x-2 text-sm py-4">
+          <button id="firstPage" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">First</button>
+          <button id="prevPage" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Previous</button>
+          <span id="pageInfo" class="font-semibold"></span>
+          <button id="nextPage" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Next</button>
+          <button id="lastPage" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Last</button>
+        </div>
       </div>
     </main>
   </div>
 
-  <!-- Add/Edit Modal -->
+  <!-- Modal -->
   <div id="menuModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center">
     <div class="bg-white p-6 rounded shadow-md w-96">
       <h2 id="modalTitle" class="text-xl font-bold mb-4">Add Menu Item</h2>
@@ -84,160 +109,163 @@
   </div>
 
   <script>
-  let menuItems = [];
-  let editingIndex = null;
+    lucide.createIcons();
 
-  const menuTable = document.getElementById("menuTable");
-  const menuModal = document.getElementById("menuModal");
-  const modalTitle = document.getElementById("modalTitle");
-  const menuForm = document.getElementById("menuForm");
-  const searchInput = document.getElementById("searchInput");
-  const sortSelect = document.getElementById("sortSelect");
-  const stockFilter = document.getElementById("stockFilter");
+    let menuItems = [];
+    let editingIndex = null;
+    let currentPage = 1;
+    const itemsPerPage = 10;
 
-  // Fetch all menu items from DB
-  function loadMenu() {
-    fetch("menu_api.php?action=fetch")
-      .then(res => res.json())
-      .then(data => {
-        menuItems = data;
-        renderMenu(searchInput.value);
-      })
-      .catch(err => console.error("Failed to load menu items:", err));
-  }
+    const menuTable = document.getElementById("menuTable");
+    const menuModal = document.getElementById("menuModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const menuForm = document.getElementById("menuForm");
+    const searchInput = document.getElementById("searchInput");
+    const sortSelect = document.getElementById("sortSelect");
+    const stockFilter = document.getElementById("stockFilter");
 
-  // Render the table
-  function renderMenu(filter = "") {
-  const searchText = filter.toLowerCase();
-  const filterStock = stockFilter.value;
-  const sortValue = sortSelect.value;
+    const firstPage = document.getElementById("firstPage");
+    const prevPage = document.getElementById("prevPage");
+    const nextPage = document.getElementById("nextPage");
+    const lastPage = document.getElementById("lastPage");
+    const pageInfo = document.getElementById("pageInfo");
 
-  let filteredItems = [...menuItems];
-
-  // Filter by search
-  filteredItems = filteredItems.filter(item =>
-    item.name.toLowerCase().includes(searchText)
-  );
-
-  // Filter by stock
-  if (filterStock === "in") {
-    filteredItems = filteredItems.filter(item => item.stock > 0);
-  } else if (filterStock === "out") {
-    filteredItems = filteredItems.filter(item => item.stock === 0);
-  }
-
-  // Sort items
-  filteredItems.sort((a, b) => {
-    switch (sortValue) {
-      case "name-asc": return a.name.localeCompare(b.name);
-      case "name-desc": return b.name.localeCompare(a.name);
-      case "price-asc": return a.price - b.price;
-      case "price-desc": return b.price - a.price;
-      case "stock-asc": return a.stock - b.stock;
-      case "stock-desc": return b.stock - a.stock;
-      default: return 0;
+    function loadMenu() {
+      fetch("menu_api.php?action=fetch")
+        .then(res => res.json())
+        .then(data => {
+          menuItems = data;
+          renderMenu(searchInput.value);
+        })
+        .catch(err => console.error("Failed to load menu items:", err));
     }
-  });
 
-  // Render
-  menuTable.innerHTML = "";
-  filteredItems.forEach((item, index) => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td class="px-4 py-2">${item.name}</td>
-      <td class="px-4 py-2">₱${item.price}</td>
-      <td class="px-4 py-2">${item.stock}</td>
-      <td class="px-4 py-2 text-right space-x-2">
-        <button onclick="editItem(${index})" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm">Edit</button>
-        <button onclick="deleteItem(${item.id})" class="bg-red-500 text-white px-3 py-1 rounded text-sm">Delete</button>
-      </td>
-    `;
-    menuTable.appendChild(row);
-  });
-}
+    function renderMenu(searchText = "") {
+      const search = searchText.toLowerCase();
+      const filterStock = stockFilter.value;
+      const sortValue = sortSelect.value;
 
-  // Add/Edit Modal open
-  function openAddModal() {
-    editingIndex = null;
-    modalTitle.textContent = "Add Menu Item";
-    menuForm.reset();
-    menuModal.classList.remove("hidden");
-    menuModal.classList.add("flex");
-  }
+      let filteredItems = menuItems.filter(item =>
+        item.name.toLowerCase().includes(search)
+      );
 
-  function editItem(index) {
-    editingIndex = index;
-    const item = menuItems[index];
-    document.getElementById("itemName").value = item.name;
-    document.getElementById("itemPrice").value = item.price;
-    document.getElementById("itemStock").value = item.stock;
-    modalTitle.textContent = "Edit Menu Item";
-    menuModal.classList.remove("hidden");
-    menuModal.classList.add("flex");
-  }
+      if (filterStock === "in") filteredItems = filteredItems.filter(i => i.stock > 0);
+      if (filterStock === "out") filteredItems = filteredItems.filter(i => i.stock === 0);
 
-  // Delete item from db
-  function deleteItem(id) {
-    if (confirm("Delete this menu item?")) {
+      filteredItems.sort((a, b) => {
+        switch (sortValue) {
+          case "name-asc": return a.name.localeCompare(b.name);
+          case "name-desc": return b.name.localeCompare(a.name);
+          case "price-asc": return a.price - b.price;
+          case "price-desc": return b.price - a.price;
+          case "stock-asc": return a.stock - b.stock;
+          case "stock-desc": return b.stock - a.stock;
+          default: return 0;
+        }
+      });
+
+      const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+      currentPage = Math.max(1, Math.min(currentPage, totalPages));
+      const start = (currentPage - 1) * itemsPerPage;
+      const paginatedItems = filteredItems.slice(start, start + itemsPerPage);
+
+      menuTable.innerHTML = "";
+      paginatedItems.forEach(item => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td class="px-4 py-2">${item.name}</td>
+          <td class="px-4 py-2">₱${item.price}</td>
+          <td class="px-4 py-2">${item.stock}</td>
+          <td class="px-4 py-2 text-right space-x-2">
+            <button onclick="editItem(${menuItems.indexOf(item)})" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm">Edit</button>
+            <button onclick="deleteItem(${item.id})" class="bg-red-500 text-white px-3 py-1 rounded text-sm">Delete</button>
+          </td>`;
+        menuTable.appendChild(row);
+      });
+
+      pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+      prevPage.disabled = currentPage === 1;
+      nextPage.disabled = currentPage === totalPages || totalPages === 0;
+    }
+
+    firstPage.addEventListener("click", () => { currentPage = 1; renderMenu(searchInput.value); });
+    prevPage.addEventListener("click", () => { if (currentPage > 1) currentPage--; renderMenu(searchInput.value); });
+    nextPage.addEventListener("click", () => { currentPage++; renderMenu(searchInput.value); });
+    lastPage.addEventListener("click", () => {
+      const filteredItems = menuItems.filter(item =>
+        item.name.toLowerCase().includes(searchInput.value.toLowerCase())
+      );
+      const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+      currentPage = totalPages;
+      renderMenu(searchInput.value);
+    });
+
+    function openAddModal() {
+      editingIndex = null;
+      modalTitle.textContent = "Add Menu Item";
+      menuForm.reset();
+      menuModal.classList.remove("hidden");
+      menuModal.classList.add("flex");
+    }
+
+    function editItem(index) {
+      editingIndex = index;
+      const item = menuItems[index];
+      document.getElementById("itemName").value = item.name;
+      document.getElementById("itemPrice").value = item.price;
+      document.getElementById("itemStock").value = item.stock;
+      modalTitle.textContent = "Edit Menu Item";
+      menuModal.classList.remove("hidden");
+      menuModal.classList.add("flex");
+    }
+
+    function closeModal() {
+      menuModal.classList.add("hidden");
+      menuModal.classList.remove("flex");
+    }
+
+    function deleteItem(id) {
+      if (confirm("Delete this menu item?")) {
+        const formData = new FormData();
+        formData.append("action", "delete");
+        formData.append("id", id);
+
+        fetch("menu_api.php", {
+          method: "POST",
+          body: formData
+        }).then(() => loadMenu());
+      }
+    }
+
+    menuForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
       const formData = new FormData();
-      formData.append("action", "delete");
-      formData.append("id", id);
+      formData.append("name", document.getElementById("itemName").value);
+      formData.append("price", document.getElementById("itemPrice").value);
+      formData.append("stock", document.getElementById("itemStock").value);
+
+      if (editingIndex === null) {
+        formData.append("action", "add");
+      } else {
+        formData.append("action", "edit");
+        formData.append("id", menuItems[editingIndex].id);
+      }
 
       fetch("menu_api.php", {
         method: "POST",
         body: formData
-      }).then(() => loadMenu());
-    }
-  }
-
-  // Modal close
-  function closeModal() {
-    menuModal.classList.add("hidden");
-    menuModal.classList.remove("flex");
-  }
-
-  // Add/Edit form submit
-  menuForm.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    const formData = new FormData();
-    formData.append("name", document.getElementById("itemName").value);
-    formData.append("price", document.getElementById("itemPrice").value);
-    formData.append("stock", document.getElementById("itemStock").value);
-
-    if (editingIndex === null) {
-      formData.append("action", "add");
-    } else {
-      formData.append("action", "edit");
-      formData.append("id", menuItems[editingIndex].id);
-    }
-
-    fetch("menu_api.php", {
-      method: "POST",
-      body: formData
-    }).then(() => {
-      closeModal();
-      loadMenu();
+      }).then(() => {
+        closeModal();
+        loadMenu();
+      });
     });
-  });
 
-  // Search functionality
-  searchInput.addEventListener("input", () => {
-    renderMenu(searchInput.value);
-  });
+    searchInput.addEventListener("input", () => renderMenu(searchInput.value));
+    sortSelect.addEventListener("change", () => renderMenu(searchInput.value));
+    stockFilter.addEventListener("change", () => renderMenu(searchInput.value));
 
-  // After renderMenu() definition and element declarations
-  searchInput.addEventListener("input", () => renderMenu(searchInput.value));
-  sortSelect.addEventListener("change", () => renderMenu(searchInput.value));
-  stockFilter.addEventListener("change", () => renderMenu(searchInput.value));
-
-// Initial load
-loadMenu();
-
-
-  // Load menu initially
-  loadMenu();
-</script>
-
+    loadMenu();
+  </script>
 </body>
 </html>

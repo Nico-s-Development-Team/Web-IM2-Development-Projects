@@ -6,9 +6,6 @@ $order_id = $_GET['order_id'] ?? null;
 $order_items = [];
 $subtotal = 0;
 
-// Debug mode (set to true to enable debug output)
-$debug = false;
-
 if (!$order_id) {
   die("Error: No order ID provided.");
 }
@@ -48,7 +45,7 @@ if ($result->num_rows === 0) {
 
 $stmt->close();
 
-$delivery_fee = 80;
+$delivery_fee = 40;
 $total = $subtotal + $delivery_fee;
 ?>
 <!DOCTYPE html>
@@ -132,5 +129,7 @@ $total = $subtotal + $delivery_fee;
     <?php print_r($order_items); ?>
   </pre>
   <?php endif; ?>
+
+  <script src="delivery_status.js"></script>
 </body>
 </html>

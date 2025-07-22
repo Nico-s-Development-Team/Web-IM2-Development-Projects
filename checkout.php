@@ -20,7 +20,7 @@ $customerId = $data['userId'];
 $basket = $data['basket'];
 
 try {
-    // Step 1: Create Order
+    // Create Order
     $stmt = $conn->prepare("INSERT INTO Order_T (Customer_ID, Order_Date, Order_Status, Total_Amount) VALUES (?, NOW(), 'Pending', 0)");
     if (!$stmt) {
         throw new Exception("Order insert prepare failed: " . $conn->error);
@@ -31,14 +31,14 @@ try {
     }
     $orderId = $stmt->insert_id;
 
-    // Step 2: Fetch MenuItem_IDs into a map
+    // Fetch MenuItem_IDs into a map
     $menuMap = [];
     $result = $conn->query("SELECT MenuItem_ID, Item_Name FROM MenuItem_T");
     while ($row = $result->fetch_assoc()) {
         $menuMap[trim($row['Item_Name'])] = $row['MenuItem_ID'];
     }
 
-    // Step 3: Insert each basket item
+    // Insert each basket item
     $itemStmt = $conn->prepare("INSERT INTO OrderItem_T (Order_ID, MenuItem_ID, Quantity, Subtotal) VALUES (?, ?, ?, ?)");
     if (!$itemStmt) {
         throw new Exception("Order item insert prepare failed: " . $conn->error);
@@ -63,10 +63,22 @@ try {
             throw new Exception("Order item insert failed: " . $itemStmt->error);
         }
 
+        // Decrement stock
+        $stockUpdateStmt = $conn->prepare("UPDATE MenuItem_T SET Quantity = Quantity - ? WHERE MenuItem_ID = ?");
+        if (!$stockUpdateStmt) {
+            throw new Exception("Stock update prepare failed: " . $conn->error);
+        }
+
+        $stockUpdateStmt->bind_param("ii", $qty, $menuItemId);
+        if (!$stockUpdateStmt->execute()) {
+            throw new Exception("Stock update failed: " . $stockUpdateStmt->error);
+        }
+
+
         $totalAmount += $subtotal;
     }
 
-    // Step 4: Update total amount
+    // Update total amount
     $updateStmt = $conn->prepare("UPDATE Order_T SET Total_Amount = ? WHERE Order_ID = ?");
     if (!$updateStmt) {
         throw new Exception("Update total prepare failed: " . $conn->error);

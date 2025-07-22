@@ -19,7 +19,7 @@ html, body {
 
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #FFF8F8;
+    background: linear-gradient(to right, #f87171, #fcd34d);
     font-family: 'Open Sans', sans-serif;
 }
 

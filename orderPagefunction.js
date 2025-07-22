@@ -70,9 +70,11 @@ renderBasket();
 
 document.querySelectorAll('.add-to-cart').forEach(button => {
   button.addEventListener('click', () => {
-    const productCard = button.closest('div');
-    const name = productCard.querySelector('h4').innerText.trim();
-    const price = parseFloat(productCard.querySelector('.text-green-600').innerText.replace('₱', '').trim());
+    const productCard = button.closest('.bg-white');
+
+    const name = productCard.querySelector('h4')?.innerText.trim() || 'Unnamed';
+    const priceEl = productCard.querySelector('.text-red-500, .text-green-600');
+    const price = priceEl ? parseFloat(priceEl.innerText.replace('₱', '').trim()) : 0;
     const image = productCard.querySelector('img')?.getAttribute('src') || 'img/default.jpg';
 
     const existing = basket.find(item => item.name === name);
@@ -89,105 +91,104 @@ document.querySelectorAll('.add-to-cart').forEach(button => {
 
 function renderBasket() {
   localStorage.setItem('basket', JSON.stringify(basket));
-  const basketContainer = document.querySelector('aside.w-64');
+
+  const basketContainer = document.getElementById('basket-items');
+  const basketTotal = document.getElementById('basket-total');
+  const checkoutButton = document.getElementById('checkout-button');
+  const basketIcon = document.getElementById('basket-icon');
+
   let total = 0;
 
-  const html = basket.map((item, index) => {
+  if (basket.length === 0) {
+    if (basketIcon) basketIcon.classList.remove('hidden'); // SHOW icon when empty
+
+    basketContainer.innerHTML = `
+      <div class="flex justify-between items-center border-b pb-2">
+        <div>
+          <p class="font-medium">No items yet</p>
+          <p class="text-xs text-gray-400">Your cart is waiting...</p>
+        </div>
+        <div class="text-sm text-gray-500">₱0</div>
+      </div>
+    `;
+    basketTotal.textContent = '₱0.00';
+    checkoutButton.disabled = true;
+    checkoutButton.classList.add('opacity-50', 'cursor-not-allowed');
+    return;
+  }
+
+  if (basketIcon) basketIcon.classList.add('hidden'); // HIDE icon when items exist
+
+  // Render basket items
+  basketContainer.innerHTML = basket.map((item, index) => {
     total += item.price * item.quantity;
     return `
-    <div class="w-full bg-white rounded-xl shadow p-3 mb-3 border border-gray-200 flex gap-3 items-start">
-        <img src="${item.image || 'img/default.jpg'}" alt="${item.name}" class="w-12 h-12 object-cover rounded-md border border-gray-300">
-
-        <div class="flex-1 flex justify-between items-start min-w-0">
-        <div class="min-w-0">
-        <p class="font-semibold text-gray-800 text-sm break-words leading-snug">${item.name}</p>
-        <div class="flex items-center gap-2 mt-1">
+      <div class="flex justify-between items-start border-b pb-2 gap-3">
+        <img src="${item.image || 'img/default.jpg'}" alt="${item.name}" class="w-12 h-12 rounded border border-gray-300 object-cover">
+        <div class="flex-1 min-w-0">
+          <p class="font-medium text-sm text-gray-800 break-words leading-tight">${item.name}</p>
+          <div class="flex items-center gap-1 mt-1 text-xs">
             <button class="decrease-qty px-2 py-1 text-gray-600 hover:text-red-500 rounded border border-gray-300 hover:border-red-400" data-index="${index}">➖</button>
             <span class="text-gray-700">x${item.quantity}</span>
             <button class="increase-qty px-2 py-1 text-gray-600 hover:text-green-600 rounded border border-gray-300 hover:border-green-400" data-index="${index}">➕</button>
+          </div>
         </div>
-        </div>
-
-        <div class="text-right">
-            <p class="text-sm text-gray-700 font-medium">₱${(item.price * item.quantity).toFixed(2)}</p>
-        </div>
-        </div>
-    </div>
+        <div class="text-sm text-gray-700 font-medium whitespace-nowrap">₱${(item.price * item.quantity).toFixed(2)}</div>
+      </div>
     `;
   }).join('');
 
-  basketContainer.innerHTML = `
-  <div id="basket-items" class="mb-24"> <!-- adds bottom space for fixed button -->
-    <h3 class="text-center text-gray-600 text-lg mb-2">Your Basket</h3>
-    ${html || '<p class="text-sm text-center text-gray-500">Basket is empty.</p>'}
-    ${basket.length > 0 ? `
-      <button id="clearBasket" class="flex items-center gap-2 text-sm font-medium text-red-500 hover:text-white border border-red-500 hover:bg-red-500 px-3 py-1 rounded transition mb-3 w-full justify-center">🗑️ Clear All</button>
-    ` : ''}
-  </div>
+  basketContainer.innerHTML += `
+    <button id="clearBasket" class="flex items-center gap-2 text-xs font-medium text-red-500 hover:text-white border border-red-500 hover:bg-red-500 px-2 py-1 rounded transition mt-3 w-full justify-center">
+      🗑️ Clear All
+    </button>
+  `;
 
-  <div id="basket-footer" class="w-full mt-4">
-  <div class="flex justify-between w-full font-semibold mt-2">
-      <span>Total:</span>
-      <span id="basket-total">₱${total.toFixed(2)}</span>
-    </div>
-  <button id="checkoutBtn" class="bg-red-500 hover:bg-red-600 text-white w-full py-2 rounded transition shadow-md ${basket.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}" ${basket.length === 0 ? 'disabled' : ''}>
-    Checkout
-  </button>
-</div>
-`;
+  basketTotal.textContent = `₱${total.toFixed(2)}`;
+  checkoutButton.disabled = false;
+  checkoutButton.classList.remove('opacity-50', 'cursor-not-allowed');
 
-  // Event Listeners
-  document.getElementById('checkoutBtn')?.addEventListener('click', handleCheckout);
-
-  document.querySelectorAll('.remove-item').forEach(button => {
-    button.addEventListener('click', () => {
-      const index = parseInt(button.getAttribute('data-index'));
-      basket.splice(index, 1);
-      localStorage.setItem('basket', JSON.stringify(basket));
-      renderBasket();
-    });
-  });
-
-  document.querySelectorAll('.increase-qty').forEach(button => {
-    button.addEventListener('click', () => {
-      const index = parseInt(button.getAttribute('data-index'));
+  // Event Listeners for quantity
+  document.querySelectorAll('.increase-qty').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const index = parseInt(btn.dataset.index);
       basket[index].quantity++;
-      localStorage.setItem('basket', JSON.stringify(basket));
       renderBasket();
     });
   });
 
-  document.querySelectorAll('.decrease-qty').forEach(button => {
-    button.addEventListener('click', () => {
-      const index = parseInt(button.getAttribute('data-index'));
+  document.querySelectorAll('.decrease-qty').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const index = parseInt(btn.dataset.index);
       if (basket[index].quantity > 1) {
         basket[index].quantity--;
       } else {
         basket.splice(index, 1);
       }
-      localStorage.setItem('basket', JSON.stringify(basket));
       renderBasket();
     });
   });
 
-    // Modal confirmation for Clear All
-    document.getElementById('clearBasket')?.addEventListener('click', () => {
-        document.getElementById('clearModal').classList.remove('hidden');
-    });
+  // Checkout button
+  checkoutButton.addEventListener('click', handleCheckout);
 
-    // Cancel button hides modal
-    document.getElementById('cancelClear')?.addEventListener('click', () => {
-        document.getElementById('clearModal').classList.add('hidden');
-    });
+  // Clear All Modal triggers
+  document.getElementById('clearBasket')?.addEventListener('click', () => {
+    document.getElementById('clearModal')?.classList.remove('hidden');
+  });
 
-    // Confirm button clears basket and hides modal
-    document.getElementById('confirmClear')?.addEventListener('click', () => {
+  document.getElementById('cancelClear')?.addEventListener('click', () => {
+    document.getElementById('clearModal')?.classList.add('hidden');
+  });
+
+  document.getElementById('confirmClear')?.addEventListener('click', () => {
     basket = [];
     localStorage.setItem('basket', JSON.stringify(basket));
     renderBasket();
-    document.getElementById('clearModal').classList.add('hidden');
-    });
+    document.getElementById('clearModal')?.classList.add('hidden');
+  });
 }
+
 
 // Event: Cancel closes the modal
 document.getElementById('cancelCheckout')?.addEventListener('click', () => {
@@ -196,8 +197,17 @@ document.getElementById('cancelCheckout')?.addEventListener('click', () => {
 
 // Event: Go to Review (redirects to reviewOrderPage.html)
 document.getElementById('goToReview')?.addEventListener('click', () => {
-  window.location.href = 'reviewOrderPage.php';
+  const overlay = document.getElementById('loading-overlay');
+  if (overlay) {
+    overlay.classList.remove('hidden'); // Show loading screen
+  }
+
+  // Slight delay so overlay is visible before redirect
+  setTimeout(() => {
+    window.location.href = 'reviewOrderPage.php';
+  }, 300);
 });
+
 
 // Fill modal with basket items
 function updateCheckoutSummary() {

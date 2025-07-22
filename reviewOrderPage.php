@@ -1,4 +1,14 @@
-<?php session_start(); ?>
+<?php 
+session_start(); 
+
+  header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+  header("Pragma: no-cache");
+
+  if (!isset($_SESSION['customer_id'])) {
+    header("Location: home.html?error=wrong_password");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +17,11 @@
 </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>Review & Payment Modal</title>
+  <script src="refresh_page.js" ></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     @keyframes modalFadeIn {
@@ -19,7 +33,7 @@
     }
   </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body class="bg-gradient-to-r from-red-400 to-yellow-300 flex items-center justify-center min-h-screen">
 
   <!-- Review & Payment Modal -->
   <div id="reviewModal" class="hidden fixed inset-0 z-50 bg-black bg-opacity-40 flex justify-center items-center px-4">
@@ -106,6 +120,16 @@
     </div>
   </div>
 
+  <div id="loading-overlay" class="fixed inset-0 bg-white bg-opacity-70 flex items-center justify-center hidden z-50">
+  <div class="text-center">
+    <svg class="animate-spin h-10 w-10 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+    </svg>
+    <p class="mt-2 text-gray-700 text-sm">Loading...</p>
+  </div>
+</div>
+
   <!-- JavaScript -->
   <script>
     const deliveryRadios = document.querySelectorAll('input[name="deliveryMethod"]');
@@ -115,6 +139,10 @@
     const agreeTerms = document.getElementById('agreeTerms');
     const placeOrderBtn = document.getElementById('placeOrderBtn');
     const reviewModal = document.getElementById('reviewModal');
+
+    document.getElementById('backToBasket').addEventListener('click', () => {
+    window.location.href = 'orderPage.php';
+  });
 
     document.addEventListener("DOMContentLoaded", () => {
   const reviewModal = document.getElementById('reviewModal');
@@ -175,12 +203,20 @@
 
     const result = await response.json();
     if (result.success) {
-      alert(`Order placed successfully! Order ID: ${result.orderId}`);
-      localStorage.removeItem('basket');
-      window.location.href = 'deliveryPage.php?order_id=' + result.orderId;
-    } else {
-      alert('Error placing order: ' + result.error);
-    }
+  const overlay = document.getElementById('loading-overlay');
+  if (overlay) {
+    overlay.classList.remove('hidden'); // Show the loading overlay
+  }
+
+  localStorage.removeItem('basket');
+
+  setTimeout(() => {
+    window.location.href = 'deliveryPage.php?order_id=' + result.orderId;
+  }, 1500); // Delay to allow overlay to appear
+} else {
+  alert('Error placing order: ' + result.error);
+}
+
   });
 });
   </script>

@@ -33,28 +33,25 @@ h1, h2, h3 {
     justify-content: space-between;
     align-items: center;
     padding: 10px 30px;
-    height: 60px;
-    border-bottom: 1px solid #ccc;
+    height: 80px;
+    border-bottom: 0px solid #ccc;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .top-navbar .logo {
     display: flex;
     align-items: center;
+    width: 9.13%
 }
 
 .top-navbar .logo img {
-    width: 40px;
-    margin-right: 10px;
-}
-
-.top-navbar .page-info {
-    color: #cc5c00;
-    font-weight: bold;
+    width: 48px;
+    margin: auto;
+    min-width: 48px;
+    margin-right: 20px;
 }
 
 .top-navbar .top-actions button {
-    background: #fff;
     border: 1px solid #ccc;
     padding: 6px 12px;
     margin-left: 10px;
@@ -109,7 +106,7 @@ h1, h2, h3 {
     padding: 8px 16px;
     white-space: nowrap;
     font-family: 'Inter', sans-serif;
-    font-weight: bolder;
+    font-weight: 800;
 }
 
 .backBtn:hover {
@@ -117,9 +114,9 @@ h1, h2, h3 {
 }
 
 .profile-div-left {
-    width: 25%;
+    width: 33%;
     min-width: 200px;
-    /* background-color: #cc5c00; */
+    background-color: rgb(252, 239, 239);
     display: flex;
     border: 1px solid #ccc;
     box-shadow: 0 0 10px #cbcaca;
@@ -159,7 +156,7 @@ h1, h2, h3 {
 }
 
 .profile-div-center .profile-types{
-    margin: 30px 30px;
+    margin: 40px 40px;
     width: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -229,7 +226,7 @@ h1, h2, h3 {
     font-size: small;
 }
 
-#uploadButton:hover {
+#upload-button:hover {
     transform: scale(1.01);
     cursor: pointer;
     background-color: #a74b01
@@ -312,7 +309,6 @@ h1, h2, h3 {
     left: 18px;
     font-size: 13px;
     color: #888;
-    background-color: #FFF8F8;
     padding: 0 4px;
     transition: 0.2s ease all;
     pointer-events: none;
@@ -478,7 +474,7 @@ input:-webkit-autofill {
 
 /* Select Boxes */
 .profile-div-middle-main{
-    width: 48%;
+    width: 65%;
     display: flex;
     flex-direction: column;
     gap: 4%;
@@ -495,10 +491,10 @@ input:-webkit-autofill {
 }
 
 .select-boxes{
-    width: 48%;
+    width: 100%;
     text-align: center;
     height: auto;
-    background-color: white;
+    background-color: #ffffff;
     display: flex;
     flex-direction: column;
     padding: 5px;
@@ -598,54 +594,6 @@ input:-webkit-autofill {
     color: #777;
 }
 
-@media (max-width: 963px) {
-
-    .profile-save-button{
-        margin-top: 10px;
-    }
-
-    .backBtn {
-        padding: 8px 0px;
-        margin-left: -10px;
-    }
-    
-
-    .profile-types-div-left{
-        width: 100%;
-    }
-
-    .profile-types-div-right{
-        width: 100%;
-    }
-
-    .profile-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 40px;
-    }
-
-    .profile-div-left{
-        width: 100%;
-    }
-
-    .profile-div-middle-main{
-        width: 100%;
-        gap: 40px;
-    }
-
-    .profile-div-right{
-        width: 100%;
-    }
-    
-}
-
-@media (max-width: 500px) {
-    .backBtn {
-        padding: 8px 0px;
-        margin-left: -20px;
-    }
-}
-
 @media (min-width: 963px) and (max-width: 1370px) {
 
     .profile-div-right .profile-category-description {
@@ -690,6 +638,54 @@ input:-webkit-autofill {
     .profile-div-right .total-amt .order-history-column-right-div {
         font-size: 11px;
     }
+    
+    
+@media (min-width: 963px) and (max-width: 1370px) {
+
+    .profile-div-right .profile-category-description {
+        font-size: 12px;
+    }
+
+    .profile-div-right .order-history-column-left-div,
+    .profile-div-right .order-history-column-center-div,
+    .profile-div-right .order-history-column-right-div {
+        font-size: 12px;
+    }
+
+    .profile-div-right .ordernum-date .order-history-column-left-div {
+        font-size: 12px;
+    }
+
+    .profile-div-right .ordernum-date .order-history-column-right-div {
+        font-size: 9px;
+    }
+
+    .profile-div-right .order-category .order-history-column-left-div,
+    .profile-div-right .order-category .order-history-column-center-div,
+    .profile-div-right .order-category .order-history-column-right-div {
+        font-size: 11px;
+    }
+
+    .profile-div-right .item-name-quan-amt .order-history-column-left-div,
+    .profile-div-right .item-name-quan-amt .order-history-column-center-div,
+    .profile-div-right .item-name-quan-amt .order-history-column-php-sign-div,
+    .profile-div-right .item-name-quan-amt .order-history-column-right-div {
+        font-size: 10px;
+    }
+
+    .profile-div-right .total-amt {
+        font-size: 11px;
+    }
+
+    .profile-div-right .total-amt .order-history-column-php-sign-div {
+        font-size: 10px;
+    }
+
+    .profile-div-right .total-amt .order-history-column-right-div {
+        font-size: 11px;
+    }
+}
+
 }
 
 

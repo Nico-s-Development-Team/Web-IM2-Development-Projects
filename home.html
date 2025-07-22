@@ -31,9 +31,9 @@
     <!-- Navbar -->
     <header class="fixed top-0 left-0 w-full bg-white shadow-md z-50">
         <div class="container mx-auto flex items-center justify-between py-4 px-6">
-            <div class="flex items-center gap-4">
-                <img src="img/logo2.png" alt="business_logo" class="h-12 w-12 object-contain">
-                <input type="text" placeholder="🔍 What would you like to eat?" class="px-4 py-2 rounded-full border border-gray-300 bg-gray-100 focus:outline-none">
+            <div class="h-15 overflow-hidden flex items-center gap-4">
+                <img src="img/logo2.png" alt="business_logo" class="w-14 object-contain scale-125">
+                <h3 class="text-xl font-bold text-gray-800 tracking-wide">Nico's Food Delivery</h3>
             </div>
             <nav class="flex items-center gap-6 text-sm">
                 <a href="#" class="hover:text-red-500 font-semibold">Home</a>
@@ -54,8 +54,14 @@
                     <img src="img/1.png" class="w-full snap-start object-cover" alt="burger_promotions">
                     <img src="img/2.png" class="w-full snap-start object-cover" alt="chicken_promotion">
                     <img src="img/3.png" class="w-full snap-start object-cover" alt="pizza_promotions">
-                </div>     
+                </div>
+                <div class="flex justify-center gap-3 mt-4">
+                    <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                    <div class="w-3 h-3 bg-gray-300 rounded-full"></div>
+                    <div class="w-3 h-3 bg-gray-300 rounded-full"></div>
+                </div>
             </div>
+
             <div class="mt-8 flex justify-center gap-6">
                 <button class="order-btn bg-red-500 text-white px-6 py-3 rounded-full font-semibold shadow hover:bg-red-600 transition">Order Now</button>
                 <button class="bg-green-600 text-white px-6 py-3 rounded-full font-semibold shadow hover:bg-green-700 transition">Order History</button>
@@ -131,10 +137,10 @@
                     <h3 class="text-xl font-semibold mb-4">Service Includes :</h3>
                     <ul class="list-disc list-inside space-y-2 text-gray-700">
                         <li>Rice</li>
-                        <li>Chicken Cordon Bleu</li>
-                        <li>Pork Adobo</li>
+                        <li>Chicken Pienoud</li>
+                        <li>Pork Menudo</li>
                         <li>Lumpiang Shanghai</li>
-                        <li>Dessert, Fries</li>
+                        <li>Dessert, Leche Flan, Buko Pandan</li>
                         <li>Drinks, Iced Tea</li>
                     </ul>
                 </div>
@@ -143,49 +149,39 @@
     </main>
 
     <!-- Footer -->
-<footer class="bg-gradient-to-r from-yellow-400 to-yellow-200">
-  <div class="container mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
-    
-    <!-- Logo & Brand Info (left-aligned but padded in) -->
-    <div class="flex flex-col items-start pl-4">
-      <div class="flex items-center gap-4">
-        <img src="img/logo2.png" alt="Nico's Logo" class="h-12 w-12 object-contain">
-        <div>
-          <p class="text-lg font-bold leading-tight">Nico’s<br>Food Delivery</p>
-          <p class="text-sm text-white mt-1">Delicious food delivered fast to your door.</p>
-        </div>
+<footer class="bg-red-600 text-white mt-16">
+  <div class="container mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+    <!-- Logo and About -->
+    <div class="flex items-center gap-4">
+      <img src="img/logo2.png" alt="Nico's Logo" class="h-12 w-12 object-contain">
+      <div>
+        <p class="text-lg font-bold">Nico’s<br>Food Delivery</p>
       </div>
     </div>
 
-    <!-- About Us (centered) -->
-    <div class="flex flex-col items-center text-center">
-      <h4 class="text-lg font-semibold mb-2">About Us</h4>
-      <ul class="space-y-1 text-sm">
-        <li><a href="AboutUs.html" class="hover:underline">Our Story</a></li>
-        <li><a href="#featured" class="hover:underline">Services</a></li>
-      </ul>
+    <!-- About Us -->
+    <div class="text-center md:text-left">
+      <p class="font-semibold text-white text-lg mb-2">About Us</p>
+      <p class="text-white text-sm">About Us</p>
+      <p class="text-white text-sm">f bout Us</p>
     </div>
 
-    <!-- Social & Contact (right-aligned but padded in) -->
-    <div class="flex flex-col items-end pr-4 text-right">
-      <h4 class="text-lg font-semibold mb-2">Connect With Us</h4>
-      <div class="flex gap-4 mb-2">
+    <!-- Socials and Contact -->
+    <div class="text-center">
+      <p class="font-semibold text-white text-lg mb-2">Stay connected with us thru</p>
+      <div class="flex justify-center md:justify-start gap-4 mb-2">
         <a href="https://www.facebook.com/profile.php?id=100063765711429" target="_blank">
-          <img src="img/fb.png" alt="Facebook" class="h-6">
+          <img src="img/fb.png" alt="Facebook" class="h-8">
         </a>
-        <img src="img/ig.png" alt="Instagram" class="h-6">
-        <img src="img/x.avif" alt="X" class="h-6">
+        <img src="img/ig.png" alt="Instagram" class="h-8">
+        <img src="img/x.avif" alt="X" class="h-8">
       </div>
-      <a href="https://nicosfooddelivery.com" class="text-sm hover:underline">nicosfooddelivery.com</a>
+      <a href="https://nicosfooddelivery.com" class="text-white text-sm hover:underline">nicosfooddelivery.com</a>
     </div>
-
   </div>
 
-  <div class="text-center text-xs text-white mt-6 pb-6 border-t border-white/20 pt-4">
-    © 2025 Nico’s Food Delivery. All rights reserved.
-  </div>
+  <p class="text-center text-xs text-white mt-4 pb-6">© 2025 Nico’s Food Delivery. All rights reserved.</p>
 </footer>
-
 
 <!-- Signup Modal -->
 <div id="signup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
