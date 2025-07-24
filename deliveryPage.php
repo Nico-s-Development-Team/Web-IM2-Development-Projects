@@ -45,8 +45,19 @@ if ($result->num_rows === 0) {
 
 $stmt->close();
 
-$delivery_fee = 40;
-$total = $subtotal + $delivery_fee;
+// Fetch rider name from Delivery_T
+$stmt2 = $conn->prepare("SELECT Assigned_To FROM Delivery_T WHERE Order_ID = ?");
+if ($stmt2) {
+  $stmt2->bind_param('i', $order_id);
+  $stmt2->execute();
+  $result2 = $stmt2->get_result();
+  if ($result2 && $row2 = $result2->fetch_assoc()) {
+    $rider = $row2['Assigned_To'] ?: 'Unassigned';
+  }
+  $stmt2->close();
+}
+
+$total = $subtotal;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -68,8 +79,8 @@ $total = $subtotal + $delivery_fee;
             Delivery Status: <b>Preparing your Order...</b>
           </p>
           <img src="img/deliriderr.gif" alt="Delivery Rider" id="delivery-delivery-rider" />
-          <p id="delivery-time-indicator">Estimated delivery time</p>
-          <p id="delivery-time">25 Min</p>
+          <p id="delivery-time-indicator" class="text-gray-600 text-sm mt-4">Assigned Rider</p>
+          <p id="delivery-time" class="text-xl font-semibold text-amber-600"><b><?= htmlspecialchars($rider) ?></b></p>
         </div>
       </div>
 
@@ -108,15 +119,10 @@ $total = $subtotal + $delivery_fee;
             <div class="order-details-category-value"><p>PHP <?= number_format($subtotal, 2) ?></p></div>
           </div>
 
-          <div class="order-details-div">
-            <div class="order-details-category"><p>Delivery Fee</p></div>
-            <div class="order-details-category-value"><p>PHP <?= number_format($delivery_fee, 2) ?></p></div>
-          </div>
-
           <hr class="delivery-hrline" />
 
           <div class="order-details-div">
-            <div class="order-details-category"><p><b>Total</b> (Incl. Delivery Fee)</p></div>
+            <div class="order-details-category"><p><b>Total</b></p></div>
             <div class="order-details-category-value"><p><b>PHP <?= number_format($total, 2) ?></b></p></div>
           </div>
         </div>

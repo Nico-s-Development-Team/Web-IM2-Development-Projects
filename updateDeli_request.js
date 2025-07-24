@@ -31,11 +31,12 @@ function renderDeliveries(filterText = "", filterStatus = "") {
         <td class="px-4 py-2">${d.orderId}</td>
         <td class="px-4 py-2">${d.address}</td>
         <td class="px-4 py-2">
-        ${d.rider === "Unassigned"
+          ${d.rider === "Unassigned"
             ? '<span class="text-red-500">Unassigned</span>'
             : d.rider}
         </td>
         <td class="px-4 py-2">${d.status}</td>
+        <td class="px-4 py-2">${d.method || "-"}</td>
         <td class="px-4 py-2">${formatDateTime(d.completionTime)}</td>
         <td class="px-4 py-2 text-right space-x-2">
           <button onclick="openDeliveryModal(${deliveries.indexOf(d)})" class="bg-blue-600 text-white px-3 py-1 rounded text-sm">Update</button>
@@ -54,7 +55,6 @@ function formatDateTime(isoString) {
     hour12: true
   }).format(date);
 }
-
 
 function closeDeliveryModal() {
   const modal = document.getElementById("deliveryModal");
@@ -90,8 +90,6 @@ function closeHistoryModal() {
   modal.classList.add("hidden");
   modal.classList.remove("flex");
 }
-
-
 
 function openDeliveryModal(index) {
   editingDeliveryIndex = index;

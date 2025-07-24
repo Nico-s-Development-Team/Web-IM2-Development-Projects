@@ -8,7 +8,8 @@ $sql = "
         d.Delivery_Status,
         d.Assigned_To,
         d.Completion_Time,
-        c.Customer_Address
+        d.Delivery_Method,  
+        c.Customer_Address AS Delivery_Address
     FROM Delivery_T d
     INNER JOIN Order_T o ON d.Order_ID = o.Order_ID
     INNER JOIN Customer_T c ON o.Customer_ID = c.Customer_ID
@@ -26,7 +27,8 @@ if ($result && $result->num_rows > 0) {
             'orderId' => '#' . $row['Order_ID'],
             'rider' => $row['Assigned_To'] ?? 'Unassigned',
             'status' => $row['Delivery_Status'],
-            'address' => $row['Customer_Address']
+            'address' => $row['Delivery_Address'],
+            'method' => $row['Delivery_Method'] ?? '-', 
         ];
 
         if (!empty($row['Completion_Time'])) {

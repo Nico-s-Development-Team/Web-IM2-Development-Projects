@@ -26,20 +26,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt->bind_param("ssssss", $firstName, $lastName, $email, $contact, $address, $password);
 
     if ($stmt->execute()) {
-        $customerID = $conn->insert_id;
-        $code = rand(100000, 999999);
-        $expiry = date("Y-m-d H:i:s", strtotime("+1 hour"));
+    $customerID = $conn->insert_id;
+    $code = rand(100000, 999999);
+    $expiry = date("Y-m-d H:i:s", strtotime("+1 hour"));
 
-        // Insert into Verification_T
-        $vstmt = $conn->prepare("INSERT INTO Verification_T (Customer_ID, Code, Expiry) VALUES (?, ?, ?)");
-        $vstmt->bind_param("iss", $customerID, $code, $expiry);
-        $vstmt->execute();
+    // Insert into Verification_T
+    $vstmt = $conn->prepare("INSERT INTO Verification_T (Customer_ID, Code, Expiry) VALUES (?, ?, ?)");
+    $vstmt->bind_param("iss", $customerID, $code, $expiry);
+    $vstmt->execute();
 
-        header("Location: orderPage.php?signup=success");
-        exit();
-    } else {
-        header("Location: home.html?signup=error");
-        exit();
+    // START SESSION AND LOGIN USER
+    session_start();
+    $_SESSION['customer_id'] = $customerID;
+
+    header("Location: orderPage.php?signup=success");
+    exit();
     }
 }
 ?>

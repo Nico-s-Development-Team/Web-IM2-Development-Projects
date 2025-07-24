@@ -1,6 +1,22 @@
 <?php 
 session_start(); 
 
+require 'db_conn.php';
+
+$customerId = $_SESSION['customer_id'];
+$customerAddress = '';
+
+// Fetch the address from Customer_T
+$stmt = $conn->prepare("SELECT Customer_Address FROM Customer_T WHERE Customer_ID = ?");
+$stmt->bind_param("i", $customerId);
+$stmt->execute();
+$stmt->bind_result($address);
+if ($stmt->fetch()) {
+    $customerAddress = $address;
+}
+$stmt->close();
+$conn->close();
+
   header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
   header("Pragma: no-cache");
 
@@ -88,6 +104,9 @@ session_start();
       <div id="addressSection" class="mb-4 hidden">
         <label class="text-sm font-medium text-gray-700 block mb-2">Choose Delivery Address</label>
         <select id="deliveryAddress" class="w-full border rounded px-3 py-2 text-sm border-gray-300 focus:ring-red-400 focus:border-red-400">
+          <?php if (!empty($customerAddress)): ?>
+    <option value="<?= htmlspecialchars($customerAddress) ?>" selected><?= htmlspecialchars($customerAddress) ?> </option>
+  <?php endif; ?>
           <option value="123 Food St., Cebu City, PH">123 Food St., Cebu City, PH</option>
           <option value="45 Mango Ave., Cebu City, PH">45 Mango Ave., Cebu City, PH</option>
           <option value="Custom">Add New Address</option>
@@ -191,13 +210,15 @@ session_start();
   placeOrderBtn.addEventListener('click', async () => {
     const basket = JSON.parse(localStorage.getItem('basket')) || [];
     const userId = currentUserId; // TODO: Replace with session-based user ID if available
+    const deliveryMethod = document.querySelector('input[name="deliveryMethod"]:checked').value;
 
     const response = await fetch('checkout.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         userId,
-        basket
+        basket,
+        deliveryMethod
       })
     });
 

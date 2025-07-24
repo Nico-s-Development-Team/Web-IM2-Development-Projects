@@ -10,14 +10,20 @@ require 'db_conn.php';
 $data = json_decode(file_get_contents("php://input"), true);
 
 // Validate input
-if (!$data || !isset($data['userId']) || !isset($data['basket'])) {
+if (
+    !$data || 
+    !isset($data['userId']) || 
+    !isset($data['basket']) || 
+    !isset($data['deliveryMethod'])
+) {
     http_response_code(400);
-    echo json_encode(["success" => false, "error" => "Invalid input: userId or basket missing"]);
+    echo json_encode(["success" => false, "error" => "Invalid input: userId, basket, or deliveryMethod missing"]);
     exit;
 }
 
 $customerId = $data['userId'];
 $basket = $data['basket'];
+$deliveryMethod = $data['deliveryMethod']; // 'pickup' or 'delivery'
 
 try {
     // Create Order
@@ -74,7 +80,6 @@ try {
             throw new Exception("Stock update failed: " . $stockUpdateStmt->error);
         }
 
-
         $totalAmount += $subtotal;
     }
 
@@ -87,6 +92,17 @@ try {
     $updateStmt->bind_param("di", $totalAmount, $orderId);
     if (!$updateStmt->execute()) {
         throw new Exception("Update total execute failed: " . $updateStmt->error);
+    }
+
+    // Insert into Delivery_T with delivery method
+    $deliveryStmt = $conn->prepare("INSERT INTO Delivery_T (Order_ID, Delivery_Method, Delivery_Status) VALUES (?, ?, 'Queued')");
+    if (!$deliveryStmt) {
+        throw new Exception("Delivery insert prepare failed: " . $conn->error);
+    }
+
+    $deliveryStmt->bind_param("is", $orderId, $deliveryMethod);
+    if (!$deliveryStmt->execute()) {
+        throw new Exception("Delivery insert failed: " . $deliveryStmt->error);
     }
 
     echo json_encode(["success" => true, "orderId" => $orderId]);

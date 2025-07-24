@@ -67,18 +67,17 @@
               <th class="px-4 py-2">Role</th>
               <th class="px-4 py-2">Phone</th>
               <th class="px-4 py-2">Address</th>
-              <th class="px-4 py-2 text-right">Actions</th>
             </tr>
           </thead>
           <tbody id="userTable" class="divide-y"></tbody>
         </table>
         <div id="pagination" class="flex justify-center items-center mt-4 space-x-2 text-sm py-4">
-            <button id="firstPage" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">First</button>
-            <button id="prevPage" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Previous</button>
-            <span id="pageInfo" class="font-semibold"></span>
-            <button id="nextPage" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Next</button>
-            <button id="lastPage" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Last</button>
-          </div>
+          <button id="firstPage" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">First</button>
+          <button id="prevPage" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Previous</button>
+          <span id="pageInfo" class="font-semibold"></span>
+          <button id="nextPage" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Next</button>
+          <button id="lastPage" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Last</button>
+        </div>
       </div>
     </main>
   </div>
@@ -122,18 +121,9 @@
       }
     }
 
-
     let editingIndex = null;
-
     let currentPage = 1;
-    const rowsPerPage = 10; // limit of content displayed
-
-    const pagination = document.getElementById("pagination");
-    const firstPage = document.getElementById("firstPage");
-    const prevPage = document.getElementById("prevPage");
-    const nextPage = document.getElementById("nextPage");
-    const lastPage = document.getElementById("lastPage");
-    const pageInfo = document.getElementById("pageInfo");
+    const rowsPerPage = 10;
 
     function renderUsers(filter = "") {
       const roleFilter = document.getElementById("roleFilter").value;
@@ -148,7 +138,7 @@
       const start = (currentPage - 1) * rowsPerPage;
       const paginated = filtered.slice(start, start + rowsPerPage);
 
-      paginated.forEach((user, index) => {
+      paginated.forEach(user => {
         const row = document.createElement("tr");
         row.innerHTML = `
           <td class="px-4 py-2">${user.name}</td>
@@ -156,10 +146,6 @@
           <td class="px-4 py-2">${user.role}</td>
           <td class="px-4 py-2">${user.phone || '—'}</td>
           <td class="px-4 py-2">${user.address || '—'}</td>
-          <td class="px-4 py-2 text-right space-x-2">
-            <button onclick="editUser(${users.indexOf(user)})" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm">Edit</button>
-            <button onclick="deleteUser(${users.indexOf(user)})" class="bg-red-500 text-white px-3 py-1 rounded text-sm">Delete</button>
-          </td>
         `;
         table.appendChild(row);
       });
@@ -194,53 +180,34 @@
       document.getElementById("userModal").classList.remove("flex");
     }
 
-    function editUser(index) {
-      editingIndex = index;
-      const u = users[index];
-      document.getElementById("modalTitle").textContent = "Edit User";
-      document.getElementById("userName").value = u.name;
-      document.getElementById("userEmail").value = u.email;
-      document.getElementById("userRole").value = u.role;
-      document.getElementById("userPhone").value = u.phone;
-      document.getElementById("userAddress").value = u.address;
-      document.getElementById("userModal").classList.remove("hidden");
-      document.getElementById("userModal").classList.add("flex");
-    }
+    // Pagination buttons
+    document.getElementById("firstPage").addEventListener("click", () => {
+      currentPage = 1;
+      renderUsers(document.getElementById("searchInput").value);
+    });
 
-    function deleteUser(index) {
-      if (confirm("Delete this user?")) {
-        users.splice(index, 1);
-        renderUsers(document.getElementById("searchInput").value);
-      }
-    }
+    document.getElementById("prevPage").addEventListener("click", () => {
+      changePage(-1);
+    });
 
-    firstPage.addEventListener("click", () => {
-  currentPage = 1;
-  renderUsers(document.getElementById("searchInput").value);
-});
+    document.getElementById("nextPage").addEventListener("click", () => {
+      changePage(1);
+    });
 
-prevPage.addEventListener("click", () => {
-  changePage(-1);
-});
+    document.getElementById("lastPage").addEventListener("click", () => {
+      const filter = document.getElementById("searchInput").value;
+      const roleFilter = document.getElementById("roleFilter").value;
 
-nextPage.addEventListener("click", () => {
-  changePage(1);
-});
+      const filtered = users.filter(u =>
+        (u.name.toLowerCase().includes(filter.toLowerCase()) || u.email.toLowerCase().includes(filter.toLowerCase())) &&
+        (!roleFilter || u.role === roleFilter)
+      );
 
-lastPage.addEventListener("click", () => {
-  const filter = document.getElementById("searchInput").value;
-  const roleFilter = document.getElementById("roleFilter").value;
+      currentPage = Math.ceil(filtered.length / rowsPerPage);
+      renderUsers(filter);
+    });
 
-  const filtered = users.filter(u =>
-    (u.name.toLowerCase().includes(filter.toLowerCase()) || u.email.toLowerCase().includes(filter.toLowerCase())) &&
-    (!roleFilter || u.role === roleFilter)
-  );
-
-  currentPage = Math.ceil(filtered.length / rowsPerPage);
-  renderUsers(filter);
-});
-
-
+    // Form handling
     document.getElementById("userForm").addEventListener("submit", function (e) {
       e.preventDefault();
       const newUser = {
