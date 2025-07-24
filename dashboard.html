@@ -5,27 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - Nico's Delivery</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    // Sample dynamic data (this would typically come from a database)
-    const dashboardStats = {
-      totalOrders: 32,
-      totalSales: 3120,
-      pendingOrders: 6,
-      alerts: [
-        "Low stock on Fresh Lumpia",
-      ]
-    };
-  </script>
 </head>
 <body class="bg-gray-100 font-sans">
-  <!-- Header -->
-  <header class="bg-white shadow px-6 py-4 flex justify-between items-center">
-    <h1 class="text-xl font-bold text-blue-600">Nico's Delivery Admin</h1>
-    <div>
-      <button onclick="openLogin()" class="text-sm text-blue-600 hover:underline mr-4">Login</button>
-      <button onclick="openSignup()" class="text-sm text-blue-600 hover:underline">Sign Up</button>
-    </div>
-  </header>
 
   <div class="flex min-h-screen">
     <!-- Sidebar -->
@@ -49,10 +30,6 @@
         <a href="user_management.html" class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-blue-700 transition-all">
           <i data-lucide="users" class="w-5 h-5"></i>
           User Management
-        </a>
-        <a href="history.html" class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-blue-700 transition-all">
-          <i data-lucide="history" class="w-5 h-5"></i>
-          Order History
         </a>
         <a href="delivery.html" class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-blue-700 transition-all">
           <i data-lucide="truck" class="w-5 h-5"></i>

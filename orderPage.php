@@ -93,6 +93,12 @@ $stmt->close();
         <nav>
           <ul id="sidebar-menu" class="space-y-2 text-[15px] font-medium text-gray-800">
             <li>
+              <a href="#recommended" class="flex items-center gap-2 px-4 py-2 rounded-md hover:bg-yellow-200 hover:text-red-600 border-l-4 border-transparent hover:border-red-500 transition-all">
+                <i data-lucide="thumbs-up" class="w-4 h-4"></i>
+                Recommended
+              </a>
+            </li>
+            <li>
               <a href="#todays-offer" class="flex items-center gap-2 px-4 py-2 rounded-md hover:bg-yellow-200 hover:text-red-600 border-l-4 border-transparent hover:border-red-500 transition-all">
                 <i data-lucide="star" class="w-4 h-4"></i>
                 Today's Offer
@@ -139,235 +145,100 @@ $stmt->close();
       <!-- Search Bar -->
     <!-- Search Bar -->
     <div class="w-full flex justify-center mb-6">
-      <input
-        type="text"
-        placeholder="Search dishes or meals..."
-        class="w-full max-w-md px-4 py-1.5 rounded-full border border-gray-300 shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-red-400"
-      />
-    </div>
+  <p class="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 bg-clip-text text-transparent drop-shadow-md tracking-wide animate-pulse">
+    BROWSE SELECTION OF FOODS
+  </p>
+</div>
+
 
           <!-- Recommended Menu Section -->
       <section class="mb-10">
-        <h2 class="text-xl font-semibold mb-4 text-gray-900">🔥 Recommended for You</h2>
+        <div class="flex items-center gap-3 mb-6 mt-12">
+          <div class="h-10 w-1 bg-red-500 rounded-full"></div>
+          <h2 id="recommended" class="text-white text-xl font-bold px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 rounded-lg shadow-md">
+            Recommended for You
+          </h2>
+        </div>
+
         
         <div class="overflow-x-auto">
-          <div class="flex space-x-4">
-            <!-- Recommended Item Card -->
-            <div class="min-w-[220px] bg-white border border-gray-200 rounded-xl p-4 flex-shrink-0 shadow hover:shadow-md transition-transform transform hover:scale-105 duration-300">
-              <img src="img/lumpia.jpg" alt="Special Burger" class="w-full h-32 object-cover rounded mb-3">
-              <h4 class="text-base font-semibold text-gray-900">Special Burger</h4>
-              <p class="text-sm text-gray-500">Juicy, smoky, mouth-watering bite in every layer.</p>
-              <div class="text-green-600 font-bold mt-2">₱129</div>
-              <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded px-3 py-1 mt-2 text-sm transition">Add +</button>
-            </div>
-
-            <!-- Another Recommended Item -->
-            <div class="min-w-[220px] bg-white border border-gray-200 rounded-xl p-4 flex-shrink-0 shadow hover:shadow-md transition-transform transform hover:scale-105 duration-300">
-              <img src="img/lumpia.jpg" alt="Cheesy Burger" class="w-full h-32 object-cover rounded mb-3">
-              <h4 class="text-base font-semibold text-gray-900">Cheesy Burger</h4>
-              <p class="text-sm text-gray-500">Overflowing cheese and premium patty perfection.</p>
-              <div class="text-green-600 font-bold mt-2">₱115</div>
-              <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded px-3 py-1 mt-2 text-sm transition">Add +</button>
-            </div>
-
-            <div class="min-w-[220px] bg-white border border-gray-200 rounded-xl p-4 flex-shrink-0 shadow hover:shadow-md transition-transform transform hover:scale-105 duration-300">
-              <img src="img/lumpia.jpg" alt="Cheesy Burger" class="w-full h-32 object-cover rounded mb-3">
-              <h4 class="text-base font-semibold text-gray-900">Cheesy Burger</h4>
-              <p class="text-sm text-gray-500">Overflowing cheese and premium patty perfection.</p>
-              <div class="text-green-600 font-bold mt-2">₱115</div>
-              <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded px-3 py-1 mt-2 text-sm transition">Add +</button>
-            </div>
-
-            <div class="min-w-[220px] bg-white border border-gray-200 rounded-xl p-4 flex-shrink-0 shadow hover:shadow-md transition-transform transform hover:scale-105 duration-300">
-              <img src="img/lumpia.jpg" alt="Cheesy Burger" class="w-full h-32 object-cover rounded mb-3">
-              <h4 class="text-base font-semibold text-gray-900">Cheesy Burger</h4>
-              <p class="text-sm text-gray-500">Overflowing cheese and premium patty perfection.</p>
-              <div class="text-green-600 font-bold mt-2">₱115</div>
-              <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded px-3 py-1 mt-2 text-sm transition">Add +</button>
-            </div>
-
-            <div class="min-w-[220px] bg-white border border-gray-200 rounded-xl p-4 flex-shrink-0 shadow hover:shadow-md transition-transform transform hover:scale-105 duration-300">
-              <img src="img/lumpia.jpg" alt="Cheesy Burger" class="w-full h-32 object-cover rounded mb-3">
-              <h4 class="text-base font-semibold text-gray-900">Cheesy Burger</h4>
-              <p class="text-sm text-gray-500">Overflowing cheese and premium patty perfection.</p>
-              <div class="text-green-600 font-bold mt-2">₱115</div>
-              <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded px-3 py-1 mt-2 text-sm transition">Add +</button>
-            </div>
-
+          <div id="recommendedContainer" class="flex space-x-4">
             <!-- Add more cards as needed -->
+
           </div>
         </div>
       </section>
 
       <hr class="my-8 border-t-2 border-gray-300">
 
-      <h2 id="todays-offer" class="text-xl font-semibold mb-6 text-gray-900">Today's Offer</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="h-10 w-1 bg-red-500 rounded-full"></div>
+        <h2 id="todays-offer" class="text-white text-xl font-bold px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 rounded-lg shadow-md">
+          Today's Offer
+        </h2>
+      </div>
+      <div id="todays-offer-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <!-- Example Product Card -->
-        <div class="bg-white rounded-2xl border border-gray-300 p-4 flex flex-col items-center shadow-sm hover:shadow-md transition duration-300">
-          <img src="img/Menu-2/Chicken_Rice_Bowl_2.jpg" alt="Fried Chicken" class="w-full h-40 object-cover rounded-xl mb-3">
-          <div class="text-center w-full">
-            <h4 class="text-lg font-bold text-gray-900 mb-1">Fried Chicken</h4>
-            <p class="text-xs text-gray-500 leading-tight mb-3">Crispy outside, juicy inside—chicken done right!</p>
-            <div class="flex items-center justify-between w-full mt-auto">
-              <div class="text-green-600 font-bold text-lg">₱105</div>
-                <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-1.5 rounded-full transition">
-                Add +
-              </button>
-            </div>
-          </div>
-        </div>
+        
+      </div>
+      <hr class="my-8 border-t-2 border-gray-300">
+      <div class="flex items-center gap-3 mb-6 mt-12">
+        <div class="h-10 w-1 bg-red-500 rounded-full"></div>
+        <h2 id="group-meals" class="text-white text-xl font-bold px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 rounded-lg shadow-md">
+          Group Meals
+        </h2>
+      </div>
+      <div id="group-meals-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Example Product Card -->
+    
+      </div>
+      <hr class="my-8 border-t-2 border-gray-300">
+      <div class="flex items-center gap-3 mb-6 mt-12">
+        <div class="h-10 w-1 bg-red-500 rounded-full"></div>
+        <h2 id="pork-dish" class="text-white text-xl font-bold px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 rounded-lg shadow-md">
+          Pork Dish
+        </h2>
+      </div>
 
-        <div class="bg-white rounded-2xl border border-gray-300 p-4 flex flex-col items-center shadow-sm hover:shadow-md transition duration-300">
-          <img src="img/lumpia.jpg" alt="Lumpia Shanghai" class="w-full h-40 object-cover rounded-xl mb-3">
-          <div class="text-center w-full">
-            <h4 class="text-lg font-bold text-gray-900 mb-1">Lumpia Shanghai</h4>
-            <p class="text-xs text-gray-500 leading-tight mb-3">Crispy, golden perfection wrapped around savory seasoned meat</p>
-            <div class="flex items-center justify-between w-full mt-auto">
-              <div class="text-green-600 font-bold text-lg">₱105</div>
-                <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-1.5 rounded-full transition">
-                Add +
-              </button>
-            </div>
-          </div>
-        </div>
+      <div id="pork-dish-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Example Product Card -->
+        
+      </div>
+      <hr class="my-8 border-t-2 border-gray-300">
+      <div class="flex items-center gap-3 mb-6 mt-12">
+        <div class="h-10 w-1 bg-red-500 rounded-full"></div>
+        <h2 id="noodles" class="text-white text-xl font-bold px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 rounded-lg shadow-md">
+          Noodles
+        </h2>
+      </div>
 
-        <div class="bg-white rounded-2xl border border-gray-300 p-4 flex flex-col items-center shadow-sm hover:shadow-md transition duration-300">
-          <img src="img/Menu-2/Pork_BBQ.jpg" alt="Pork BBQ" class="w-full h-40 object-cover rounded-xl mb-3">
-          <div class="text-center w-full">
-            <h4 class="text-lg font-bold text-gray-900 mb-1">Pork BBQ</h4>
-            <p class="text-xs text-gray-500 leading-tight mb-3">Smoky, sweet, and tender—skewers that steal the show!</p>
-            <div class="flex items-center justify-between w-full mt-auto">
-              <div class="text-green-600 font-bold text-lg">₱105</div>
-                <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-1.5 rounded-full transition">
-                Add +
-              </button>
-            </div>
-          </div>
-        </div>
+      <div id="noodles-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Example Product Card -->
+        
+      </div>
+      <hr class="my-8 border-t-2 border-gray-300">
+      <div class="flex items-center gap-3 mb-6 mt-12">
+        <div class="h-10 w-1 bg-red-500 rounded-full"></div>
+        <h2 id="rice-meals" class="text-white text-xl font-bold px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 rounded-lg shadow-md">
+          Rice Meals
+        </h2>
+      </div>
 
-        <div class="bg-white rounded-2xl border border-gray-300 p-4 flex flex-col items-center shadow-sm hover:shadow-md transition duration-300">
-          <img src="img/Menu-2/Pork_Bistek_3.jpg" alt="Pork Bistek" class="w-full h-40 object-cover rounded-xl mb-3">
-          <div class="text-center w-full">
-            <h4 class="text-lg font-bold text-gray-900 mb-1">Pork Bistek</h4>
-            <p class="text-xs text-gray-500 leading-tight mb-3">Tender pork slices in tangy soy-calamansi sauce</p>
-            <div class="flex items-center justify-between w-full mt-auto">
-              <div class="text-green-600 font-bold text-lg">₱105</div>
-                <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-1.5 rounded-full transition">
-                Add +
-              </button>
-            </div>
-          </div>
-        </div>
+      <div id="rice-meals-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Example Product Card -->
+        
       </div>
       <hr class="my-8 border-t-2 border-gray-300">
-      <h2 id="group-meals" class="text-xl font-semibold mb-6 text-gray-900 mt-12">Group Meals</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Example Product Card -->
-        <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center shadow hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
-          <img src="img/Menu-2/barkada_bundle.jpg" alt="barkada" class="w-28 h-28 object-cover mb-3 rounded">
-          <h4 class="text-base font-medium text-gray-900">Barkada Bundle</h4>
-          <p class="text-sm text-gray-500 text-center">(Good for 4–5 persons)</p>
-          <div class="text-green-600 font-bold mt-2">₱105</div>
-          <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded px-3 py-1 mt-2 text-lg transition">Add +</button>
-        </div>
-        <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center shadow hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
-          <img src="img/Menu-2/family_set.jpg" alt="Lumpia" class="w-28 h-28 object-cover mb-3 rounded">
-          <h4 class="text-base font-medium text-gray-900">Pamilya Set A</h4>
-          <p class="text-sm text-gray-500 text-center">(Good for 6–8 persons)</p>
-          <div class="text-green-600 font-bold mt-2">₱105</div>
-          <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded px-3 py-1 mt-2 text-lg transition">Add +</button>
-        </div>
-        <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center shadow hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
-          <img src="img/Menu-2/fiesta_meal.jpg" alt="Lumpia" class="w-28 h-28 object-cover mb-3 rounded">
-          <h4 class="text-base font-medium text-gray-900">Fiesta Meal Package</h4>
-          <p class="text-sm text-gray-500 text-center">(Good for 10 persons)</p>
-          <div class="text-green-600 font-bold mt-2">₱105</div>
-          <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded px-3 py-1 mt-2 text-lg transition">Add +</button>
-        </div>
+      <div class="flex items-center gap-3 mb-6 mt-12">
+        <div class="h-10 w-1 bg-red-500 rounded-full"></div>
+        <h2 id="breakfast-meals" class="text-white text-xl font-bold px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 rounded-lg shadow-md">
+          Breakfast Meals
+        </h2>
       </div>
-      <hr class="my-8 border-t-2 border-gray-300">
-      <h2 id="pork-dish" class="text-xl font-semibold mb-6 text-gray-900 mt-12">Pork Dish</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <div id="breakfast-meals-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <!-- Example Product Card -->
-        <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center shadow hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
-          <img src="img/Menu-2/Pork_BBQ.jpg" alt="Lumpia" class="w-28 h-28 object-cover mb-3 rounded">
-          <h4 class="text-base font-medium text-gray-900">Pork BBQ</h4>
-          <p class="text-sm text-gray-500 text-center">Smoky, sweet, and tender—skewers that steal the show!</p>
-          <div class="text-green-600 font-bold mt-2">₱105</div>
-          <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded px-3 py-1 mt-2 text-lg transition">Add +</button>
-        </div>
-        <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center shadow hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
-          <img src="img/Menu-2/Pork_Bistek_3.jpg" alt="Lumpia" class="w-28 h-28 object-cover mb-3 rounded">
-          <h4 class="text-base font-medium text-gray-900">Pork Bistek</h4>
-          <p class="text-sm text-gray-500 text-center">Tender pork slices in tangy soy-calamansi sauce</p>
-          <div class="text-green-600 font-bold mt-2">₱105</div>
-          <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded px-3 py-1 mt-2 text-lg transition">Add +</button>
-        </div>
-        <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center shadow hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
-          <img src="img/lumpia.jpg" alt="Lumpia" class="w-28 h-28 object-cover mb-3 rounded">
-          <h4 class="text-base font-medium text-gray-900">Adobo</h4>
-          <p class="text-sm text-gray-500 text-center">Crispy, golden perfection wrapped around savory seasoned meat</p>
-          <div class="text-green-600 font-bold mt-2">₱105</div>
-          <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded px-3 py-1 mt-2 text-lg transition">Add +</button>
-        </div>
-      </div>
-      <hr class="my-8 border-t-2 border-gray-300">
-      <h2 id="noodles" class="text-xl font-semibold mb-6 text-gray-900 mt-12">Noodles</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Example Product Card -->
-        <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center shadow hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
-          <img src="img/Menu-2/Pancit_Bihon.jpg" alt="Lumpia" class="w-28 h-28 object-cover mb-3 rounded">
-          <h4 class="text-base font-medium text-gray-900">Pancit Bihon</h4>
-          <p class="text-sm text-gray-500 text-center">Long life, big flavor—celebrate with every noodle forkful!</p>
-          <div class="text-green-600 font-bold mt-2">₱105</div>
-          <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded px-3 py-1 mt-2 text-lg transition">Add +</button>
-        </div>
-        <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center shadow hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
-          <img src="img/Menu-2/Bam-I_3.jpg" alt="Bam-I" class="w-28 h-28 object-cover mb-3 rounded">
-          <h4 class="text-base font-medium text-gray-900">Bam-I</h4>
-          <p class="text-sm text-gray-500 text-center">Two noodles, one unforgettable Filipino-Chinese fusion!</p>
-          <div class="text-green-600 font-bold mt-2">₱105</div>
-          <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded px-3 py-1 mt-2 text-lg transition">Add +</button>
-        </div>
-      </div>
-      <hr class="my-8 border-t-2 border-gray-300">
-      <h2 id="rice-meals" class="text-xl font-semibold mb-6 text-gray-900 mt-12">Rice Meals</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Example Product Card -->
-        <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center shadow hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
-          <img src="img/Menu-2/Chicken_Rice_Bowl_1.jpg" alt="Lumpia" class="w-28 h-28 object-cover mb-3 rounded">
-          <h4 class="text-base font-medium text-gray-900">Fried Chicken w/ Rice</h4>
-          <p class="text-sm text-gray-500 text-center">Crispy on the outside, juicy on the inside—chicken done right!</p>
-          <div class="text-green-600 font-bold mt-2">₱105</div>
-          <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded px-3 py-1 mt-2 text-lg transition">Add +</button>
-        </div>
-        <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center shadow hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
-          <img src="img/Menu-2/Bicol_Express.jpg" alt="Lumpia" class="w-28 h-28 object-cover mb-3 rounded">
-          <h4 class="text-base font-medium text-gray-900">Bicol Express</h4>
-          <p class="text-sm text-gray-500 text-center">Creamy, spicy, and addictively good—Bicolano heat in every bite!</p>
-          <div class="text-green-600 font-bold mt-2">₱105</div>
-          <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded px-3 py-1 mt-2 text-lg transition">Add +</button>
-        </div>
-      </div>
-      <hr class="my-8 border-t-2 border-gray-300">
-      <h2 id="breakfast-meals" class="text-xl font-semibold mb-6 text-gray-900 mt-12">Breakfast Meals</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Example Product Card -->
-        <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center shadow hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
-          <img src="img/lumpia.jpg" alt="Lumpia" class="w-28 h-28 object-cover mb-3 rounded">
-          <h4 class="text-base font-medium text-gray-900">Dinuguan</h4>
-          <p class="text-sm text-gray-500 text-center">Crispy, golden perfection wrapped around savory seasoned meat</p>
-          <div class="text-green-600 font-bold mt-2">₱105</div>
-          <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded px-3 py-1 mt-2 text-lg transition">Add +</button>
-        </div>
-        <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center shadow hover:shadow-lg transition-transform transform hover:scale-105 duration-300">
-          <img src="img/lumpia.jpg" alt="Lumpia" class="w-28 h-28 object-cover mb-3 rounded">
-          <h4 class="text-base font-medium text-gray-900">4-pc. Lumpia Shanghai</h4>
-          <p class="text-sm text-gray-500 text-center">Crispy, golden perfection wrapped around savory seasoned meat</p>
-          <div class="text-green-600 font-bold mt-2">₱105</div>
-          <button class="add-to-cart bg-red-500 hover:bg-red-600 text-white rounded px-3 py-1 mt-2 text-lg transition">Add +</button>
-        </div>
+        
       </div>
       
       
@@ -440,7 +311,7 @@ $stmt->close();
   <h5 class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Settings</h5>
   <ul class="space-y-2 text-sm text-gray-700">
     <li>
-      <a href="newProfile.html" class="flex items-center justify-between px-3 py-2 rounded-md hover:bg-red-50 hover:text-red-500 transition">
+      <a href="newProfile.php" class="flex items-center justify-between px-3 py-2 rounded-md hover:bg-red-50 hover:text-red-500 transition">
         Edit Profile
         <span class="text-xs text-gray-400">›</span>
       </a>
@@ -551,6 +422,10 @@ $stmt->close();
     const currentUserId = <?= json_encode($_SESSION['customer_id'] ?? null); ?>;
   </script>
 
+  
+
   <script src="orderPageFunction.js" defer></script>
+  <script src="fetch_recommended.js" ></script>
+  <script src="productLoader.js" ></script>
 </body>
 </html>

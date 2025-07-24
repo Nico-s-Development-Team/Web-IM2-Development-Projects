@@ -30,10 +30,6 @@
           <i data-lucide="users" class="w-5 h-5"></i>
           User Management
         </a>
-        <a href="history.html" class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-blue-700 transition-all">
-          <i data-lucide="history" class="w-5 h-5"></i>
-          Order History
-        </a>
         <a href="delivery.html" class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-blue-700 transition-all">
           <i data-lucide="truck" class="w-5 h-5"></i>
           Delivery Management
@@ -234,36 +230,61 @@
 
 
   function showOrderDetails(id) {
-    const order = orders.find(o => o.id === id);
-    if (order) {
+  fetch(`orders_api.php?action=details&id=${id}`)
+    .then(res => res.json())
+    .then(data => {
+      if (!data.success) return alert("Failed to load order details.");
+
+      const order = data.order;
+      const items = data.items;
+
+      let itemList = '';
+      if (items.length > 0) {
+        itemList = `
+          <ul class="list-disc ml-5 text-sm space-y-1">
+            ${items.map(item => `
+              <li>${item.Menu_Name} × ${item.Quantity} — ₱${item.Price}</li>
+            `).join('')}
+          </ul>
+        `;
+      } else {
+        itemList = `<p class="text-sm italic text-gray-500">No items found.</p>`;
+      }
+
       detailsContent.innerHTML = `
         <div class="flex justify-between">
-          <strong>Order ID</strong><span>#${order.id}</span>
+          <strong>Order ID</strong><span>#${order.Order_ID}</span>
         </div>
         <div class="flex justify-between">
-          <strong>Customer</strong><span>${order.customer}</span>
+          <strong>Customer</strong><span>${order.Customer_FirstName} ${order.Customer_LastName}</span>
         </div>
         <div class="flex justify-between">
-          <strong>Date</strong><span>${order.date}</span>
+          <strong>Date</strong><span>${order.Order_Date}</span>
         </div>
         <div class="flex justify-between">
-          <strong>Status</strong><span>${order.status}</span>
+          <strong>Status</strong><span>${order.Status}</span>
         </div>
         <div class="flex justify-between">
-          <strong>Total</strong><span>₱${order.total}</span>
+          <strong>Total</strong><span>₱${order.Total_Amount}</span>
         </div>
         <div class="flex justify-between">
-          <strong>Payment</strong><span>Cash</span>
+          <strong>Payment</strong><span>${order.Payment_Method || 'Cash'}</span>
         </div>
         <div>
           <strong class="block mt-4">Order Items:</strong>
-          <p class="text-sm italic text-gray-500">Item details loading not yet implemented.</p>
+          ${itemList}
         </div>
       `;
+
       detailsModal.classList.remove("hidden");
       detailsModal.classList.add("flex");
-    }
-  }
+    })
+    .catch(err => {
+      console.error("Failed to load order details:", err);
+      alert("Error loading order details.");
+    });
+}
+
 
   function closeDetailsModal() {
     detailsModal.classList.add("hidden");

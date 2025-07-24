@@ -6,7 +6,7 @@ $action = $_POST['action'] ?? $_GET['action'] ?? '';
 
 if ($action === 'fetch') {
     // View all items
-    $sql = "SELECT MenuItem_ID, Item_Name, Price, Quantity FROM MenuItem_T";
+    $sql = "SELECT MenuItem_ID, Item_Name, Price, Quantity, Category, Image_URL FROM MenuItem_T";
     $result = $conn->query($sql);
 
     $menu = [];
@@ -15,7 +15,9 @@ if ($action === 'fetch') {
             'id' => $row['MenuItem_ID'],
             'name' => $row['Item_Name'],
             'price' => $row['Price'],
-            'stock' => $row['Quantity']
+            'stock' => $row['Quantity'],
+            'category' => $row['Category'],
+            'image_url' => $row['Image_URL']
         ];
     }
 
@@ -25,9 +27,11 @@ if ($action === 'fetch') {
     $name = $_POST['name'];
     $price = $_POST['price'];
     $stock = $_POST['stock'];
+    $category = $_POST['category'];
+    $image_url = $_POST['image_url'];
 
-    $stmt = $conn->prepare("INSERT INTO MenuItem_T (Item_Name, Price, Quantity) VALUES (?, ?, ?)");
-    $stmt->bind_param("sdi", $name, $price, $stock);
+    $stmt = $conn->prepare("INSERT INTO MenuItem_T (Item_Name, Price, Quantity, Category, Image_URL) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sdiss", $name, $price, $stock, $category, $image_url);
     $stmt->execute();
 
     echo json_encode(['success' => true]);
@@ -37,9 +41,11 @@ if ($action === 'fetch') {
     $name = $_POST['name'];
     $price = $_POST['price'];
     $stock = $_POST['stock'];   
+    $category = $_POST['category'];
+    $image_url = $_POST['image_url'];
 
-    $stmt = $conn->prepare("UPDATE MenuItem_T SET Item_Name = ?, Price = ?, Quantity = ? WHERE MenuItem_ID = ?");
-    $stmt->bind_param("sdii", $name, $price, $stock, $id);
+    $stmt = $conn->prepare("UPDATE MenuItem_T SET Item_Name = ?, Price = ?, Quantity = ?, Category = ?, Image_URL = ? WHERE MenuItem_ID = ?");
+    $stmt->bind_param("sdissi", $name, $price, $stock, $category, $image_url, $id);
     $stmt->execute();
 
     echo json_encode(['success' => true]);

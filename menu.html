@@ -30,10 +30,6 @@
           <i data-lucide="users" class="w-5 h-5"></i>
           User Management
         </a>
-        <a href="history.html" class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-blue-700 transition-all">
-          <i data-lucide="history" class="w-5 h-5"></i>
-          Order History
-        </a>
         <a href="delivery.html" class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-blue-700 transition-all">
           <i data-lucide="truck" class="w-5 h-5"></i>
           Delivery Management
@@ -75,6 +71,7 @@
               <th class="px-4 py-2">Name</th>
               <th class="px-4 py-2">Price</th>
               <th class="px-4 py-2">Stock</th>
+              <th class="px-4 py-2">Category</th>
               <th class="px-4 py-2 text-right">Actions</th>
             </tr>
           </thead>
@@ -100,6 +97,8 @@
         <input type="text" id="itemName" placeholder="Item Name" class="w-full border px-3 py-2 rounded" required>
         <input type="number" id="itemPrice" placeholder="Price" class="w-full border px-3 py-2 rounded" required>
         <input type="number" id="itemStock" placeholder="Stock" class="w-full border px-3 py-2 rounded" required>
+        <input type="text" id="itemCategory" placeholder="Category" class="w-full border px-3 py-2 rounded" required>
+        <input type="text" id="itemImage_URL" placeholder="Image_URL" class="w-full border px-3 py-2 rounded" required>
         <div class="flex justify-end space-x-2">
           <button type="button" onclick="closeModal()" class="bg-gray-500 text-white px-4 py-1 rounded">Cancel</button>
           <button type="submit" class="bg-green-600 text-white px-4 py-1 rounded">Save</button>
@@ -176,6 +175,7 @@
           <td class="px-4 py-2">${item.name}</td>
           <td class="px-4 py-2">₱${item.price}</td>
           <td class="px-4 py-2">${item.stock}</td>
+          <td class="px-4 py-2">${item.category}</td>
           <td class="px-4 py-2 text-right space-x-2">
             <button onclick="editItem(${menuItems.indexOf(item)})" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm">Edit</button>
             <button onclick="deleteItem(${item.id})" class="bg-red-500 text-white px-3 py-1 rounded text-sm">Delete</button>
@@ -214,6 +214,8 @@
       document.getElementById("itemName").value = item.name;
       document.getElementById("itemPrice").value = item.price;
       document.getElementById("itemStock").value = item.stock;
+      document.getElementById("itemCategory").value = item.category;
+      document.getElementById("itemImage_URL").value = item.image_url;
       modalTitle.textContent = "Edit Menu Item";
       menuModal.classList.remove("hidden");
       menuModal.classList.add("flex");
@@ -244,6 +246,9 @@
       formData.append("name", document.getElementById("itemName").value);
       formData.append("price", document.getElementById("itemPrice").value);
       formData.append("stock", document.getElementById("itemStock").value);
+      formData.append("category", document.getElementById("itemCategory").value);
+      formData.append("image_url", document.getElementById("itemImage_URL").value);
+
 
       if (editingIndex === null) {
         formData.append("action", "add");

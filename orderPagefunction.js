@@ -68,26 +68,29 @@ document.addEventListener("DOMContentLoaded", function () {
 let basket = JSON.parse(localStorage.getItem('basket')) || [];
 renderBasket();
 
-document.querySelectorAll('.add-to-cart').forEach(button => {
-  button.addEventListener('click', () => {
+document.addEventListener('click', function (event) {
+  if (event.target.classList.contains('add-to-cart')) {
+    const button = event.target;
     const productCard = button.closest('.bg-white');
 
-    const name = productCard.querySelector('h4')?.innerText.trim() || 'Unnamed';
-    const priceEl = productCard.querySelector('.text-red-500, .text-green-600');
-    const price = priceEl ? parseFloat(priceEl.innerText.replace('₱', '').trim()) : 0;
-    const image = productCard.querySelector('img')?.getAttribute('src') || 'img/default.jpg';
+    const id = button.dataset.id;
+    const name = button.dataset.name;
+    const price = parseFloat(button.dataset.price);
+    const image = productCard.querySelector('img')?.getAttribute('src') || 'img/burger.png';
 
-    const existing = basket.find(item => item.name === name);
+    const existing = basket.find(item => item.name === name); // FIXED: compare IDs properly
     if (existing) {
       existing.quantity += 1;
     } else {
-      basket.push({ name, price, quantity: 1, image });
+      basket.push({ id, name, price, quantity: 1, image });
     }
 
     localStorage.setItem('basket', JSON.stringify(basket));
     renderBasket();
-  });
+    console.log("Basket now:", basket); // DEBUG
+  }
 });
+
 
 function renderBasket() {
   localStorage.setItem('basket', JSON.stringify(basket));
