@@ -95,15 +95,27 @@ try {
     }
 
     // Insert into Delivery_T with delivery method
-    $deliveryStmt = $conn->prepare("INSERT INTO Delivery_T (Order_ID, Delivery_Method, Delivery_Status) VALUES (?, ?, 'Queued')");
-    if (!$deliveryStmt) {
-        throw new Exception("Delivery insert prepare failed: " . $conn->error);
-    }
+    // Only insert into Delivery_T if order status is 'Ready'
+$statusCheckStmt = $conn->prepare("SELECT Order_Status FROM Order_T WHERE Order_ID = ?");
+$statusCheckStmt->bind_param("i", $orderId);
+$statusCheckStmt->execute();
+$statusResult = $statusCheckStmt->get_result();
 
-    $deliveryStmt->bind_param("is", $orderId, $deliveryMethod);
-    if (!$deliveryStmt->execute()) {
-        throw new Exception("Delivery insert failed: " . $deliveryStmt->error);
+if ($statusResult && $row = $statusResult->fetch_assoc()) {
+    if (strtolower($row['Order_Status']) === 'ready') {
+        $deliveryStmt = $conn->prepare("INSERT INTO Delivery_T (Order_ID, Delivery_Method, Delivery_Status) VALUES (?, ?, 'Queued')");
+        if (!$deliveryStmt) {
+            throw new Exception("Delivery insert prepare failed: " . $conn->error);
+        }
+
+        $deliveryStmt->bind_param("is", $orderId, $deliveryMethod);
+        if (!$deliveryStmt->execute()) {
+            throw new Exception("Delivery insert failed: " . $deliveryStmt->error);
+        }
     }
+}
+$statusCheckStmt->close();
+
 
     echo json_encode(["success" => true, "orderId" => $orderId]);
 } catch (Exception $e) {
